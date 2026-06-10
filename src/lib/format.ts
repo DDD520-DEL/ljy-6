@@ -153,6 +153,8 @@ export function timeAgo(iso?: string) {
   return formatDate(iso);
 }
 
+export const formatDateRelative = timeAgo;
+
 export function toLocalInputDate(iso?: string) {
   if (!iso) return '';
   const d = new Date(iso);

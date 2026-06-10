@@ -157,6 +157,14 @@ const en: Record<string, string> = {
   profile_no_followers: 'No followers yet',
   profile_times: 'times',
   profile_first: 'First',
+  profile_tab_activity: 'Activity',
+  profile_no_activity: 'No activity yet',
+  profile_activity_desc: 'Activities will appear here after you publish observations, comment, or follow other birders',
+
+  activity_publish_obs: 'published a new observation',
+  activity_comment: 'commented on an observation',
+  activity_follow: 'followed',
+  activity_reply_to_obs: 'Replying to:',
 
   analytics_title: 'Species Analytics · Urban Bird Data Center',
   analytics_subtitle: 'Frequency rankings, seasonal patterns, and migration heatmaps',
@@ -189,7 +197,7 @@ const en: Record<string, string> = {
   community_label: 'Community',
   community_feed: 'Feed',
   community_users: 'Birders',
-  community_no_feed: 'No observations yet',
+  community_no_feed: 'No community activity yet',
 
   challenges_title: 'Birding Challenges',
   challenges_subtitle: 'Complete monthly challenges, collect badges, and compete with birders nationwide',

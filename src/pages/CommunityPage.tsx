@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Users, MessageCircle, Sparkles, Home } from 'lucide-react';
 import api from '../lib/api';
-import type { Observation, User } from '../../shared/types';
-import { ObservationCard } from '../components/ObservationCard';
+import type { User, Activity } from '../../shared/types';
+import { ActivityCard } from '../components/ActivityCard';
 import { UserCard } from '../components/UserCard';
 import { useT } from '../i18n';
 
@@ -11,15 +11,15 @@ type TabType = 'feed' | 'users';
 export default function CommunityPage() {
   const t = useT();
   const [tab, setTab] = useState<TabType>('feed');
-  const [observations, setObservations] = useState<Observation[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchFeed = async () => {
     setLoading(true);
     try {
-      const { data } = await api.get('/observations', { params: { limit: 30 } });
-      setObservations(data.data || []);
+      const { data } = await api.get('/observations/feed', { params: { limit: 50 } });
+      setActivities(data.data || []);
     } finally {
       setLoading(false);
     }
@@ -92,16 +92,16 @@ export default function CommunityPage() {
           ))}
         </div>
       ) : tab === 'feed' ? (
-        observations.length === 0 ? (
+        activities.length === 0 ? (
           <div className="card py-20 text-center text-sage-400">
             <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-40" />
             <p className="text-lg font-medium">{t('community_no_feed')}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {observations.map((obs, i) => (
-              <div key={obs.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-slide-up">
-                <ObservationCard observation={obs} onUpdate={fetchFeed} />
+            {activities.map((act, i) => (
+              <div key={act.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-slide-up">
+                <ActivityCard activity={act} onUpdate={fetchFeed} />
               </div>
             ))}
           </div>

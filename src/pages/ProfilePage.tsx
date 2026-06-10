@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy } from 'lucide-react';
+import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy, Activity } from 'lucide-react';
 import api from '../lib/api';
-import type { User, YearListItem, Observation, Collection, UserBadge } from '../../shared/types';
+import type { User, YearListItem, Observation, Collection, UserBadge, Activity as ActivityType } from '../../shared/types';
 import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
+import { ActivityCard } from '../components/ActivityCard';
 import { formatDateShort } from '../lib/format';
 import { useAuthStore } from '../stores/authStore';
 import { MIGRATION_LABELS, RARITY_COLORS, getMigrationLabel, getRarityLabel as getRarityLabelConst, getHabitatLabel, getBirdSizeLabel, getBeakLabel } from '../lib/constants';
@@ -25,7 +26,7 @@ export default function ProfilePage() {
   const [followers, setFollowers] = useState<User[]>([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<'list' | 'obs' | 'collections' | 'badges' | 'following' | 'followers'>('list');
+  const [tab, setTab] = useState<'activity' | 'list' | 'obs' | 'collections' | 'badges' | 'following' | 'followers'>('activity');
   const [collectionsGrouped, setCollectionsGrouped] = useState<{
     order: string;
     families: { family: string; collections: Collection[]; count: number }[];
@@ -34,6 +35,8 @@ export default function ProfilePage() {
   const [collectionsTotal, setCollectionsTotal] = useState(0);
   const [badges, setBadges] = useState<UserBadge[]>([]);
   const [badgesTotal, setBadgesTotal] = useState(0);
+  const [activities, setActivities] = useState<ActivityType[]>([]);
+  const [activitiesTotal, setActivitiesTotal] = useState(0);
 
   const fetchAll = async () => {
     if (!id) return;
@@ -46,8 +49,9 @@ export default function ProfilePage() {
         api.get(`/users/${id}/followers`),
         api.get(`/collections/user/${id}/grouped`),
         api.get(`/challenges/user/${id}/badges`),
+        api.get(`/users/${id}/activities`),
       ];
-      const [pRes, yRes, fFollowing, fFollowers, cRes, bRes] = await Promise.all(reqs);
+      const [pRes, yRes, fFollowing, fFollowers, cRes, bRes, aRes] = await Promise.all(reqs);
       setProfile(pRes.data.data);
       setYearList(yRes.data.data || []);
       setYearTotal(yRes.data.total || 0);
@@ -58,6 +62,8 @@ export default function ProfilePage() {
       setCollectionsTotal(cRes.data.total || 0);
       setBadges(bRes.data.data || []);
       setBadgesTotal(bRes.data.total || 0);
+      setActivities(aRes.data.data || []);
+      setActivitiesTotal(aRes.data.total || 0);
     } finally {
       setLoading(false);
     }
@@ -191,6 +197,12 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex items-center gap-2 mb-5 overflow-x-auto pb-2">
+        <TabBtn active={tab === 'activity'} onClick={() => setTab('activity')}>
+          <span className="flex items-center gap-1.5">
+            <Activity className="w-4 h-4" />
+            {t('profile_tab_activity')} ({activitiesTotal})
+          </span>
+        </TabBtn>
         <TabBtn active={tab === 'list'} onClick={() => setTab('list')}>{t('profile_tab_list')} ({yearTotal})</TabBtn>
         <TabBtn active={tab === 'obs'} onClick={() => setTab('obs')}>{t('profile_tab_obs')} ({observations.length})</TabBtn>
         <TabBtn active={tab === 'collections'} onClick={() => setTab('collections')}>
@@ -210,6 +222,23 @@ export default function ProfilePage() {
       </div>
 
       <div className="animate-fade-in">
+        {tab === 'activity' && (
+          activities.length === 0 ? (
+            <EmptyCard
+              icon={<Activity className="w-12 h-12" />}
+              title={t('profile_no_activity')}
+              desc={t('profile_activity_desc')}
+            />
+          ) : (
+            <div className="space-y-5">
+              {activities.map((act, i) => (
+                <div key={act.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-slide-up">
+                  <ActivityCard activity={act} onUpdate={fetchAll} />
+                </div>
+              ))}
+            </div>
+          )
+        )}
         {tab === 'list' && (
           yearList.length === 0 ? (
             <EmptyCard icon={<Award className="w-12 h-12" />} title={t('profile_no_year_records')} desc={t('profile_go_record')} to={isSelf ? '/observe/new' : undefined} />

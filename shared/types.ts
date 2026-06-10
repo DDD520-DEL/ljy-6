@@ -161,6 +161,22 @@ export interface UserBadge {
   challenge?: Challenge;
 }
 
+export type ActivityType = 'publish_observation' | 'comment' | 'follow';
+
+export interface Activity {
+  id: number;
+  userId: number;
+  type: ActivityType;
+  targetId?: number;
+  targetType?: 'observation' | 'comment' | 'user';
+  metadata?: Record<string, any>;
+  createdAt: string;
+  user?: User;
+  observation?: Observation;
+  comment?: Comment;
+  targetUser?: User;
+}
+
 export interface ChallengeRankingItem {
   userId: number;
   user: User;

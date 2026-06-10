@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { verifyToken } from './auth.js';
 import { ObservationService } from '../services/observationService.js';
+import { ActivityService } from '../services/activityService.js';
 
 const router = Router();
 
@@ -26,9 +27,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/feed', (req, res) => {
-  const auth = verifyToken(req.headers.authorization);
-  if (!auth) return res.status(401).json({ success: false, message: '请先登录' });
-  const result = ObservationService.getFeed(auth.userId);
+  const currentUserId = getCurrentUserId(req);
+  const limit = req.query.limit ? Number(req.query.limit) : 50;
+  const offset = req.query.offset ? Number(req.query.offset) : 0;
+  const result = ActivityService.getFeed(currentUserId, { limit, offset });
   res.json({ success: true, ...result });
 });
 

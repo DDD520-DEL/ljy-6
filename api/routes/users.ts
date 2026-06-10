@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { verifyToken } from './auth.js';
 import { UserService } from '../services/userService.js';
+import { ActivityService } from '../services/activityService.js';
 
 const router = Router();
 
@@ -54,6 +55,15 @@ router.get('/:id/following', (req, res) => {
   const currentUserId = getCurrentUserId(req);
   const data = UserService.getFollowing(id, currentUserId);
   res.json({ success: true, data, total: data.length });
+});
+
+router.get('/:id/activities', (req, res) => {
+  const id = Number(req.params.id);
+  const currentUserId = getCurrentUserId(req);
+  const limit = req.query.limit ? Number(req.query.limit) : 50;
+  const offset = req.query.offset ? Number(req.query.offset) : 0;
+  const result = ActivityService.getUserActivities(id, currentUserId, { limit, offset });
+  res.json({ success: true, ...result });
 });
 
 router.post('/follow/:id', (req, res) => {

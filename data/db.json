@@ -6,7 +6,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder1&backgroundColor=b6e3f4",
       "bio": "十年观鸟经验，热爱记录城市飞羽之美。常驻北京朝阳公园。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-09T18:55:09.180Z"
+      "createdAt": "2026-06-09T19:13:29.999Z"
     },
     {
       "id": 2,
@@ -14,7 +14,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder2&backgroundColor=c0aede",
       "bio": "自然摄影师，专注鸟类摄影五年。喜欢迁徙季追鸟。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-08T18:55:09.180Z"
+      "createdAt": "2026-06-08T19:13:29.999Z"
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder3&backgroundColor=ffd5dc",
       "bio": "城市观鸟入门者，从常见鸟开始积累。上海人。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-07T18:55:09.180Z"
+      "createdAt": "2026-06-07T19:13:29.999Z"
     },
     {
       "id": 4,
@@ -30,7 +30,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder4&backgroundColor=ffdfbf",
       "bio": "生态保护工作者，深圳湾水鸟调查志愿者。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-06T18:55:09.180Z"
+      "createdAt": "2026-06-06T19:13:29.999Z"
     },
     {
       "id": 5,
@@ -38,7 +38,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder5&backgroundColor=d1d4f9",
       "bio": "成都观鸟协会会员，每周公园巡礼。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-05T18:55:09.180Z"
+      "createdAt": "2026-06-05T19:13:29.999Z"
     }
   ],
   "species": [
@@ -583,8 +583,8 @@
       ],
       "thumbnailUrls": [],
       "description": "十几只麻雀在广场上觅食，游客投喂时蜂拥而至。",
-      "likes": 8,
-      "createdAt": "2026-06-09T18:55:09.180Z"
+      "likes": 4,
+      "createdAt": "2026-06-09T19:13:29.999Z"
     },
     {
       "id": 2,
@@ -602,8 +602,8 @@
       ],
       "thumbnailUrls": [],
       "description": "清晨的鸣唱大赛，数只白头鹎此起彼伏。",
-      "likes": 7,
-      "createdAt": "2026-06-08T18:55:09.180Z"
+      "likes": 8,
+      "createdAt": "2026-06-08T19:13:29.999Z"
     },
     {
       "id": 3,
@@ -621,8 +621,8 @@
       ],
       "thumbnailUrls": [],
       "description": "一对斑鸠在草坪散步，时不时互相依偎。",
-      "likes": 7,
-      "createdAt": "2026-06-07T18:55:09.180Z"
+      "likes": 6,
+      "createdAt": "2026-06-07T19:13:29.999Z"
     },
     {
       "id": 4,
@@ -640,8 +640,8 @@
       ],
       "thumbnailUrls": [],
       "description": "喜鹊夫妇正在街旁梧桐树上衔枝筑巢，非常忙碌。",
-      "likes": 7,
-      "createdAt": "2026-06-09T18:55:09.180Z"
+      "likes": 5,
+      "createdAt": "2026-06-09T19:13:29.999Z"
     },
     {
       "id": 5,
@@ -659,8 +659,8 @@
       ],
       "thumbnailUrls": [],
       "description": "黄昏时分，一群八哥停在古建筑屋顶，叫声嘈杂。",
-      "likes": 5,
-      "createdAt": "2026-06-06T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-06-06T19:13:29.999Z"
     },
     {
       "id": 6,
@@ -678,8 +678,8 @@
       ],
       "thumbnailUrls": [],
       "description": "十多只白鹭在退潮后的泥滩上踱步，偶尔啄食小蟹。",
-      "likes": 4,
-      "createdAt": "2026-06-10T18:55:09.180Z"
+      "likes": 8,
+      "createdAt": "2026-06-10T19:13:29.999Z"
     },
     {
       "id": 7,
@@ -697,8 +697,8 @@
       ],
       "thumbnailUrls": [],
       "description": "数十只夜鹭挤在一棵大榕树上休息，红眼醒目。",
-      "likes": 5,
-      "createdAt": "2026-06-05T18:55:09.180Z"
+      "likes": 3,
+      "createdAt": "2026-06-05T19:13:29.999Z"
     },
     {
       "id": 8,
@@ -716,8 +716,8 @@
       ],
       "thumbnailUrls": [],
       "description": "一只小䴙䴘反复潜入水中，每次出水都带着小鱼。",
-      "likes": 2,
-      "createdAt": "2026-06-08T18:55:09.180Z"
+      "likes": 6,
+      "createdAt": "2026-06-08T19:13:29.999Z"
     },
     {
       "id": 9,
@@ -735,8 +735,8 @@
       ],
       "thumbnailUrls": [],
       "description": "一群家燕在护城河上空穿梭，飞行技艺精湛。",
-      "likes": 6,
-      "createdAt": "2026-06-04T18:55:09.180Z"
+      "likes": 3,
+      "createdAt": "2026-06-04T19:13:29.999Z"
     },
     {
       "id": 10,
@@ -754,8 +754,8 @@
       ],
       "thumbnailUrls": [],
       "description": "戴胜用细长弯喙在草地上翻找昆虫幼虫，羽冠时而展开。",
-      "likes": 7,
-      "createdAt": "2026-06-03T18:55:09.180Z"
+      "likes": 2,
+      "createdAt": "2026-06-03T19:13:29.999Z"
     },
     {
       "id": 11,
@@ -773,8 +773,8 @@
       ],
       "thumbnailUrls": [],
       "description": "大山雀活泼好动，在松树枝间跳跃，不时发出清脆叫声。",
-      "likes": 1,
-      "createdAt": "2026-06-02T18:55:09.180Z"
+      "likes": 2,
+      "createdAt": "2026-06-02T19:13:29.999Z"
     },
     {
       "id": 12,
@@ -792,8 +792,8 @@
       ],
       "thumbnailUrls": [],
       "description": "一群红嘴蓝鹊从苏堤上空飞过，长尾飘逸极为壮观。",
-      "likes": 0,
-      "createdAt": "2026-06-07T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-06-07T19:13:29.999Z"
     },
     {
       "id": 13,
@@ -811,8 +811,8 @@
       ],
       "thumbnailUrls": [],
       "description": "翠鸟停在荷花茎上一动不动，闪电般冲入水中叼起小鱼。",
-      "likes": 4,
-      "createdAt": "2026-06-06T18:55:09.180Z"
+      "likes": 1,
+      "createdAt": "2026-06-06T19:13:29.999Z"
     },
     {
       "id": 14,
@@ -830,8 +830,8 @@
       ],
       "thumbnailUrls": [],
       "description": "黑卷尾像黑色闪电在空中翻飞，追逐飞虫。",
-      "likes": 2,
-      "createdAt": "2026-06-05T18:55:09.180Z"
+      "likes": 8,
+      "createdAt": "2026-06-05T19:13:29.999Z"
     },
     {
       "id": 15,
@@ -849,8 +849,8 @@
       ],
       "thumbnailUrls": [],
       "description": "伯劳站在光秃秃的高枝上俯视四周，准备捕食。",
-      "likes": 6,
-      "createdAt": "2026-06-01T18:55:09.180Z"
+      "likes": 8,
+      "createdAt": "2026-06-01T19:13:29.999Z"
     },
     {
       "id": 16,
@@ -869,7 +869,7 @@
       "thumbnailUrls": [],
       "description": "一大群灰喜鹊从湖面掠过，然后落在草地上。",
       "likes": 2,
-      "createdAt": "2026-05-31T18:55:09.180Z"
+      "createdAt": "2026-05-31T19:13:29.999Z"
     },
     {
       "id": 17,
@@ -887,8 +887,8 @@
       ],
       "thumbnailUrls": [],
       "description": "数十只红头长尾山雀在竹林顶端跳跃翻飞，如移动的彩色珍珠。",
-      "likes": 9,
-      "createdAt": "2026-05-30T18:55:09.180Z"
+      "likes": 5,
+      "createdAt": "2026-05-30T19:13:29.999Z"
     },
     {
       "id": 18,
@@ -906,8 +906,8 @@
       ],
       "thumbnailUrls": [],
       "description": "乌鸫在草坪上认真地翻动草皮，不时抬头张望警惕。",
-      "likes": 2,
-      "createdAt": "2026-05-29T18:55:09.180Z"
+      "likes": 0,
+      "createdAt": "2026-05-29T19:13:29.999Z"
     },
     {
       "id": 19,
@@ -925,8 +925,8 @@
       ],
       "thumbnailUrls": [],
       "description": "一对鸳鸯在西湖里悠闲游弋，从不分离。",
-      "likes": 9,
-      "createdAt": "2026-05-26T18:55:09.180Z"
+      "likes": 4,
+      "createdAt": "2026-05-26T19:13:29.999Z"
     },
     {
       "id": 20,
@@ -944,8 +944,8 @@
       ],
       "thumbnailUrls": [],
       "description": "几只鸬鹚在海湾里反复潜水，出水后展开翅膀晒太阳。",
-      "likes": 1,
-      "createdAt": "2026-05-28T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-28T19:13:29.999Z"
     },
     {
       "id": 21,
@@ -963,8 +963,8 @@
       ],
       "thumbnailUrls": [],
       "description": "麻雀们在餐厅门口捡食掉落的米粒和面包屑。",
-      "likes": 9,
-      "createdAt": "2026-05-27T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-27T19:13:29.999Z"
     },
     {
       "id": 22,
@@ -982,8 +982,8 @@
       ],
       "thumbnailUrls": [],
       "description": "城市中心也能听到白头鹎悦耳的歌声。",
-      "likes": 6,
-      "createdAt": "2026-05-25T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-25T19:13:29.999Z"
     },
     {
       "id": 23,
@@ -1001,8 +1001,8 @@
       ],
       "thumbnailUrls": [],
       "description": "白鹭贴着湖面优雅地滑翔，引得游人驻足。",
-      "likes": 3,
-      "createdAt": "2026-05-24T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-24T19:13:29.999Z"
     },
     {
       "id": 24,
@@ -1021,7 +1021,7 @@
       "thumbnailUrls": [],
       "description": "家燕在江面上飞，忽高忽低。",
       "likes": 5,
-      "createdAt": "2026-05-23T18:55:09.180Z"
+      "createdAt": "2026-05-23T19:13:29.999Z"
     },
     {
       "id": 25,
@@ -1039,8 +1039,8 @@
       ],
       "thumbnailUrls": [],
       "description": "古木参天中，大山雀灵动地穿梭。",
-      "likes": 0,
-      "createdAt": "2026-05-21T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-21T19:13:29.999Z"
     },
     {
       "id": 26,
@@ -1058,8 +1058,8 @@
       ],
       "thumbnailUrls": [],
       "description": "斑鸠们在草地上咕咕叫着漫步。",
-      "likes": 9,
-      "createdAt": "2026-05-22T18:55:09.180Z"
+      "likes": 0,
+      "createdAt": "2026-05-22T19:13:29.999Z"
     },
     {
       "id": 27,
@@ -1077,8 +1077,8 @@
       ],
       "thumbnailUrls": [],
       "description": "喜鹊在几百年的古松顶端搭建巨巢。",
-      "likes": 1,
-      "createdAt": "2026-05-20T18:55:09.180Z"
+      "likes": 7,
+      "createdAt": "2026-05-20T19:13:29.999Z"
     },
     {
       "id": 28,
@@ -1096,8 +1096,8 @@
       ],
       "thumbnailUrls": [],
       "description": "灰喜鹊群在古典园林中飞来飞去。",
-      "likes": 5,
-      "createdAt": "2026-05-19T18:55:09.180Z"
+      "likes": 1,
+      "createdAt": "2026-05-19T19:13:29.999Z"
     },
     {
       "id": 29,
@@ -1115,8 +1115,8 @@
       ],
       "thumbnailUrls": [],
       "description": "灰蓝色的夜鹭在雨中一动不动地等待。",
-      "likes": 5,
-      "createdAt": "2026-05-18T18:55:09.180Z"
+      "likes": 4,
+      "createdAt": "2026-05-18T19:13:29.999Z"
     },
     {
       "id": 30,
@@ -1134,8 +1134,8 @@
       ],
       "thumbnailUrls": [],
       "description": "乌鸫在人群中穿行，毫不畏惧。",
-      "likes": 7,
-      "createdAt": "2026-05-17T18:55:09.180Z"
+      "likes": 9,
+      "createdAt": "2026-05-17T19:13:29.999Z"
     }
   ],
   "comments": [],
@@ -1147,6 +1147,7 @@
   "badges": [],
   "userChallengeProgress": [],
   "userBadges": [],
+  "activities": [],
   "_counters": {
     "users": 5,
     "species": 20,
@@ -1159,6 +1160,7 @@
     "challenges": 0,
     "badges": 0,
     "userChallengeProgress": 0,
-    "userBadges": 0
+    "userBadges": 0,
+    "activities": 0
   }
 }

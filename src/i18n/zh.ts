@@ -157,6 +157,14 @@ const zh: Record<string, string> = {
   profile_no_followers: '还没有粉丝关注',
   profile_times: '次',
   profile_first: '首次',
+  profile_tab_activity: '动态',
+  profile_no_activity: '还没有动态',
+  profile_activity_desc: '发布观测、评论或关注其他观鸟者后，动态会出现在这里',
+
+  activity_publish_obs: '发布了新的观测记录',
+  activity_comment: '评论了一条观测记录',
+  activity_follow: '关注了',
+  activity_reply_to_obs: '回复的观测记录：',
 
   analytics_title: '物种分析 · 城市野鸟数据中心',
   analytics_subtitle: '观测数据的频率排行、季节性规律与迁徙热力图',
@@ -189,7 +197,7 @@ const zh: Record<string, string> = {
   community_label: '观鸟社区',
   community_feed: '动态广场',
   community_users: '观鸟者',
-  community_no_feed: '还没有观测动态',
+  community_no_feed: '还没有社区动态',
 
   challenges_title: '观鸟挑战',
   challenges_subtitle: '完成月度挑战，收集专属徽章，与全国观鸟爱好者一较高下',

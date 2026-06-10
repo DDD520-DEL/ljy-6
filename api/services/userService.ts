@@ -2,6 +2,7 @@ import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { User } from '../../shared/types.js';
 import { ObservationService } from './observationService.js';
 import { NotificationService } from './notificationService.js';
+import { ActivityService } from './activityService.js';
 
 function countUserStats(userId: number) {
   const db = getDb();
@@ -102,6 +103,14 @@ export const UserService = {
       fromUserId: followerId,
       toUserId: followingId,
     });
+
+    ActivityService.create({
+      userId: followerId,
+      type: 'follow',
+      targetId: followingId,
+      targetType: 'user',
+    });
+
     scheduleSave();
     return true;
   },

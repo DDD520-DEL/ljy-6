@@ -3,6 +3,7 @@ import type { Observation, Comment } from '../../shared/types.js';
 import { UserService } from './userService.js';
 import { NotificationService } from './notificationService.js';
 import { ChallengeService } from './challengeService.js';
+import { ActivityService } from './activityService.js';
 import ExcelJS from 'exceljs';
 
 function enrichUser(userId?: number) {
@@ -130,6 +131,13 @@ export const ObservationService = {
     db.observations.push(obs);
     scheduleSave();
 
+    ActivityService.create({
+      userId: data.userId,
+      type: 'publish_observation',
+      targetId: id,
+      targetType: 'observation',
+    });
+
     setTimeout(() => {
       ChallengeService.updateAllProgressForUser(data.userId);
     }, 100);
@@ -192,6 +200,14 @@ export const ObservationService = {
     const id = nextId('comments');
     const c = { id, observationId, userId, content, createdAt: new Date().toISOString() };
     db.comments.push(c);
+
+    ActivityService.create({
+      userId,
+      type: 'comment',
+      targetId: id,
+      targetType: 'comment',
+      metadata: { observationId, content },
+    });
 
     if (obs.userId !== userId) {
       NotificationService.create({
