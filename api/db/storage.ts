@@ -1,0 +1,91 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.resolve(__dirname, '../../data');
+
+const DB_FILE = path.join(DATA_DIR, 'db.json');
+
+interface Database {
+  users: any[];
+  species: any[];
+  observations: any[];
+  comments: any[];
+  follows: any[];
+  likes: any[];
+  _counters: {
+    users: number;
+    species: number;
+    observations: number;
+    comments: number;
+    follows: number;
+    likes: number;
+  };
+}
+
+let cachedDb: Database | null = null;
+let saveTimer: NodeJS.Timeout | null = null;
+
+function defaultDb(): Database {
+  return {
+    users: [],
+    species: [],
+    observations: [],
+    comments: [],
+    follows: [],
+    likes: [],
+    _counters: { users: 0, species: 0, observations: 0, comments: 0, follows: 0, likes: 0 },
+  };
+}
+
+function ensureDir() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+}
+
+export function loadDb(): Database {
+  if (cachedDb) return cachedDb;
+  ensureDir();
+  if (!fs.existsSync(DB_FILE)) {
+    cachedDb = defaultDb();
+    saveDb();
+    return cachedDb;
+  }
+  try {
+    const raw = fs.readFileSync(DB_FILE, 'utf-8');
+    cachedDb = JSON.parse(raw);
+  } catch {
+    cachedDb = defaultDb();
+  }
+  return cachedDb;
+}
+
+export function saveDb() {
+  ensureDir();
+  if (cachedDb) {
+    fs.writeFileSync(DB_FILE, JSON.stringify(cachedDb, null, 2), 'utf-8');
+  }
+}
+
+export function scheduleSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveDb, 300);
+}
+
+export function getDb(): Database {
+  return loadDb();
+}
+
+export function resetDb(data: Database) {
+  cachedDb = data;
+  saveDb();
+}
+
+export function nextId(table: keyof Database['_counters']): number {
+  const db = loadDb();
+  db._counters[table] += 1;
+  scheduleSave();
+  return db._counters[table];
+}
