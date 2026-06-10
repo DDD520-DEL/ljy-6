@@ -87,6 +87,21 @@ export interface SeasonalItem {
 
 export type HeatmapPoint = [number, number, number];
 
+export type NotificationType = 'comment' | 'reply' | 'follow';
+
+export interface Notification {
+  id: number;
+  type: NotificationType;
+  fromUserId: number;
+  toUserId: number;
+  observationId?: number;
+  commentId?: number;
+  read: boolean;
+  createdAt: string;
+  fromUser?: User;
+  observation?: Observation;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;

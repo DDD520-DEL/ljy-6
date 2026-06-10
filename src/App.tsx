@@ -10,6 +10,7 @@ import ProfilePage from './pages/ProfilePage';
 import LoginPage from './pages/LoginPage';
 import ObservationDetailPage from './pages/ObservationDetailPage';
 import SpeciesDetailPage from './pages/SpeciesDetailPage';
+import NotificationsPage from './pages/NotificationsPage';
 import { useAuthStore } from './stores/authStore';
 
 function AppRoutes() {
@@ -29,6 +30,7 @@ function AppRoutes() {
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/observe/:id" element={<ObservationDetailPage />} />
         <Route path="/species/:id" element={<SpeciesDetailPage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>
     </Routes>

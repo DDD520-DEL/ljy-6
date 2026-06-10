@@ -1,6 +1,7 @@
 import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { User } from '../../shared/types.js';
 import { ObservationService } from './observationService.js';
+import { NotificationService } from './notificationService.js';
 
 function countUserStats(userId: number) {
   const db = getDb();
@@ -79,6 +80,11 @@ export const UserService = {
       followerId,
       followingId,
       createdAt: new Date().toISOString(),
+    });
+    NotificationService.create({
+      type: 'follow',
+      fromUserId: followerId,
+      toUserId: followingId,
     });
     scheduleSave();
     return true;

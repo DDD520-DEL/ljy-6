@@ -1,6 +1,7 @@
 import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { Observation, Comment } from '../../shared/types.js';
 import { UserService } from './userService.js';
+import { NotificationService } from './notificationService.js';
 import ExcelJS from 'exceljs';
 
 function enrichUser(userId?: number) {
@@ -145,9 +146,39 @@ export const ObservationService = {
 
   addComment(userId: number, observationId: number, content: string) {
     const db = getDb();
+    const obs = db.observations.find((o) => o.id === observationId);
+    if (!obs) return null;
     const id = nextId('comments');
     const c = { id, observationId, userId, content, createdAt: new Date().toISOString() };
     db.comments.push(c);
+
+    if (obs.userId !== userId) {
+      NotificationService.create({
+        type: 'comment',
+        fromUserId: userId,
+        toUserId: obs.userId,
+        observationId,
+        commentId: id,
+      });
+    }
+
+    const otherCommenterIds = [
+      ...new Set(
+        db.comments
+          .filter((item) => item.observationId === observationId && item.userId !== userId && item.userId !== obs.userId)
+          .map((item) => item.userId),
+      ),
+    ];
+    otherCommenterIds.forEach((cid) => {
+      NotificationService.create({
+        type: 'reply',
+        fromUserId: userId,
+        toUserId: cid,
+        observationId,
+        commentId: id,
+      });
+    });
+
     scheduleSave();
     return this.getById(observationId, userId);
   },

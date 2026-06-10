@@ -1,12 +1,22 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Search, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu } from 'lucide-react';
-import { useState } from 'react';
+import { Bird, MapPin, Search, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
+import { useNotificationStore } from '../stores/notificationStore';
 
 export function Navbar() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { unreadCount, fetchUnreadCount } = useNotificationStore();
+
+  useEffect(() => {
+    if (user) {
+      fetchUnreadCount();
+      const interval = setInterval(() => fetchUnreadCount(), 30000);
+      return () => clearInterval(interval);
+    }
+  }, [user, fetchUnreadCount]);
 
   const navItems = [
     { to: '/', label: '观测地图', icon: MapPin, end: true },
@@ -59,6 +69,15 @@ export function Navbar() {
             记录观测
           </button>
 
+          {user && (
+            <Link to="/notifications" className="relative p-2 rounded-xl hover:bg-sage-50 transition">
+              <Bell className="w-5 h-5 text-sage-600" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white" />
+              )}
+            </Link>
+          )}
+
           {user ? (
             <div className="relative">
               <button
@@ -71,6 +90,17 @@ export function Navbar() {
               </button>
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-56 card py-2 animate-slide-up">
+                  <Link
+                    to="/notifications"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
+                  >
+                    <Bell className="w-4 h-4" />
+                    消息通知
+                    {unreadCount > 0 && (
+                      <span className="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">{unreadCount > 99 ? '99+' : unreadCount}</span>
+                    )}
+                  </Link>
                   <Link
                     to={`/profile/${user.id}`}
                     onClick={() => setMenuOpen(false)}
@@ -130,6 +160,15 @@ export function Navbar() {
             <Link to="/login" onClick={() => setMenuOpen(false)} className="nav-link flex items-center gap-2 col-span-2 justify-center">
               <User className="w-4 h-4" />
               登录 / 注册
+            </Link>
+          )}
+          {user && (
+            <Link to="/notifications" onClick={() => setMenuOpen(false)} className="nav-link flex items-center gap-2 relative">
+              <Bell className="w-4 h-4" />
+              消息通知
+              {unreadCount > 0 && (
+                <span className="w-2 h-2 bg-red-500 rounded-full" />
+              )}
             </Link>
           )}
         </nav>

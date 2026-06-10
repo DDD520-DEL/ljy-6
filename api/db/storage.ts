@@ -14,6 +14,7 @@ interface Database {
   comments: any[];
   follows: any[];
   likes: any[];
+  notifications: any[];
   _counters: {
     users: number;
     species: number;
@@ -21,6 +22,7 @@ interface Database {
     comments: number;
     follows: number;
     likes: number;
+    notifications: number;
   };
 }
 
@@ -35,7 +37,8 @@ function defaultDb(): Database {
     comments: [],
     follows: [],
     likes: [],
-    _counters: { users: 0, species: 0, observations: 0, comments: 0, follows: 0, likes: 0 },
+    notifications: [],
+    _counters: { users: 0, species: 0, observations: 0, comments: 0, follows: 0, likes: 0, notifications: 0 },
   };
 }
 
@@ -56,6 +59,8 @@ export function loadDb(): Database {
   try {
     const raw = fs.readFileSync(DB_FILE, 'utf-8');
     cachedDb = JSON.parse(raw);
+    if (!cachedDb!.notifications) cachedDb!.notifications = [];
+    if (!cachedDb!._counters.notifications) cachedDb!._counters.notifications = 0;
   } catch {
     cachedDb = defaultDb();
   }
