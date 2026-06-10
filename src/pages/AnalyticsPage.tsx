@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
-import { TrendingUp, BarChart3, Calendar, Flame, Eye, Bird } from 'lucide-react';
+import { TrendingUp, BarChart3, Calendar, Flame, Eye, Bird, Download, MapPin } from 'lucide-react';
 import api from '../lib/api';
 import type { Species, SeasonalItem, FrequencyItem } from '../../shared/types';
 import { SpeciesCard } from '../components/SpeciesCard';
@@ -43,6 +43,11 @@ export default function AnalyticsPage() {
   const [speciesId, setSpeciesId] = useState<number | null>(null);
   const [month, setMonth] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [exportSpeciesId, setExportSpeciesId] = useState<number | null>(null);
+  const [exportStartDate, setExportStartDate] = useState('');
+  const [exportEndDate, setExportEndDate] = useState('');
+  const [exportLocationName, setExportLocationName] = useState('');
+  const [exporting, setExporting] = useState(false);
 
   const fetchAll = async () => {
     setLoading(true);
@@ -61,6 +66,37 @@ export default function AnalyticsPage() {
       setSpecies(speciesRes.data.data || []);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const params: any = {};
+      if (exportSpeciesId) params.speciesId = exportSpeciesId;
+      if (exportStartDate) params.startDate = exportStartDate;
+      if (exportEndDate) params.endDate = exportEndDate;
+      if (exportLocationName) params.locationName = exportLocationName;
+
+      const response = await api.get('/observations/export/excel', {
+        params,
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      const dateStr = new Date().toISOString().slice(0, 10);
+      link.setAttribute('download', `观测记录_${dateStr}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('导出失败:', err);
+      alert('导出失败，请重试');
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -168,6 +204,86 @@ export default function AnalyticsPage() {
             <div className="text-sm text-sage-500">{s.label}</div>
           </div>
         ))}
+      </div>
+
+      <div className="card p-6 mb-8 animate-slide-up">
+        <div className="flex flex-wrap items-center gap-3 mb-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-card">
+            <Download className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="font-display text-xl font-semibold text-forest-800">数据导出</h2>
+            <p className="text-sm text-sage-500">按条件筛选后导出观测记录为 Excel 文件</p>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Bird className="w-3.5 h-3.5 inline mr-1" />
+              物种类型
+            </label>
+            <select
+              value={exportSpeciesId ?? ''}
+              onChange={(e) => setExportSpeciesId(e.target.value ? Number(e.target.value) : null)}
+              className="input-base w-full"
+            >
+              <option value="">全部物种</option>
+              {species.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Calendar className="w-3.5 h-3.5 inline mr-1" />
+              开始日期
+            </label>
+            <input
+              type="date"
+              value={exportStartDate}
+              onChange={(e) => setExportStartDate(e.target.value)}
+              className="input-base w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Calendar className="w-3.5 h-3.5 inline mr-1" />
+              结束日期
+            </label>
+            <input
+              type="date"
+              value={exportEndDate}
+              onChange={(e) => setExportEndDate(e.target.value)}
+              className="input-base w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <MapPin className="w-3.5 h-3.5 inline mr-1" />
+              观测地点
+            </label>
+            <input
+              type="text"
+              placeholder="输入地点关键词"
+              value={exportLocationName}
+              onChange={(e) => setExportLocationName(e.target.value)}
+              className="input-base w-full"
+            />
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-sage-500">
+            提示：不填写筛选条件将导出全部观测记录
+          </p>
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            {exporting ? '导出中...' : '导出 Excel'}
+          </button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6 mb-6">

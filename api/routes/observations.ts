@@ -70,4 +70,26 @@ router.post('/:id/comments', (req, res) => {
   res.json({ success: true, data: obs });
 });
 
+router.get('/export/excel', async (req, res) => {
+  try {
+    const opts: any = {};
+    if (req.query.speciesId) opts.speciesId = Number(req.query.speciesId);
+    if (req.query.startDate) opts.startDate = String(req.query.startDate);
+    if (req.query.endDate) opts.endDate = String(req.query.endDate);
+    if (req.query.locationName) opts.locationName = String(req.query.locationName);
+    opts.currentUserId = getCurrentUserId(req);
+
+    const buffer = await ObservationService.exportToExcel(opts);
+
+    const fileName = `观测记录_${new Date().toISOString().slice(0, 10)}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${encodeURIComponent(fileName)}`);
+    res.setHeader('Content-Length', buffer.length);
+    res.send(buffer);
+  } catch (err) {
+    console.error('导出失败:', err);
+    res.status(500).json({ success: false, message: '导出失败' });
+  }
+});
+
 export default router;

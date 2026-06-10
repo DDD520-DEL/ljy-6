@@ -1,6 +1,7 @@
 import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { Observation, Comment } from '../../shared/types.js';
 import { UserService } from './userService.js';
+import ExcelJS from 'exceljs';
 
 function enrichUser(userId?: number) {
   return (row: any): Observation => {
@@ -156,5 +157,93 @@ export const ObservationService = {
     const followingIds = db.follows.filter((f) => f.followerId === userId).map((f) => f.followingId);
     if (followingIds.length === 0) return this.list({ currentUserId: userId, limit: 30 });
     return this.list({ currentUserId: userId });
+  },
+
+  async exportToExcel(options: {
+    speciesId?: number;
+    startDate?: string;
+    endDate?: string;
+    locationName?: string;
+    currentUserId?: number;
+  } = {}) {
+    const { data } = this.list({
+      speciesId: options.speciesId,
+      startDate: options.startDate,
+      endDate: options.endDate,
+      currentUserId: options.currentUserId,
+    });
+
+    let observations = data;
+    if (options.locationName) {
+      const q = options.locationName.toLowerCase();
+      observations = observations.filter((o) => o.locationName?.toLowerCase().includes(q));
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = '城市野鸟观测社区';
+    workbook.created = new Date();
+
+    const worksheet = workbook.addWorksheet('观测记录');
+
+    worksheet.columns = [
+      { header: 'ID', key: 'id', width: 8 },
+      { header: '物种名称', key: 'speciesName', width: 20 },
+      { header: '学名', key: 'scientificName', width: 25 },
+      { header: '观测地点', key: 'locationName', width: 25 },
+      { header: '纬度', key: 'latitude', width: 12 },
+      { header: '经度', key: 'longitude', width: 12 },
+      { header: '观测时间', key: 'observationTime', width: 22 },
+      { header: '天气', key: 'weather', width: 10 },
+      { header: '行为', key: 'behavior', width: 20 },
+      { header: '描述', key: 'description', width: 40 },
+      { header: '观测者', key: 'observer', width: 15 },
+      { header: '点赞数', key: 'likes', width: 10 },
+      { header: '评论数', key: 'commentsCount', width: 10 },
+      { header: '记录创建时间', key: 'createdAt', width: 22 },
+    ];
+
+    worksheet.getRow(1).font = { bold: true, size: 12, color: { argb: 'FF2D6A4F' } };
+    worksheet.getRow(1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFD8F3DC' },
+    };
+    worksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' };
+
+    observations.forEach((obs) => {
+      worksheet.addRow({
+        id: obs.id,
+        speciesName: obs.speciesName,
+        scientificName: obs.species?.scientificName || '',
+        locationName: obs.locationName || '',
+        latitude: obs.latitude,
+        longitude: obs.longitude,
+        observationTime: obs.observationTime,
+        weather: obs.weather,
+        behavior: obs.behavior || '',
+        description: obs.description || '',
+        observer: obs.user?.username || '',
+        likes: obs.likes,
+        commentsCount: obs.comments?.length || 0,
+        createdAt: obs.createdAt,
+      });
+    });
+
+    worksheet.eachRow((row, rowNumber) => {
+      row.alignment = { vertical: 'middle', wrapText: true };
+      if (rowNumber > 1) {
+        row.eachCell((cell) => {
+          cell.border = {
+            top: { style: 'thin', color: { argb: 'FFE0E0E0' } },
+            left: { style: 'thin', color: { argb: 'FFE0E0E0' } },
+            bottom: { style: 'thin', color: { argb: 'FFE0E0E0' } },
+            right: { style: 'thin', color: { argb: 'FFE0E0E0' } },
+          };
+        });
+      }
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return Buffer.from(buffer);
   },
 };
