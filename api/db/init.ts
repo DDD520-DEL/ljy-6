@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { loadDb, nextId, resetDb } from './storage.js';
 import { seedUsers, seedSpecies, seedObservations, seedComments } from './seedData.js';
+import { ChallengeService } from '../services/challengeService.js';
 
 function rand(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -107,6 +108,10 @@ export function initializeDatabase(force = false) {
     likes,
     notifications: [],
     collections: [],
+    challenges: [],
+    badges: [],
+    userChallengeProgress: [],
+    userBadges: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -116,7 +121,18 @@ export function initializeDatabase(force = false) {
       likes: likes.length,
       notifications: 0,
       collections: 0,
+      challenges: 0,
+      badges: 0,
+      userChallengeProgress: 0,
+      userBadges: 0,
     },
+  });
+
+  ChallengeService.initializeBadges();
+  ChallengeService.ensureCurrentMonthChallenges();
+
+  userPics.forEach((u) => {
+    ChallengeService.updateAllProgressForUser(u.id);
   });
 
   console.log(`[DB] 初始化完成: ${users.length} 用户, ${species.length} 物种, ${observations.length} 观测记录, ${comments.length} 评论, ${follows.length} 关注, ${likes.length} 点赞`);

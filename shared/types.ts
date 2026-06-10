@@ -112,6 +112,62 @@ export interface Notification {
   observation?: Observation;
 }
 
+export type ChallengeType = 'species_count' | 'city_count' | 'observation_count' | 'rarity_sum' | 'habitat_variety';
+
+export interface Challenge {
+  id: number;
+  month: string;
+  year: number;
+  type: ChallengeType;
+  title: string;
+  description: string;
+  target: number;
+  unit: string;
+  badgeId: number;
+  createdAt: string;
+}
+
+export interface Badge {
+  id: number;
+  name: string;
+  description: string;
+  icon: string;
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  color: string;
+}
+
+export interface UserChallengeProgress {
+  id: number;
+  userId: number;
+  challengeId: number;
+  currentValue: number;
+  completed: boolean;
+  completedAt: string | null;
+  badgeAwarded: boolean;
+}
+
+export interface ChallengeWithProgress extends Challenge {
+  progress: UserChallengeProgress | null;
+}
+
+export interface UserBadge {
+  id: number;
+  userId: number;
+  badgeId: number;
+  challengeId: number;
+  awardedAt: string;
+  badge?: Badge;
+  challenge?: Challenge;
+}
+
+export interface ChallengeRankingItem {
+  userId: number;
+  user: User;
+  completedCount: number;
+  totalProgress: number;
+  rank: number;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;

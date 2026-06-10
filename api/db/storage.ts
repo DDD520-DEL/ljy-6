@@ -17,6 +17,10 @@ interface Database {
   likes: any[];
   notifications: any[];
   collections: any[];
+  challenges: any[];
+  badges: any[];
+  userChallengeProgress: any[];
+  userBadges: any[];
   _counters: {
     users: number;
     species: number;
@@ -26,6 +30,10 @@ interface Database {
     likes: number;
     notifications: number;
     collections: number;
+    challenges: number;
+    badges: number;
+    userChallengeProgress: number;
+    userBadges: number;
   };
 }
 
@@ -42,7 +50,24 @@ function defaultDb(): Database {
     likes: [],
     notifications: [],
     collections: [],
-    _counters: { users: 0, species: 0, observations: 0, comments: 0, follows: 0, likes: 0, notifications: 0, collections: 0 },
+    challenges: [],
+    badges: [],
+    userChallengeProgress: [],
+    userBadges: [],
+    _counters: {
+      users: 0,
+      species: 0,
+      observations: 0,
+      comments: 0,
+      follows: 0,
+      likes: 0,
+      notifications: 0,
+      collections: 0,
+      challenges: 0,
+      badges: 0,
+      userChallengeProgress: 0,
+      userBadges: 0,
+    },
   };
 }
 
@@ -67,6 +92,14 @@ export function loadDb(): Database {
     if (!cachedDb!._counters.notifications) cachedDb!._counters.notifications = 0;
     if (!cachedDb!.collections) cachedDb!.collections = [];
     if (!cachedDb!._counters.collections) cachedDb!._counters.collections = 0;
+    if (!cachedDb!.challenges) cachedDb!.challenges = [];
+    if (!cachedDb!._counters.challenges) cachedDb!._counters.challenges = 0;
+    if (!cachedDb!.badges) cachedDb!.badges = [];
+    if (!cachedDb!._counters.badges) cachedDb!._counters.badges = 0;
+    if (!cachedDb!.userChallengeProgress) cachedDb!.userChallengeProgress = [];
+    if (!cachedDb!._counters.userChallengeProgress) cachedDb!._counters.userChallengeProgress = 0;
+    if (!cachedDb!.userBadges) cachedDb!.userBadges = [];
+    if (!cachedDb!._counters.userBadges) cachedDb!._counters.userBadges = 0;
     let needSave = false;
     cachedDb!.species.forEach((sp: any, idx: number) => {
       if (!sp.order || !sp.family) {

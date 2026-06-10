@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Search, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell } from 'lucide-react';
+import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
@@ -22,6 +22,7 @@ export function Navbar() {
     { to: '/', label: '观测地图', icon: MapPin, end: true },
     { to: '/bird-id', label: '识鸟助手', icon: Sparkles },
     { to: '/analytics', label: '物种分析', icon: BarChart3 },
+    { to: '/challenges', label: '观鸟挑战', icon: Trophy },
     { to: '/community', label: '观鸟社区', icon: Users },
   ];
 

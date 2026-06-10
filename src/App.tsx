@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import ObservationDetailPage from './pages/ObservationDetailPage';
 import SpeciesDetailPage from './pages/SpeciesDetailPage';
 import NotificationsPage from './pages/NotificationsPage';
+import ChallengesPage from './pages/ChallengesPage';
 import { useAuthStore } from './stores/authStore';
 
 function AppRoutes() {
@@ -27,6 +28,7 @@ function AppRoutes() {
         <Route path="/bird-id" element={<BirdIdPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/community" element={<CommunityPage />} />
+        <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/profile/:userId" element={<ProfilePage />} />
         <Route path="/observe/:id" element={<ObservationDetailPage />} />
         <Route path="/species/:id" element={<SpeciesDetailPage />} />

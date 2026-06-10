@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers } from 'lucide-react';
+import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy } from 'lucide-react';
 import api from '../lib/api';
-import type { User, YearListItem, Observation, Collection } from '../../shared/types';
+import type { User, YearListItem, Observation, Collection, UserBadge } from '../../shared/types';
 import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
 import { formatDateShort } from '../lib/format';
@@ -23,13 +23,15 @@ export default function ProfilePage() {
   const [followers, setFollowers] = useState<User[]>([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<'list' | 'obs' | 'collections' | 'following' | 'followers'>('list');
+  const [tab, setTab] = useState<'list' | 'obs' | 'collections' | 'badges' | 'following' | 'followers'>('list');
   const [collectionsGrouped, setCollectionsGrouped] = useState<{
     order: string;
     families: { family: string; collections: Collection[]; count: number }[];
     orderCount: number;
   }[]>([]);
   const [collectionsTotal, setCollectionsTotal] = useState(0);
+  const [badges, setBadges] = useState<UserBadge[]>([]);
+  const [badgesTotal, setBadgesTotal] = useState(0);
 
   const fetchAll = async () => {
     if (!id) return;
@@ -41,8 +43,9 @@ export default function ProfilePage() {
         api.get(`/users/${id}/following`),
         api.get(`/users/${id}/followers`),
         api.get(`/collections/user/${id}/grouped`),
+        api.get(`/challenges/user/${id}/badges`),
       ];
-      const [pRes, yRes, fFollowing, fFollowers, cRes] = await Promise.all(reqs);
+      const [pRes, yRes, fFollowing, fFollowers, cRes, bRes] = await Promise.all(reqs);
       setProfile(pRes.data.data);
       setYearList(yRes.data.data || []);
       setYearTotal(yRes.data.total || 0);
@@ -51,6 +54,8 @@ export default function ProfilePage() {
       setFollowers(fFollowers.data.data || []);
       setCollectionsGrouped(cRes.data.data || []);
       setCollectionsTotal(cRes.data.total || 0);
+      setBadges(bRes.data.data || []);
+      setBadgesTotal(bRes.data.total || 0);
     } finally {
       setLoading(false);
     }
@@ -134,10 +139,11 @@ export default function ProfilePage() {
             </div>
           )}
 
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             <Stat icon={<Binoculars className="w-5 h-5" />} label="观测记录" value={profile.observationsCount} color="bg-forest-100 text-forest-600" />
             <Stat icon={<Eye className="w-5 h-5" />} label="发现物种" value={profile.speciesCount} color="bg-sky-100 text-sky-600" />
             <Stat icon={<BookOpen className="w-5 h-5" />} label="图鉴收藏" value={collectionsTotal} color="bg-amber-100 text-amber-600" />
+            <Stat icon={<Trophy className="w-5 h-5" />} label="获得徽章" value={badgesTotal} color="bg-purple-100 text-purple-600" />
             <Stat icon={<Target className="w-5 h-5" />} label="关注" value={profile.followingCount} color="bg-earth-100 text-earth-600" />
             <Stat icon={<Award className="w-5 h-5" />} label="粉丝" value={profile.followersCount} color="bg-rose-100 text-rose-600" />
           </div>
@@ -189,6 +195,12 @@ export default function ProfilePage() {
           <span className="flex items-center gap-1.5">
             <BookOpen className="w-4 h-4" />
             图鉴收藏 ({collectionsTotal})
+          </span>
+        </TabBtn>
+        <TabBtn active={tab === 'badges'} onClick={() => setTab('badges')}>
+          <span className="flex items-center gap-1.5">
+            <Trophy className="w-4 h-4" />
+            获得徽章 ({badgesTotal})
           </span>
         </TabBtn>
         <TabBtn active={tab === 'following'} onClick={() => setTab('following')}>关注 ({following.length})</TabBtn>
@@ -324,6 +336,66 @@ export default function ProfilePage() {
                   </div>
                 </div>
               ))}
+            </div>
+          )
+        )}
+        {tab === 'badges' && (
+          badges.length === 0 ? (
+            <EmptyCard
+              icon={<Trophy className="w-12 h-12" />}
+              title="还没有获得徽章"
+              desc={isSelf ? '去挑战页面完成月度挑战吧！' : 'TA 还没有完成任何挑战'}
+              to={isSelf ? '/challenges' : undefined}
+            />
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {badges.map((userBadge, i) => {
+                const badge = userBadge.badge;
+                if (!badge) return null;
+                const RARITY_COLORS: Record<string, string> = {
+                  common: 'from-gray-400 to-gray-500',
+                  rare: 'from-blue-400 to-blue-600',
+                  epic: 'from-purple-400 to-purple-600',
+                  legendary: 'from-yellow-400 to-orange-500',
+                };
+                const RARITY_LABELS: Record<string, string> = {
+                  common: '普通',
+                  rare: '稀有',
+                  epic: '史诗',
+                  legendary: '传说',
+                };
+                return (
+                  <div
+                    key={userBadge.id}
+                    className="card p-4 text-center animate-slide-up group hover:shadow-card-hover transition-all"
+                    style={{ animationDelay: `${i * 40}ms` }}
+                  >
+                    <div
+                      className={`w-14 h-14 mx-auto mb-2 rounded-2xl bg-gradient-to-br ${
+                        RARITY_COLORS[badge.rarity] || RARITY_COLORS.common
+                      } flex items-center justify-center text-2xl shadow-md group-hover:scale-110 transition-transform`}
+                    >
+                      {badge.icon}
+                    </div>
+                    <h4 className="font-display font-semibold text-forest-800 text-sm mb-0.5">{badge.name}</h4>
+                    <p className="text-[10px] text-sage-500 mb-1.5 line-clamp-2">{badge.description}</p>
+                    <div className="text-[10px] text-sage-400">{formatDateShort(userBadge.awardedAt)}</div>
+                    <span
+                      className={`chip text-[9px] !py-0.5 !px-1.5 mt-1.5 ${
+                        badge.rarity === 'legendary'
+                          ? 'bg-gradient-to-r from-yellow-100 to-orange-100 text-orange-700'
+                          : badge.rarity === 'epic'
+                          ? 'bg-purple-100 text-purple-700'
+                          : badge.rarity === 'rare'
+                          ? 'bg-blue-100 text-blue-700'
+                          : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      {RARITY_LABELS[badge.rarity]}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           )
         )}

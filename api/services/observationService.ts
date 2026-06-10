@@ -2,6 +2,7 @@ import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { Observation, Comment } from '../../shared/types.js';
 import { UserService } from './userService.js';
 import { NotificationService } from './notificationService.js';
+import { ChallengeService } from './challengeService.js';
 import ExcelJS from 'exceljs';
 
 function enrichUser(userId?: number) {
@@ -124,6 +125,11 @@ export const ObservationService = {
     };
     db.observations.push(obs);
     scheduleSave();
+
+    setTimeout(() => {
+      ChallengeService.updateAllProgressForUser(data.userId);
+    }, 100);
+
     return this.getById(id, data.userId);
   },
 
