@@ -106,6 +106,7 @@ export function initializeDatabase(force = false) {
     follows,
     likes,
     notifications: [],
+    collections: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -114,6 +115,7 @@ export function initializeDatabase(force = false) {
       follows: follows.length,
       likes: likes.length,
       notifications: 0,
+      collections: 0,
     },
   });
 

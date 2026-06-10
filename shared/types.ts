@@ -20,6 +20,8 @@ export interface Species {
   id: number;
   name: string;
   scientificName: string;
+  order: string;
+  family: string;
   size: BirdSize;
   beakShape: BeakShape;
   featherColors: string[];
@@ -28,6 +30,14 @@ export interface Species {
   imageUrl: string;
   rarity: number;
   migrationPattern: MigrationPattern;
+}
+
+export interface Collection {
+  id: number;
+  userId: number;
+  speciesId: number;
+  createdAt: string;
+  species?: Species;
 }
 
 export interface SpeciesMatch extends Species {

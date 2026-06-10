@@ -39,6 +39,14 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder5&backgroundColor=d1d4f9",
       "bio": "成都观鸟协会会员，每周公园巡礼。",
       "createdAt": "2026-01-11T06:38:26.445Z"
+    },
+    {
+      "id": 6,
+      "username": "????",
+      "passwordHash": "$2a$08$KGdWDYCisJIW/l7YrqAStePVwanL7PXxqhnmeOOP7N/dnTdWMTZcm",
+      "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=%3F%3F%3F%3F",
+      "bio": "??",
+      "createdAt": "2026-06-10T12:34:38.419Z"
     }
   ],
   "species": [
@@ -62,7 +70,9 @@
       "description": "城市最常见鸟类，体型小巧，头顶及后颈栗褐色，背部褐色具黑斑。喜群居，以谷物及昆虫为食。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=sparrow%20bird%20perched%20on%20branch%20natural%20light%20high%20quality%20photo&image_size=square",
       "rarity": 10,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "雀科"
     },
     {
       "id": 2,
@@ -85,7 +95,9 @@
       "description": "城市常见鸣禽，头顶白色，枕部有醒目白色羽冠。背部灰绿色，鸣声清脆多变。杂食性。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=light-vented%20bulbul%20bird%20white%20head%20green%20wings%20photography&image_size=square",
       "rarity": 15,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "鹎科"
     },
     {
       "id": 3,
@@ -109,7 +121,9 @@
       "description": "城市常见鸠类，颈部有黑白珠点斑纹。常在地面觅食，鸣声低沉重复。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spotted%20dove%20bird%20pearl%20necklace%20markings%20photography&image_size=square",
       "rarity": 20,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "鸽形目",
+      "family": "鸠鸽科"
     },
     {
       "id": 4,
@@ -133,7 +147,9 @@
       "description": "常见留鸟，黑白配色，尾羽修长。具金属光泽。聪明适应力强，筑巢于高大乔木。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=oriental%20magpie%20black%20white%20iridescent%20perched%20on%20branch&image_size=square",
       "rarity": 25,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "鸦科"
     },
     {
       "id": 5,
@@ -155,7 +171,9 @@
       "description": "通体黑色，额前有冠羽，飞行时翼下白斑明显。善于鸣唱，可模仿声音。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=crested%20myna%20bird%20black%20plumage%20white%20wing%20patches&image_size=square",
       "rarity": 35,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "椋鸟科"
     },
     {
       "id": 6,
@@ -178,7 +196,9 @@
       "description": "全身洁白，繁殖期具丝状饰羽。黑腿黄趾，常见于湿地浅水区。以鱼虾为食。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20egret%20white%20heron%20wading%20in%20water%20elegant&image_size=square",
       "rarity": 45,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "鹈形目",
+      "family": "鹭科"
     },
     {
       "id": 7,
@@ -202,7 +222,9 @@
       "description": "体型粗壮，头顶背黑色，下体灰白色。红眼。夜行性，白天常群栖树上。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-crowned%20night%20heron%20red%20eyes%20perched%20near%20water&image_size=square",
       "rarity": 55,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "鹈形目",
+      "family": "鹭科"
     },
     {
       "id": 8,
@@ -226,7 +248,9 @@
       "description": "水鸟，体小矮扁。繁殖期喉及前颈栗红色。擅长潜水，遇惊扰潜入水中。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20grebe%20duckling%20brown%20swimming%20in%20pond%20cute&image_size=square",
       "rarity": 50,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "䴙䴘目",
+      "family": "䴙䴘科"
     },
     {
       "id": 9,
@@ -250,7 +274,9 @@
       "description": "夏候鸟。上体金属蓝黑色，喉栗红色，叉形尾。空中飞行捕虫。春季北上繁殖。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=barn%20swallow%20in%20flight%20forked%20tail%20blue%20black&image_size=square",
       "rarity": 30,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "order": "雀形目",
+      "family": "燕科"
     },
     {
       "id": 10,
@@ -275,7 +301,9 @@
       "description": "具标志性棕栗色羽冠，展开呈扇形。体羽粉褐相间，长而细尖的喙略弯。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hoopoe%20bird%20crown%20feathers%20long%20beak%20colorful&image_size=square",
       "rarity": 70,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "order": "犀鸟目",
+      "family": "戴胜科"
     },
     {
       "id": 11,
@@ -300,7 +328,9 @@
       "description": "小型鸣禽，头黑色，两颊具大白斑。背部黄绿色，腹面黄。活泼好动，食虫益鸟。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20tit%20bird%20yellow%20belly%20black%20cap%20cute&image_size=square",
       "rarity": 40,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "山雀科"
     },
     {
       "id": 12,
@@ -325,7 +355,9 @@
       "description": "羽色艳丽，红嘴红脚，长尾蓝灰相间。头顶至颈背黑色。性活泼嘈杂，常结群。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=red-billed%20blue%20magpie%20colorful%20long%20tail%20perched&image_size=square",
       "rarity": 65,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "鸦科"
     },
     {
       "id": 13,
@@ -351,7 +383,9 @@
       "description": "羽色艳丽，上体金属蓝绿色，下体橙棕色。长喙粗直。临水而立，俯冲入水捕鱼。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=common%20kingfisher%20bright%20blue%20orange%20perched%20by%20water&image_size=square",
       "rarity": 75,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "佛法僧目",
+      "family": "翠鸟科"
     },
     {
       "id": 14,
@@ -374,7 +408,9 @@
       "description": "通体黑色具金属光泽，尾深叉形。性情凶猛，敢围攻猛禽。夏季繁殖候鸟。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black%20drongo%20forked%20tail%20silhouette%20perched%20on%20wire&image_size=square",
       "rarity": 60,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "order": "雀形目",
+      "family": "卷尾科"
     },
     {
       "id": 15,
@@ -399,7 +435,9 @@
       "description": "具黑眼罩，头顶及尾灰色，背棕红色，翅黑。鸣禽中的猛禽，常将猎物穿刺于刺上。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=long-tailed%20shrike%20rufous%20back%20black%20mask%20perched&image_size=square",
       "rarity": 68,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "伯劳科"
     },
     {
       "id": 16,
@@ -422,7 +460,9 @@
       "description": "头黑色，背灰色，翼尾蓝色。比喜鹊体型小。常见于城市公园，集群活动。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=azure-winged%20magpie%20gray%20black%20blue%20flock&image_size=square",
       "rarity": 32,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "鸦科"
     },
     {
       "id": 17,
@@ -447,7 +487,9 @@
       "description": "体型极小。头顶栗红色，过眼纹宽黑。下体白，胸带栗色。活泼跳跃，结群活动。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-throated%20bushtit%20red%20head%20tiny%20cute%20fluffy&image_size=square",
       "rarity": 58,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "长尾山雀科"
     },
     {
       "id": 18,
@@ -470,7 +512,9 @@
       "description": "雄鸟通体乌黑，眼圈及喙黄色。鸣声婉转多变，善模仿。常见于城市草地觅食蚯蚓。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20blackbird%20male%20yellow%20beak%20singing&image_size=square",
       "rarity": 28,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "order": "雀形目",
+      "family": "鸫科"
     },
     {
       "id": 19,
@@ -497,7 +541,9 @@
       "description": "雄鸟艳丽无比，具标志性橙色帆状饰羽。雌鸟朴素褐色。传统爱情象征。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mandarin%20duck%20male%20colorful%20plumage%20swimming&image_size=square",
       "rarity": 82,
-      "migrationPattern": "winter"
+      "migrationPattern": "winter",
+      "order": "雁形目",
+      "family": "鸭科"
     },
     {
       "id": 20,
@@ -523,10 +569,48 @@
       "description": "大型水鸟，通体黑色具金属绿光泽。喙粗长带钩。善潜水捕鱼，渔民常驯其捕鱼。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=great%20cormorant%20black%20diving%20bird%20perched%20on%20water&image_size=square",
       "rarity": 72,
-      "migrationPattern": "winter"
+      "migrationPattern": "winter",
+      "order": "鲣鸟目",
+      "family": "鸬鹚科"
     }
   ],
   "observations": [
+    {
+      "id": 6,
+      "userId": 4,
+      "speciesId": 6,
+      "speciesName": "白鹭",
+      "latitude": 22.5431,
+      "longitude": 114.0579,
+      "locationName": "深圳·深圳湾公园",
+      "observationTime": "2026-06-10T00:06:00.000Z",
+      "weather": "sunny",
+      "behavior": "浅滩涉水觅食",
+      "photoUrls": [
+        "https://picsum.photos/seed/bird6/600/400"
+      ],
+      "description": "十多只白鹭在退潮后的泥滩上踱步，偶尔啄食小蟹。",
+      "likes": 6,
+      "createdAt": "2026-06-10T00:06:00.000Z"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "speciesId": 4,
+      "speciesName": "喜鹊",
+      "latitude": 31.2304,
+      "longitude": 121.4737,
+      "locationName": "上海·人民广场",
+      "observationTime": "2026-06-09T02:25:00.000Z",
+      "weather": "sunny",
+      "behavior": "在梧桐树上筑巢",
+      "photoUrls": [
+        "https://picsum.photos/seed/bird4/600/400"
+      ],
+      "description": "喜鹊夫妇正在街旁梧桐树上衔枝筑巢，非常忙碌。",
+      "likes": 6,
+      "createdAt": "2026-06-09T02:25:00.000Z"
+    },
     {
       "id": 1,
       "userId": 1,
@@ -544,6 +628,24 @@
       "description": "十几只麻雀在广场上觅食，游客投喂时蜂拥而至。",
       "likes": 6,
       "createdAt": "2026-06-09T01:30:00.000Z"
+    },
+    {
+      "id": 8,
+      "userId": 5,
+      "speciesId": 8,
+      "speciesName": "小䴙䴘",
+      "latitude": 30.5728,
+      "longitude": 104.0668,
+      "locationName": "成都·浣花溪公园",
+      "observationTime": "2026-06-08T06:01:00.000Z",
+      "weather": "rainy",
+      "behavior": "湖中潜水捕鱼",
+      "photoUrls": [
+        "https://picsum.photos/seed/bird8/600/400"
+      ],
+      "description": "一只小䴙䴘反复潜入水中，每次出水都带着小鱼。",
+      "likes": 6,
+      "createdAt": "2026-06-08T06:01:00.000Z"
     },
     {
       "id": 2,
@@ -582,22 +684,22 @@
       "createdAt": "2026-06-07T08:15:00.000Z"
     },
     {
-      "id": 4,
-      "userId": 3,
-      "speciesId": 4,
-      "speciesName": "喜鹊",
-      "latitude": 31.2304,
-      "longitude": 121.4737,
-      "locationName": "上海·人民广场",
-      "observationTime": "2026-06-09T02:25:00.000Z",
+      "id": 12,
+      "userId": 2,
+      "speciesId": 12,
+      "speciesName": "红嘴蓝鹊",
+      "latitude": 30.2571,
+      "longitude": 120.136,
+      "locationName": "杭州·西湖风景区",
+      "observationTime": "2026-06-07T07:05:00.000Z",
       "weather": "sunny",
-      "behavior": "在梧桐树上筑巢",
+      "behavior": "林间穿梭群飞",
       "photoUrls": [
-        "https://picsum.photos/seed/bird4/600/400"
+        "https://picsum.photos/seed/bird12/600/400"
       ],
-      "description": "喜鹊夫妇正在街旁梧桐树上衔枝筑巢，非常忙碌。",
+      "description": "一群红嘴蓝鹊从苏堤上空飞过，长尾飘逸极为壮观。",
       "likes": 6,
-      "createdAt": "2026-06-09T02:25:00.000Z"
+      "createdAt": "2026-06-07T07:05:00.000Z"
     },
     {
       "id": 5,
@@ -618,22 +720,22 @@
       "createdAt": "2026-06-06T10:40:00.000Z"
     },
     {
-      "id": 6,
+      "id": 13,
       "userId": 4,
-      "speciesId": 6,
-      "speciesName": "白鹭",
+      "speciesId": 13,
+      "speciesName": "普通翠鸟",
       "latitude": 22.5431,
       "longitude": 114.0579,
-      "locationName": "深圳·深圳湾公园",
-      "observationTime": "2026-06-10T00:06:00.000Z",
+      "locationName": "深圳·洪湖公园",
+      "observationTime": "2026-06-06T02:32:00.000Z",
       "weather": "sunny",
-      "behavior": "浅滩涉水觅食",
+      "behavior": "枝头静待捕鱼",
       "photoUrls": [
-        "https://picsum.photos/seed/bird6/600/400"
+        "https://picsum.photos/seed/bird13/600/400"
       ],
-      "description": "十多只白鹭在退潮后的泥滩上踱步，偶尔啄食小蟹。",
+      "description": "翠鸟停在荷花茎上一动不动，闪电般冲入水中叼起小鱼。",
       "likes": 6,
-      "createdAt": "2026-06-10T00:06:00.000Z"
+      "createdAt": "2026-06-06T02:32:00.000Z"
     },
     {
       "id": 7,
@@ -654,22 +756,22 @@
       "createdAt": "2026-06-05T09:37:00.000Z"
     },
     {
-      "id": 8,
-      "userId": 5,
-      "speciesId": 8,
-      "speciesName": "小䴙䴘",
-      "latitude": 30.5728,
-      "longitude": 104.0668,
-      "locationName": "成都·浣花溪公园",
-      "observationTime": "2026-06-08T06:01:00.000Z",
-      "weather": "rainy",
-      "behavior": "湖中潜水捕鱼",
+      "id": 14,
+      "userId": 3,
+      "speciesId": 14,
+      "speciesName": "黑卷尾",
+      "latitude": 31.2304,
+      "longitude": 121.4737,
+      "locationName": "上海·世纪公园",
+      "observationTime": "2026-06-05T08:42:00.000Z",
+      "weather": "windy",
+      "behavior": "空中翻飞捕虫",
       "photoUrls": [
-        "https://picsum.photos/seed/bird8/600/400"
+        "https://picsum.photos/seed/bird14/600/400"
       ],
-      "description": "一只小䴙䴘反复潜入水中，每次出水都带着小鱼。",
+      "description": "黑卷尾像黑色闪电在空中翻飞，追逐飞虫。",
       "likes": 6,
-      "createdAt": "2026-06-08T06:01:00.000Z"
+      "createdAt": "2026-06-05T08:42:00.000Z"
     },
     {
       "id": 9,
@@ -724,60 +826,6 @@
       "description": "大山雀活泼好动，在松树枝间跳跃，不时发出清脆叫声。",
       "likes": 6,
       "createdAt": "2026-06-02T01:24:00.000Z"
-    },
-    {
-      "id": 12,
-      "userId": 2,
-      "speciesId": 12,
-      "speciesName": "红嘴蓝鹊",
-      "latitude": 30.2571,
-      "longitude": 120.136,
-      "locationName": "杭州·西湖风景区",
-      "observationTime": "2026-06-07T07:05:00.000Z",
-      "weather": "sunny",
-      "behavior": "林间穿梭群飞",
-      "photoUrls": [
-        "https://picsum.photos/seed/bird12/600/400"
-      ],
-      "description": "一群红嘴蓝鹊从苏堤上空飞过，长尾飘逸极为壮观。",
-      "likes": 6,
-      "createdAt": "2026-06-07T07:05:00.000Z"
-    },
-    {
-      "id": 13,
-      "userId": 4,
-      "speciesId": 13,
-      "speciesName": "普通翠鸟",
-      "latitude": 22.5431,
-      "longitude": 114.0579,
-      "locationName": "深圳·洪湖公园",
-      "observationTime": "2026-06-06T02:32:00.000Z",
-      "weather": "sunny",
-      "behavior": "枝头静待捕鱼",
-      "photoUrls": [
-        "https://picsum.photos/seed/bird13/600/400"
-      ],
-      "description": "翠鸟停在荷花茎上一动不动，闪电般冲入水中叼起小鱼。",
-      "likes": 6,
-      "createdAt": "2026-06-06T02:32:00.000Z"
-    },
-    {
-      "id": 14,
-      "userId": 3,
-      "speciesId": 14,
-      "speciesName": "黑卷尾",
-      "latitude": 31.2304,
-      "longitude": 121.4737,
-      "locationName": "上海·世纪公园",
-      "observationTime": "2026-06-05T08:42:00.000Z",
-      "weather": "windy",
-      "behavior": "空中翻飞捕虫",
-      "photoUrls": [
-        "https://picsum.photos/seed/bird14/600/400"
-      ],
-      "description": "黑卷尾像黑色闪电在空中翻飞，追逐飞虫。",
-      "likes": 6,
-      "createdAt": "2026-06-05T08:42:00.000Z"
     },
     {
       "id": 15,
@@ -852,24 +900,6 @@
       "createdAt": "2026-05-29T02:14:00.000Z"
     },
     {
-      "id": 19,
-      "userId": 2,
-      "speciesId": 19,
-      "speciesName": "鸳鸯",
-      "latitude": 30.2571,
-      "longitude": 120.136,
-      "locationName": "杭州·西湖孤山",
-      "observationTime": "2026-05-26T06:58:00.000Z",
-      "weather": "cloudy",
-      "behavior": "湖中结伴游泳",
-      "photoUrls": [
-        "https://picsum.photos/seed/bird19/600/400"
-      ],
-      "description": "一对鸳鸯在西湖里悠闲游弋，从不分离。",
-      "likes": 6,
-      "createdAt": "2026-05-26T06:58:00.000Z"
-    },
-    {
       "id": 20,
       "userId": 4,
       "speciesId": 20,
@@ -904,6 +934,24 @@
       "description": "麻雀们在餐厅门口捡食掉落的米粒和面包屑。",
       "likes": 6,
       "createdAt": "2026-05-27T04:00:00.000Z"
+    },
+    {
+      "id": 19,
+      "userId": 2,
+      "speciesId": 19,
+      "speciesName": "鸳鸯",
+      "latitude": 30.2571,
+      "longitude": 120.136,
+      "locationName": "杭州·西湖孤山",
+      "observationTime": "2026-05-26T06:58:00.000Z",
+      "weather": "cloudy",
+      "behavior": "湖中结伴游泳",
+      "photoUrls": [
+        "https://picsum.photos/seed/bird19/600/400"
+      ],
+      "description": "一对鸳鸯在西湖里悠闲游弋，从不分离。",
+      "likes": 6,
+      "createdAt": "2026-05-26T06:58:00.000Z"
     },
     {
       "id": 22,
@@ -960,24 +1008,6 @@
       "createdAt": "2026-05-23T09:35:00.000Z"
     },
     {
-      "id": 25,
-      "userId": 2,
-      "speciesId": 11,
-      "speciesName": "大山雀",
-      "latitude": 30.2571,
-      "longitude": 120.136,
-      "locationName": "杭州·灵隐寺",
-      "observationTime": "2026-05-20T22:40:00.000Z",
-      "weather": "foggy",
-      "behavior": "古树枝间活动",
-      "photoUrls": [
-        "https://picsum.photos/seed/bird11/600/400"
-      ],
-      "description": "古木参天中，大山雀灵动地穿梭。",
-      "likes": 6,
-      "createdAt": "2026-05-20T22:40:00.000Z"
-    },
-    {
       "id": 26,
       "userId": 4,
       "speciesId": 3,
@@ -994,6 +1024,24 @@
       "description": "斑鸠们在草地上咕咕叫着漫步。",
       "likes": 6,
       "createdAt": "2026-05-22T08:49:00.000Z"
+    },
+    {
+      "id": 25,
+      "userId": 2,
+      "speciesId": 11,
+      "speciesName": "大山雀",
+      "latitude": 30.2571,
+      "longitude": 120.136,
+      "locationName": "杭州·灵隐寺",
+      "observationTime": "2026-05-20T22:40:00.000Z",
+      "weather": "foggy",
+      "behavior": "古树枝间活动",
+      "photoUrls": [
+        "https://picsum.photos/seed/bird11/600/400"
+      ],
+      "description": "古木参天中，大山雀灵动地穿梭。",
+      "likes": 6,
+      "createdAt": "2026-05-20T22:40:00.000Z"
     },
     {
       "id": 27,
@@ -2287,11 +2335,34 @@
     }
   ],
   "_counters": {
-    "users": 5,
+    "users": 6,
     "species": 20,
     "observations": 30,
     "comments": 12,
     "follows": 10,
-    "likes": 178
-  }
+    "likes": 178,
+    "notifications": 0,
+    "collections": 4
+  },
+  "notifications": [],
+  "collections": [
+    {
+      "id": 2,
+      "userId": 6,
+      "speciesId": 2,
+      "createdAt": "2026-06-10T12:34:54.677Z"
+    },
+    {
+      "id": 3,
+      "userId": 6,
+      "speciesId": 6,
+      "createdAt": "2026-06-10T12:34:54.682Z"
+    },
+    {
+      "id": 4,
+      "userId": 6,
+      "speciesId": 13,
+      "createdAt": "2026-06-10T12:34:54.713Z"
+    }
+  ]
 }

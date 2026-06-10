@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn } from 'lucide-react';
+import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers } from 'lucide-react';
 import api from '../lib/api';
-import type { User, YearListItem, Observation } from '../../shared/types';
+import type { User, YearListItem, Observation, Collection } from '../../shared/types';
 import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
 import { formatDateShort } from '../lib/format';
 import { useAuthStore } from '../stores/authStore';
+import { MIGRATION_LABELS } from '../lib/constants';
 
 export default function ProfilePage() {
   const { userId } = useParams();
@@ -22,24 +23,34 @@ export default function ProfilePage() {
   const [followers, setFollowers] = useState<User[]>([]);
   const [year, setYear] = useState(new Date().getFullYear());
   const [loading, setLoading] = useState(true);
-  const [tab, setTab] = useState<'list' | 'obs' | 'following' | 'followers'>('list');
+  const [tab, setTab] = useState<'list' | 'obs' | 'collections' | 'following' | 'followers'>('list');
+  const [collectionsGrouped, setCollectionsGrouped] = useState<{
+    order: string;
+    families: { family: string; collections: Collection[]; count: number }[];
+    orderCount: number;
+  }[]>([]);
+  const [collectionsTotal, setCollectionsTotal] = useState(0);
 
   const fetchAll = async () => {
     if (!id) return;
     setLoading(true);
     try {
-      const [pRes, yRes, fFollowing, fFollowers] = await Promise.all([
+      const reqs: Promise<any>[] = [
         api.get(`/users/${id}`),
         api.get(`/users/${id}/yearlist`, { params: { year } }),
         api.get(`/users/${id}/following`),
         api.get(`/users/${id}/followers`),
-      ]);
+        api.get(`/collections/user/${id}/grouped`),
+      ];
+      const [pRes, yRes, fFollowing, fFollowers, cRes] = await Promise.all(reqs);
       setProfile(pRes.data.data);
       setYearList(yRes.data.data || []);
       setYearTotal(yRes.data.total || 0);
       setObservations(pRes.data.data?.observations || []);
       setFollowing(fFollowing.data.data || []);
       setFollowers(fFollowers.data.data || []);
+      setCollectionsGrouped(cRes.data.data || []);
+      setCollectionsTotal(cRes.data.total || 0);
     } finally {
       setLoading(false);
     }
@@ -123,9 +134,10 @@ export default function ProfilePage() {
             </div>
           )}
 
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="mt-6 grid grid-cols-2 sm:grid-cols-5 gap-4">
             <Stat icon={<Binoculars className="w-5 h-5" />} label="观测记录" value={profile.observationsCount} color="bg-forest-100 text-forest-600" />
             <Stat icon={<Eye className="w-5 h-5" />} label="发现物种" value={profile.speciesCount} color="bg-sky-100 text-sky-600" />
+            <Stat icon={<BookOpen className="w-5 h-5" />} label="图鉴收藏" value={collectionsTotal} color="bg-amber-100 text-amber-600" />
             <Stat icon={<Target className="w-5 h-5" />} label="关注" value={profile.followingCount} color="bg-earth-100 text-earth-600" />
             <Stat icon={<Award className="w-5 h-5" />} label="粉丝" value={profile.followersCount} color="bg-rose-100 text-rose-600" />
           </div>
@@ -173,6 +185,12 @@ export default function ProfilePage() {
       <div className="flex items-center gap-2 mb-5 overflow-x-auto pb-2">
         <TabBtn active={tab === 'list'} onClick={() => setTab('list')}>年度清单 ({yearTotal})</TabBtn>
         <TabBtn active={tab === 'obs'} onClick={() => setTab('obs')}>观测记录 ({observations.length})</TabBtn>
+        <TabBtn active={tab === 'collections'} onClick={() => setTab('collections')}>
+          <span className="flex items-center gap-1.5">
+            <BookOpen className="w-4 h-4" />
+            图鉴收藏 ({collectionsTotal})
+          </span>
+        </TabBtn>
         <TabBtn active={tab === 'following'} onClick={() => setTab('following')}>关注 ({following.length})</TabBtn>
         <TabBtn active={tab === 'followers'} onClick={() => setTab('followers')}>粉丝 ({followers.length})</TabBtn>
       </div>
@@ -221,6 +239,89 @@ export default function ProfilePage() {
               {observations.map((obs, i) => (
                 <div key={obs.id} style={{ animationDelay: `${i * 50}ms` }} className="animate-slide-up">
                   <ObservationCard observation={obs} onUpdate={fetchAll} />
+                </div>
+              ))}
+            </div>
+          )
+        )}
+        {tab === 'collections' && (
+          collectionsGrouped.length === 0 ? (
+            <EmptyCard
+              icon={<BookOpen className="w-12 h-12" />}
+              title="图鉴收藏为空"
+              desc={isSelf ? '去物种详情页收藏你喜欢的鸟类吧' : ''}
+              to={isSelf ? '/bird-id' : undefined}
+            />
+          ) : (
+            <div className="space-y-8">
+              {collectionsGrouped.map((orderGroup, oi) => (
+                <div key={orderGroup.order} className="animate-fade-in" style={{ animationDelay: `${oi * 80}ms` }}>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-1 h-7 bg-gradient-to-b from-forest-500 to-forest-700 rounded-full" />
+                    <h3 className="font-display text-xl font-bold text-forest-800 flex items-center gap-2">
+                      <Layers className="w-5 h-5 text-forest-600" />
+                      {orderGroup.order}
+                    </h3>
+                    <span className="chip !py-1 !px-2.5 bg-forest-100 text-forest-700 text-sm font-medium">
+                      {orderGroup.orderCount} 种
+                    </span>
+                  </div>
+                  <div className="space-y-5">
+                    {orderGroup.families.map((familyGroup, fi) => (
+                      <div key={familyGroup.family} className="card p-5 border-l-4 border-l-amber-400">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-semibold text-sage-800 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-amber-500" />
+                            {familyGroup.family}
+                          </h4>
+                          <span className="text-xs text-sage-500">{familyGroup.count} 种</span>
+                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                          {familyGroup.collections.map((c, ci) => {
+                            const sp = c.species!;
+                            return (
+                              <Link
+                                key={c.id}
+                                to={`/species/${sp.id}`}
+                                className="group block rounded-2xl overflow-hidden border border-sage-100 hover:shadow-card-hover transition-all bg-white"
+                                style={{ animationDelay: `${(oi * 5 + fi * 3 + ci) * 30}ms` }}
+                              >
+                                <div className="relative aspect-[4/3] overflow-hidden bg-sage-50">
+                                  <img
+                                    src={sp.imageUrl}
+                                    alt={sp.name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    loading="lazy"
+                                  />
+                                  <div className="absolute top-2 left-2">
+                                    <span className={`chip text-[10px] !py-0.5 !px-1.5 ${MIGRATION_LABELS[sp.migrationPattern]?.color || ''}`}>
+                                      {MIGRATION_LABELS[sp.migrationPattern]?.label}
+                                    </span>
+                                  </div>
+                                </div>
+                                <div className="p-3">
+                                  <div className="font-display font-semibold text-forest-800 text-sm truncate group-hover:text-forest-600 transition">
+                                    {sp.name}
+                                  </div>
+                                  <div className="text-[10px] text-sage-500 italic truncate mt-0.5">
+                                    {sp.scientificName}
+                                  </div>
+                                  <div className="flex items-center justify-between mt-2">
+                                    <div className="text-[10px] text-sage-500">
+                                      稀有度 {'★'.repeat(Math.max(1, Math.ceil(sp.rarity / 20)))}
+                                    </div>
+                                    <div className="text-[10px] text-sage-400">
+                                      {formatDateShort(c.createdAt)}
+                                    </div>
+                                  </div>
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>

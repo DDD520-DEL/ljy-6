@@ -35,6 +35,8 @@ export const seedSpecies = [
   {
     name: '麻雀',
     scientificName: 'Passer montanus',
+    order: '雀形目',
+    family: '雀科',
     size: 'small',
     beakShape: 'conical',
     featherColors: ['brown', 'gray', 'black', 'white'],
@@ -47,6 +49,8 @@ export const seedSpecies = [
   {
     name: '白头鹎',
     scientificName: 'Pycnonotus sinensis',
+    order: '雀形目',
+    family: '鹎科',
     size: 'medium',
     beakShape: 'slender',
     featherColors: ['white', 'gray', 'green', 'yellow'],
@@ -59,6 +63,8 @@ export const seedSpecies = [
   {
     name: '珠颈斑鸠',
     scientificName: 'Spilopelia chinensis',
+    order: '鸽形目',
+    family: '鸠鸽科',
     size: 'medium',
     beakShape: 'slender',
     featherColors: ['gray', 'brown', 'pink', 'black', 'white'],
@@ -71,6 +77,8 @@ export const seedSpecies = [
   {
     name: '喜鹊',
     scientificName: 'Pica serica',
+    order: '雀形目',
+    family: '鸦科',
     size: 'large',
     beakShape: 'slender',
     featherColors: ['black', 'white', 'iridescent', 'blue', 'green'],
@@ -83,6 +91,8 @@ export const seedSpecies = [
   {
     name: '八哥',
     scientificName: 'Acridotheres cristatellus',
+    order: '雀形目',
+    family: '椋鸟科',
     size: 'medium',
     beakShape: 'short',
     featherColors: ['black', 'white', 'yellow'],
@@ -95,6 +105,8 @@ export const seedSpecies = [
   {
     name: '白鹭',
     scientificName: 'Egretta garzetta',
+    order: '鹈形目',
+    family: '鹭科',
     size: 'large',
     beakShape: 'slender',
     featherColors: ['white', 'yellow', 'black'],
@@ -107,6 +119,8 @@ export const seedSpecies = [
   {
     name: '夜鹭',
     scientificName: 'Nycticorax nycticorax',
+    order: '鹈形目',
+    family: '鹭科',
     size: 'large',
     beakShape: 'hooked',
     featherColors: ['gray', 'black', 'white', 'brown', 'red'],
@@ -119,6 +133,8 @@ export const seedSpecies = [
   {
     name: '小䴙䴘',
     scientificName: 'Tachybaptus ruficollis',
+    order: '䴙䴘目',
+    family: '䴙䴘科',
     size: 'small',
     beakShape: 'slender',
     featherColors: ['brown', 'chestnut', 'black', 'white', 'gray'],
@@ -131,6 +147,8 @@ export const seedSpecies = [
   {
     name: '家燕',
     scientificName: 'Hirundo rustica',
+    order: '雀形目',
+    family: '燕科',
     size: 'small',
     beakShape: 'short',
     featherColors: ['blue', 'black', 'white', 'red', 'chestnut'],
@@ -143,6 +161,8 @@ export const seedSpecies = [
   {
     name: '戴胜',
     scientificName: 'Upupa epops',
+    order: '犀鸟目',
+    family: '戴胜科',
     size: 'medium',
     beakShape: 'curved',
     featherColors: ['pink', 'brown', 'black', 'white', 'orange'],
@@ -155,6 +175,8 @@ export const seedSpecies = [
   {
     name: '大山雀',
     scientificName: 'Parus minor',
+    order: '雀形目',
+    family: '山雀科',
     size: 'small',
     beakShape: 'short',
     featherColors: ['black', 'white', 'yellow', 'green', 'gray', 'blue'],
@@ -167,6 +189,8 @@ export const seedSpecies = [
   {
     name: '红嘴蓝鹊',
     scientificName: 'Urocissa erythroryncha',
+    order: '雀形目',
+    family: '鸦科',
     size: 'xlarge',
     beakShape: 'hooked',
     featherColors: ['blue', 'black', 'white', 'red', 'brown', 'gray'],
@@ -179,6 +203,8 @@ export const seedSpecies = [
   {
     name: '普通翠鸟',
     scientificName: 'Alcedo atthis',
+    order: '佛法僧目',
+    family: '翠鸟科',
     size: 'small',
     beakShape: 'slender',
     featherColors: ['blue', 'green', 'orange', 'white', 'iridescent', 'red'],
@@ -191,6 +217,8 @@ export const seedSpecies = [
   {
     name: '黑卷尾',
     scientificName: 'Dicrurus macrocercus',
+    order: '雀形目',
+    family: '卷尾科',
     size: 'medium',
     beakShape: 'hooked',
     featherColors: ['black', 'iridescent', 'blue', 'green'],
@@ -203,6 +231,8 @@ export const seedSpecies = [
   {
     name: '棕背伯劳',
     scientificName: 'Lanius schach',
+    order: '雀形目',
+    family: '伯劳科',
     size: 'medium',
     beakShape: 'hooked',
     featherColors: ['brown', 'gray', 'black', 'white', 'chestnut', 'rufous'],
@@ -215,6 +245,8 @@ export const seedSpecies = [
   {
     name: '灰喜鹊',
     scientificName: 'Cyanopica cyanus',
+    order: '雀形目',
+    family: '鸦科',
     size: 'large',
     beakShape: 'slender',
     featherColors: ['gray', 'black', 'blue', 'white'],
@@ -227,6 +259,8 @@ export const seedSpecies = [
   {
     name: '红头长尾山雀',
     scientificName: 'Aegithalos concinnus',
+    order: '雀形目',
+    family: '长尾山雀科',
     size: 'small',
     beakShape: 'short',
     featherColors: ['red', 'chestnut', 'black', 'white', 'gray', 'brown'],
@@ -239,6 +273,8 @@ export const seedSpecies = [
   {
     name: '乌鸫',
     scientificName: 'Turdus mandarinus',
+    order: '雀形目',
+    family: '鸫科',
     size: 'medium',
     beakShape: 'slender',
     featherColors: ['black', 'brown', 'yellow', 'orange'],
@@ -251,6 +287,8 @@ export const seedSpecies = [
   {
     name: '鸳鸯',
     scientificName: 'Aix galericulata',
+    order: '雁形目',
+    family: '鸭科',
     size: 'medium',
     beakShape: 'short',
     featherColors: ['red', 'orange', 'green', 'purple', 'blue', 'white', 'brown'],
@@ -263,6 +301,8 @@ export const seedSpecies = [
   {
     name: '鸬鹚',
     scientificName: 'Phalacrocorax carbo',
+    order: '鲣鸟目',
+    family: '鸬鹚科',
     size: 'xlarge',
     beakShape: 'hooked',
     featherColors: ['black', 'iridescent', 'green', 'purple', 'white', 'yellow'],

@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home } from 'lucide-react';
+import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star, Bookmark, BookmarkCheck } from 'lucide-react';
 import api from '../lib/api';
 import type { Species, Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { FEATHER_COLORS, BIRD_SIZES, BEAK_SHAPES, HABITATS, MIGRATION_LABELS } from '../lib/constants';
+import { useAuthStore } from '../stores/authStore';
 
 const markerIcon = L.divIcon({
   className: '',
@@ -18,8 +19,11 @@ const markerIcon = L.divIcon({
 export default function SpeciesDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user: curUser } = useAuthStore();
   const [species, setSpecies] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isCollected, setIsCollected] = useState(false);
+  const [collecting, setCollecting] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -27,11 +31,32 @@ export default function SpeciesDetailPage() {
       try {
         const { data } = await api.get(`/species/${id}`);
         setSpecies(data.data);
+        if (curUser) {
+          const res = await api.get(`/collections/check/${id}`);
+          setIsCollected(res.data.data);
+        }
       } finally {
         setLoading(false);
       }
     })();
-  }, [id]);
+  }, [id, curUser]);
+
+  const toggleCollect = async () => {
+    if (!curUser) return navigate('/login');
+    if (collecting) return;
+    setCollecting(true);
+    try {
+      if (isCollected) {
+        await api.delete(`/collections/${id}`);
+        setIsCollected(false);
+      } else {
+        await api.post(`/collections/${id}`);
+        setIsCollected(true);
+      }
+    } finally {
+      setCollecting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -88,7 +113,32 @@ export default function SpeciesDetailPage() {
               <div>
                 <h1 className="font-display text-3xl sm:text-4xl font-bold text-forest-800">{sp.name}</h1>
                 <p className="text-sage-500 italic text-lg mt-1">{sp.scientificName}</p>
+                <div className="flex items-center gap-2 mt-2 text-sm text-sage-500">
+                  <span className="chip !py-1 !px-2.5 bg-forest-50 text-forest-700">{sp.order}</span>
+                  <span className="chip !py-1 !px-2.5 bg-sky-50 text-sky-700">{sp.family}</span>
+                </div>
               </div>
+              <button
+                onClick={toggleCollect}
+                disabled={collecting}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all ${
+                  isCollected
+                    ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 shadow-soft'
+                    : 'bg-white text-sage-600 border border-sage-200 hover:border-amber-300 hover:text-amber-600 hover:bg-amber-50'
+                } ${collecting ? 'opacity-60 cursor-wait' : ''}`}
+              >
+                {isCollected ? (
+                  <>
+                    <BookmarkCheck className="w-5 h-5" />
+                    <span>已收藏</span>
+                  </>
+                ) : (
+                  <>
+                    <Bookmark className="w-5 h-5" />
+                    <span>收藏</span>
+                  </>
+                )}
+              </button>
             </div>
 
             <div className="mt-5 grid sm:grid-cols-2 gap-3">

@@ -10,6 +10,7 @@ import speciesRoutes from './routes/species.js';
 import analyticsRoutes from './routes/analytics.js';
 import userRoutes from './routes/users.js';
 import notificationRoutes from './routes/notifications.js';
+import collectionRoutes from './routes/collections.js';
 
 config();
 
@@ -29,6 +30,7 @@ app.use('/api/species', speciesRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/collections', collectionRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: '观鸟社区API服务正常运行 🐦' });
