@@ -179,8 +179,8 @@ export default function MapHomePage() {
               >
                 <Popup>
                   <div className="p-0 overflow-hidden -mx-2 -my-1" style={{ minWidth: 260 }}>
-                    {obs.photoUrls?.[0] && (
-                      <img src={obs.photoUrls[0]} alt="" className="w-full h-32 object-cover" />
+                    {(obs.thumbnailUrls?.[0] || obs.photoUrls?.[0]) && (
+                      <img src={obs.thumbnailUrls?.[0] || obs.photoUrls[0]} alt="" className="w-full h-32 object-cover" />
                     )}
                     <div className="p-3">
                       <div className="font-display font-semibold text-forest-800">{obs.speciesName}</div>

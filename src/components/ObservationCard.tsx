@@ -44,7 +44,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
     }
   };
 
-  const photo = observation.photoUrls?.[0];
+  const photo = observation.thumbnailUrls?.[0] || observation.photoUrls?.[0];
   const u = observation.user;
   const sp = observation.species;
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Share2, Sparkles, Binoculars } from 'lucide-react';
+import { useEffect, useState, useCallback } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import api from '../lib/api';
 import type { Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
@@ -8,16 +8,64 @@ import { useAuthStore } from '../stores/authStore';
 import { timeAgo, formatDateTime } from '../lib/format';
 import { MIGRATION_LABELS } from '../lib/constants';
 
+function Lightbox({ photos, initialIndex, onClose }: { photos: string[]; initialIndex: number; onClose: () => void }) {
+  const [index, setIndex] = useState(initialIndex);
+
+  const goNext = useCallback(() => setIndex((i) => (i + 1) % photos.length), [photos.length]);
+  const goPrev = useCallback(() => setIndex((i) => (i - 1 + photos.length) % photos.length), [photos.length]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') goNext();
+      if (e.key === 'ArrowLeft') goPrev();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose, goNext, goPrev]);
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center" onClick={onClose}>
+      <button onClick={onClose} className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition z-10">
+        <X className="w-6 h-6" />
+      </button>
+
+      <div className="relative max-w-[90vw] max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+        <img
+          src={photos[index]}
+          alt={`照片 ${index + 1}`}
+          className="max-w-full max-h-[85vh] object-contain rounded-lg"
+        />
+
+        {photos.length > 1 && (
+          <>
+            <button onClick={goPrev} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition">
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button onClick={goNext} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition">
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </>
+        )}
+
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1.5 rounded-full">
+          {index + 1} / {photos.length}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ObservationDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const { user: curUser } = useAuthStore();
   const [obs, setObs] = useState<Observation | null>(null);
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
   const [commentLoading, setCommentLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -82,6 +130,9 @@ export default function ObservationDetailPage() {
 
   const sp = obs.species;
   const u = obs.user;
+  const photos = obs.photoUrls || [];
+  const thumbnails = obs.thumbnailUrls || [];
+  const isOwner = curUser && curUser.id === obs.userId;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -91,9 +142,36 @@ export default function ObservationDetailPage() {
       </button>
 
       <div className="card overflow-hidden animate-fade-in">
-        {obs.photoUrls?.[0] && (
+        {photos.length > 0 && (
           <div className="relative aspect-[16/9] bg-sage-50">
-            <img src={obs.photoUrls[0]} alt={obs.speciesName} className="w-full h-full object-cover" />
+            <div className="w-full h-full relative group">
+              <img
+                src={thumbnails[0] || photos[0]}
+                alt={obs.speciesName}
+                className="w-full h-full object-cover cursor-pointer"
+                onClick={() => setLightboxIndex(0)}
+              />
+              {photos.length > 1 && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/50 to-transparent p-4">
+                  <div className="flex gap-2 overflow-x-auto pb-1">
+                    {photos.map((url, i) => (
+                      <img
+                        key={i}
+                        src={thumbnails[i] || url}
+                        alt={`缩略图 ${i + 1}`}
+                        className={`w-16 h-12 rounded-lg object-cover shrink-0 cursor-pointer border-2 transition ${
+                          i === 0 ? 'border-white shadow-lg' : 'border-white/40 opacity-70 hover:opacity-100'
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLightboxIndex(i);
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             {sp && (
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className={`chip text-xs !py-1.5 !px-3 ${MIGRATION_LABELS[sp.migrationPattern]?.color || ''}`}>
@@ -106,6 +184,27 @@ export default function ObservationDetailPage() {
                 )}
               </div>
             )}
+            {isOwner && (
+              <Link
+                to={`/observe/${obs.id}/edit`}
+                className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/90 hover:bg-white text-forest-700 rounded-xl text-sm font-medium shadow transition"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+                编辑
+              </Link>
+            )}
+          </div>
+        )}
+
+        {photos.length === 0 && isOwner && (
+          <div className="p-4 bg-sage-50 border-b border-sage-100 flex justify-end">
+            <Link
+              to={`/observe/${obs.id}/edit`}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-sage-100 text-forest-700 rounded-xl text-sm font-medium border border-sage-200 transition"
+            >
+              <Pencil className="w-3.5 h-3.5" />
+              编辑
+            </Link>
           </div>
         )}
 
@@ -155,6 +254,28 @@ export default function ObservationDetailPage() {
               <p className="text-sage-700 leading-relaxed bg-forest-50/40 px-4 py-4 rounded-2xl">
                 {obs.description}
               </p>
+            </div>
+          )}
+
+          {photos.length > 1 && (
+            <div className="mt-5">
+              <h3 className="text-sm font-semibold text-sage-700 mb-3">观测照片</h3>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                {photos.map((url, i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-xl overflow-hidden border border-sage-100 cursor-pointer hover:shadow-md transition group"
+                    onClick={() => setLightboxIndex(i)}
+                  >
+                    <img
+                      src={thumbnails[i] || url}
+                      alt={`照片 ${i + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
@@ -232,6 +353,14 @@ export default function ObservationDetailPage() {
           </div>
         </div>
       </div>
+
+      {lightboxIndex !== null && photos.length > 0 && (
+        <Lightbox
+          photos={photos}
+          initialIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </div>
   );
 }

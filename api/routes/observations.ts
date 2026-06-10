@@ -50,6 +50,18 @@ router.post('/', (req, res) => {
   res.json({ success: true, data: obs });
 });
 
+router.put('/:id', (req, res) => {
+  const auth = verifyToken(req.headers.authorization);
+  if (!auth) return res.status(401).json({ success: false, message: '请先登录' });
+  const id = Number(req.params.id);
+  const existing = ObservationService.getById(id, auth.userId);
+  if (!existing) return res.status(404).json({ success: false, message: '观测记录不存在' });
+  if (existing.userId !== auth.userId) return res.status(403).json({ success: false, message: '无权编辑此记录' });
+  const body = req.body ?? {};
+  const updated = ObservationService.update(id, body);
+  res.json({ success: true, data: updated });
+});
+
 router.post('/:id/like', (req, res) => {
   const auth = verifyToken(req.headers.authorization);
   if (!auth) return res.status(401).json({ success: false, message: '请先登录' });

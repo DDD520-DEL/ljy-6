@@ -65,6 +65,7 @@ export interface Observation {
   weather: WeatherType | string;
   behavior: string;
   photoUrls: string[];
+  thumbnailUrls: string[];
   description: string;
   likes: number;
   createdAt: string;

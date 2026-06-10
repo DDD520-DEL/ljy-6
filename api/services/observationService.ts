@@ -27,6 +27,7 @@ function enrichUser(userId?: number) {
     const isLiked = userId ? db.likes.some((l) => l.userId === userId && l.observationId === row.id) : false;
     return {
       ...row,
+      thumbnailUrls: row.thumbnailUrls || [],
       user: user ? UserService.findById(user.id, userId) : undefined,
       species,
       comments,
@@ -103,6 +104,7 @@ export const ObservationService = {
     weather?: string;
     behavior?: string;
     photoUrls?: string[];
+    thumbnailUrls?: string[];
     description?: string;
   }) {
     const id = nextId('observations');
@@ -119,6 +121,7 @@ export const ObservationService = {
       weather: data.weather ?? 'sunny',
       behavior: data.behavior ?? '',
       photoUrls: data.photoUrls ?? [],
+      thumbnailUrls: data.thumbnailUrls ?? [],
       description: data.description ?? '',
       likes: 0,
       createdAt: new Date().toISOString(),
@@ -131,6 +134,37 @@ export const ObservationService = {
     }, 100);
 
     return this.getById(id, data.userId);
+  },
+
+  update(id: number, data: {
+    speciesId?: number | null;
+    speciesName?: string;
+    latitude?: number;
+    longitude?: number;
+    locationName?: string;
+    observationTime?: string;
+    weather?: string;
+    behavior?: string;
+    photoUrls?: string[];
+    thumbnailUrls?: string[];
+    description?: string;
+  }) {
+    const db = getDb();
+    const obs = db.observations.find((o: any) => o.id === id);
+    if (!obs) return null;
+    if (data.speciesId !== undefined) obs.speciesId = data.speciesId;
+    if (data.speciesName !== undefined) obs.speciesName = data.speciesName;
+    if (data.latitude !== undefined) obs.latitude = data.latitude;
+    if (data.longitude !== undefined) obs.longitude = data.longitude;
+    if (data.locationName !== undefined) obs.locationName = data.locationName;
+    if (data.observationTime !== undefined) obs.observationTime = data.observationTime;
+    if (data.weather !== undefined) obs.weather = data.weather;
+    if (data.behavior !== undefined) obs.behavior = data.behavior;
+    if (data.photoUrls !== undefined) obs.photoUrls = data.photoUrls;
+    if (data.thumbnailUrls !== undefined) obs.thumbnailUrls = data.thumbnailUrls;
+    if (data.description !== undefined) obs.description = data.description;
+    scheduleSave();
+    return this.getById(id);
   },
 
   like(userId: number, observationId: number) {

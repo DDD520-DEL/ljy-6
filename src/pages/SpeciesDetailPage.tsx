@@ -233,7 +233,7 @@ export default function SpeciesDetailPage() {
                   <Marker key={o.id} position={[o.latitude, o.longitude]} icon={markerIcon}>
                     <Popup>
                       <Link to={`/observe/${o.id}`} className="block -m-3 p-3 min-w-[200px]">
-                        {o.photoUrls?.[0] && <img src={o.photoUrls[0]} className="w-full h-24 object-cover rounded-lg mb-2" />}
+                        {(o.thumbnailUrls?.[0] || o.photoUrls?.[0]) && <img src={o.thumbnailUrls?.[0] || o.photoUrls[0]} className="w-full h-24 object-cover rounded-lg mb-2" />}
                         <div className="font-medium text-forest-800">{o.locationName}</div>
                         <div className="text-xs text-sage-500">{o.user?.username}</div>
                       </Link>

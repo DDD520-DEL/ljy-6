@@ -25,6 +25,7 @@ function AppRoutes() {
       <Route element={<Layout />}>
         <Route path="/" element={<MapHomePage />} />
         <Route path="/observe/new" element={<NewObservationPage />} />
+        <Route path="/observe/:id/edit" element={<NewObservationPage />} />
         <Route path="/bird-id" element={<BirdIdPage />} />
         <Route path="/analytics" element={<AnalyticsPage />} />
         <Route path="/community" element={<CommunityPage />} />
