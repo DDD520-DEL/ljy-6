@@ -291,8 +291,8 @@ export const ChallengeService = {
     const badge = db.badges.find((b) => b.id === badgeId);
     if (badge) {
       NotificationService.create({
-        type: 'follow' as any,
-        fromUserId: 1,
+        type: 'badge_earned',
+        fromUserId: 0,
         toUserId: userId,
       });
     }

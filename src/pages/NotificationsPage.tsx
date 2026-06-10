@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, MessageCircle, UserPlus, Reply, CheckCheck, Sparkles } from 'lucide-react';
+import { Bell, MessageCircle, UserPlus, Reply, CheckCheck, Sparkles, Award } from 'lucide-react';
 import { useNotificationStore } from '../stores/notificationStore';
 import { useAuthStore } from '../stores/authStore';
 import { timeAgo } from '../lib/format';
 
-type NotificationType = 'comment' | 'reply' | 'follow';
+type NotificationType = 'comment' | 'reply' | 'follow' | 'badge_earned';
 
 function typeIcon(type: NotificationType) {
   switch (type) {
@@ -15,6 +15,8 @@ function typeIcon(type: NotificationType) {
       return <Reply className="w-4 h-4 text-violet-500" />;
     case 'follow':
       return <UserPlus className="w-4 h-4 text-emerald-500" />;
+    case 'badge_earned':
+      return <Award className="w-4 h-4 text-amber-500" />;
   }
 }
 
@@ -26,6 +28,8 @@ function typeLabel(type: NotificationType) {
       return '回复了你的评论';
     case 'follow':
       return '关注了你';
+    case 'badge_earned':
+      return '恭喜你获得了新徽章！';
   }
 }
 
@@ -37,6 +41,8 @@ function typeBg(type: NotificationType) {
       return 'bg-violet-50';
     case 'follow':
       return 'bg-emerald-50';
+    case 'badge_earned':
+      return 'bg-amber-50';
   }
 }
 
@@ -61,7 +67,9 @@ export default function NotificationsPage() {
       await markAsRead(n.id);
       fetchUnreadCount();
     }
-    if (n.type === 'follow' && n.fromUser) {
+    if (n.type === 'badge_earned') {
+      navigate('/challenges');
+    } else if (n.type === 'follow' && n.fromUser) {
       navigate(`/profile/${n.fromUser.id}`);
     } else if (n.observationId) {
       navigate(`/observe/${n.observationId}`);
@@ -130,11 +138,11 @@ export default function NotificationsPage() {
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm text-sage-800">
                     <span className="font-semibold text-forest-700">
-                      {n.fromUser?.username || '用户'}
+                      {n.type === 'badge_earned' ? '🎉 系统' : n.fromUser?.username || '用户'}
                     </span>
                     {' '}
                     {typeLabel(n.type)}
-                    {n.type !== 'follow' && n.observation && (
+                    {n.type !== 'follow' && n.type !== 'badge_earned' && n.observation && (
                       <span className="text-sage-500">
                         {' · '}
                         {n.observation.speciesName}

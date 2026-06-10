@@ -7,7 +7,7 @@ import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
 import { formatDateShort } from '../lib/format';
 import { useAuthStore } from '../stores/authStore';
-import { MIGRATION_LABELS } from '../lib/constants';
+import { MIGRATION_LABELS, RARITY_COLORS, RARITY_LABELS } from '../lib/constants';
 
 export default function ProfilePage() {
   const { userId } = useParams();
@@ -352,18 +352,6 @@ export default function ProfilePage() {
               {badges.map((userBadge, i) => {
                 const badge = userBadge.badge;
                 if (!badge) return null;
-                const RARITY_COLORS: Record<string, string> = {
-                  common: 'from-gray-400 to-gray-500',
-                  rare: 'from-blue-400 to-blue-600',
-                  epic: 'from-purple-400 to-purple-600',
-                  legendary: 'from-yellow-400 to-orange-500',
-                };
-                const RARITY_LABELS: Record<string, string> = {
-                  common: '普通',
-                  rare: '稀有',
-                  epic: '史诗',
-                  legendary: '传说',
-                };
                 return (
                   <div
                     key={userBadge.id}

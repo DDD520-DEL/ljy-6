@@ -5,22 +5,9 @@ import api from '../lib/api';
 import type { ChallengeWithProgress, ChallengeRankingItem, Badge, UserChallengeProgress } from '../../shared/types';
 import { useAuthStore } from '../stores/authStore';
 import { formatDateShort } from '../lib/format';
+import { RARITY_COLORS, RARITY_LABELS } from '../lib/constants';
 
 const MONTH_NAMES = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
-
-const RARITY_COLORS: Record<string, string> = {
-  common: 'from-gray-400 to-gray-500',
-  rare: 'from-blue-400 to-blue-600',
-  epic: 'from-purple-400 to-purple-600',
-  legendary: 'from-yellow-400 to-orange-500',
-};
-
-const RARITY_LABELS: Record<string, string> = {
-  common: '普通',
-  rare: '稀有',
-  epic: '史诗',
-  legendary: '传说',
-};
 
 export default function ChallengesPage() {
   const { user } = useAuthStore();

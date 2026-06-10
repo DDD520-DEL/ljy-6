@@ -65,3 +65,17 @@ export const MIGRATION_LABELS: Record<string, { label: string; color: string }> 
 };
 
 export const MONTHS = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+
+export const RARITY_COLORS: Record<string, string> = {
+  common: 'from-gray-400 to-gray-500',
+  rare: 'from-blue-400 to-blue-600',
+  epic: 'from-purple-400 to-purple-600',
+  legendary: 'from-yellow-400 to-orange-500',
+};
+
+export const RARITY_LABELS: Record<string, string> = {
+  common: '普通',
+  rare: '稀有',
+  epic: '史诗',
+  legendary: '传说',
+};

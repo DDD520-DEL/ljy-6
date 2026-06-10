@@ -97,7 +97,7 @@ export interface SeasonalItem {
 
 export type HeatmapPoint = [number, number, number];
 
-export type NotificationType = 'comment' | 'reply' | 'follow';
+export type NotificationType = 'comment' | 'reply' | 'follow' | 'badge_earned';
 
 export interface Notification {
   id: number;
