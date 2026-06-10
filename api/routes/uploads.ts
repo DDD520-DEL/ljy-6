@@ -49,8 +49,8 @@ router.post('/', upload.array('photos', 9), async (req, res, next) => {
   try {
     const results = await Promise.all(
       files.map(async (file) => {
-        const ext = path.extname(file.filename);
-        const thumbName = `${path.basename(file.filename, ext)}_thumb${ext}`;
+        const baseName = path.basename(file.filename, path.extname(file.filename));
+        const thumbName = `${baseName}_thumb.jpg`;
         const thumbPath = path.join(THUMB_DIR, thumbName);
 
         await sharp(file.path)
