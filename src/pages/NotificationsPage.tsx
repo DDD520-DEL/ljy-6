@@ -4,6 +4,7 @@ import { Bell, MessageCircle, UserPlus, Reply, CheckCheck, Sparkles, Award } fro
 import { useNotificationStore } from '../stores/notificationStore';
 import { useAuthStore } from '../stores/authStore';
 import { timeAgo } from '../lib/format';
+import { useT } from '../i18n';
 
 type NotificationType = 'comment' | 'reply' | 'follow' | 'badge_earned';
 
@@ -20,16 +21,16 @@ function typeIcon(type: NotificationType) {
   }
 }
 
-function typeLabel(type: NotificationType) {
+function typeLabel(type: NotificationType, t: (key: string) => string) {
   switch (type) {
     case 'comment':
-      return '评论了你的观测记录';
+      return t('notifications_comment');
     case 'reply':
-      return '回复了你的评论';
+      return t('notifications_reply');
     case 'follow':
-      return '关注了你';
+      return t('notifications_follow');
     case 'badge_earned':
-      return '恭喜你获得了新徽章！';
+      return t('notifications_badge_earned');
   }
 }
 
@@ -49,6 +50,7 @@ function typeBg(type: NotificationType) {
 export default function NotificationsPage() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const t = useT();
   const { notifications, loading, fetchNotifications, markAsRead, markAllAsRead, fetchUnreadCount } =
     useNotificationStore();
 
@@ -81,10 +83,10 @@ export default function NotificationsPage() {
       <div className="mb-10 text-center animate-fade-in">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-100 text-rose-700 text-sm font-medium mb-4">
           <Bell className="w-4 h-4" />
-          消息通知
+          {t('notifications_label')}
         </div>
-        <h1 className="section-title !text-3xl md:!text-4xl">通知中心</h1>
-        <p className="text-sage-600 mt-3">查看与你相关的所有动态消息</p>
+        <h1 className="section-title !text-3xl md:!text-4xl">{t('notifications_title')}</h1>
+        <p className="text-sage-600 mt-3">{t('notifications_subtitle')}</p>
       </div>
 
       {hasUnread && (
@@ -97,7 +99,7 @@ export default function NotificationsPage() {
             className="flex items-center gap-1.5 text-sm text-forest-600 hover:text-forest-800 transition"
           >
             <CheckCheck className="w-4 h-4" />
-            全部已读
+            {t('notifications_mark_all_read')}
           </button>
         </div>
       )}
@@ -117,8 +119,8 @@ export default function NotificationsPage() {
       ) : notifications.length === 0 ? (
         <div className="card py-20 text-center text-sage-400">
           <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-40" />
-          <p className="text-lg font-medium">暂无通知</p>
-          <p className="text-sm mt-1">当有人评论你的观测记录、回复你的评论或关注你时，通知会出现在这里</p>
+          <p className="text-lg font-medium">{t('notifications_no_notifications')}</p>
+          <p className="text-sm mt-1">{t('notifications_empty_desc')}</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -138,10 +140,10 @@ export default function NotificationsPage() {
                 <div className="flex items-start justify-between gap-2">
                   <p className="text-sm text-sage-800">
                     <span className="font-semibold text-forest-700">
-                      {n.type === 'badge_earned' ? '🎉 系统' : n.fromUser?.username || '用户'}
+                      {n.type === 'badge_earned' ? t('notifications_system') : n.fromUser?.username || t('notifications_user')}
                     </span>
                     {' '}
-                    {typeLabel(n.type)}
+                    {typeLabel(n.type, t)}
                     {n.type !== 'follow' && n.type !== 'badge_earned' && n.observation && (
                       <span className="text-sage-500">
                         {' · '}

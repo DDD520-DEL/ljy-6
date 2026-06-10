@@ -8,6 +8,7 @@ import { WEATHER_OPTIONS } from '../lib/constants';
 import { fromLocalInputDate, toLocalInputDate, formatDateShort } from '../lib/format';
 import { useMapStore } from '../stores/mapStore';
 import { useAuthStore } from '../stores/authStore';
+import { useT } from '../i18n';
 import type { Species } from '../../shared/types';
 
 const clickIcon = L.divIcon({
@@ -41,6 +42,7 @@ export default function NewObservationPage() {
   const { pendingNewObservation } = useMapStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
+  const t = useT();
 
   const [pos, setPos] = useState<[number, number]>(pendingNewObservation ? [pendingNewObservation.lat, pendingNewObservation.lng] : [39.9087, 116.3975]);
   const [locationName, setLocationName] = useState(pendingNewObservation?.locationName || '');
@@ -96,7 +98,7 @@ export default function NewObservationPage() {
       return;
     }
     clearTimeout(searchTimer);
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       try {
         const { data } = await api.get('/species', { params: { search: speciesName, limit: 8 } });
         setSpeciesSuggestions(data.data || []);
@@ -104,8 +106,8 @@ export default function NewObservationPage() {
         setSpeciesSuggestions([]);
       }
     }, 300);
-    setSearchTimer(t);
-    return () => clearTimeout(t);
+    setSearchTimer(timer);
+    return () => clearTimeout(timer);
   }, [speciesName]);
 
   const selectSpecies = (s: Species) => {
@@ -217,13 +219,13 @@ export default function NewObservationPage() {
     <div className="max-w-5xl mx-auto px-4 py-8 sm:py-10">
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-sage-600 hover:text-forest-700 mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
-        返回
+        {t('obs_back')}
       </button>
 
       <div className="mb-8">
-        <h1 className="section-title">{isEdit ? '编辑观测记录' : '记录新观测'}</h1>
+        <h1 className="section-title">{isEdit ? t('obs_edit_title') : t('obs_new_title')}</h1>
         <p className="text-sage-600 mt-2">
-          {isEdit ? '修改观测信息，可更新照片和详细描述' : '在地图上选择位置，填写观测信息，分享你发现的城市飞羽 🐦'}
+          {isEdit ? t('obs_edit_desc') : t('obs_new_desc')}
         </p>
       </div>
 
@@ -232,7 +234,7 @@ export default function NewObservationPage() {
           <div className="card p-5">
             <h2 className="font-display text-lg font-semibold text-forest-800 mb-4 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-forest-600" />
-              选择观测位置
+              {t('obs_select_location')}
               <span className="text-xs text-rose-500 font-sans">*</span>
             </h2>
             <div className="h-72 rounded-xl overflow-hidden border border-sage-100">
@@ -240,22 +242,22 @@ export default function NewObservationPage() {
                 <TileLayer attribution='OSM' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <ClickHandler setPos={setPos} />
                 <Marker position={pos} icon={clickIcon}>
-                  <Popup>观测位置</Popup>
+                  <Popup>{t('obs_location_on_map')}</Popup>
                 </Marker>
               </MapContainer>
             </div>
             <div className="mt-4 grid sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-sm text-sage-700 font-medium">位置名称 *</label>
+                <label className="text-sm text-sage-700 font-medium">{`${t('obs_location_name')} *`}</label>
                 <input
                   value={locationName}
                   onChange={(e) => setLocationName(e.target.value)}
-                  placeholder="例如：北京·朝阳公园"
+                  placeholder={t('obs_location_placeholder')}
                   className="input-base mt-1"
                 />
               </div>
               <div>
-                <label className="text-sm text-sage-700 font-medium">坐标</label>
+                <label className="text-sm text-sage-700 font-medium">{t('obs_coordinates')}</label>
                 <input
                   value={`${pos[0].toFixed(4)}, ${pos[1].toFixed(4)}`}
                   readOnly
@@ -268,8 +270,8 @@ export default function NewObservationPage() {
           <div className="card p-5 space-y-4">
             <h2 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2">
               <Upload className="w-5 h-5 text-forest-600" />
-              照片上传
-              <span className="text-xs text-sage-400 font-sans font-normal ml-1">（最多9张）</span>
+              {t('obs_photo_upload')}
+              <span className="text-xs text-sage-400 font-sans font-normal ml-1">({t('obs_photo_max')})</span>
             </h2>
 
             <div className="grid grid-cols-3 gap-3">
@@ -277,7 +279,7 @@ export default function NewObservationPage() {
                 <div key={index} className="relative aspect-square rounded-xl overflow-hidden border border-sage-100 group">
                   <img
                     src={photo.preview || photo.thumbnailUrl || photo.url}
-                    alt={`照片 ${index + 1}`}
+                    alt={`photo ${index + 1}`}
                     className="w-full h-full object-cover"
                   />
                   <button
@@ -315,7 +317,7 @@ export default function NewObservationPage() {
                       type="button"
                       onClick={() => cameraInputRef.current?.click()}
                       className="w-10 h-10 rounded-xl bg-forest-100 text-forest-600 hover:bg-forest-200 flex items-center justify-center transition"
-                      title="拍照"
+                      title={t('obs_take_photo')}
                     >
                       <Camera className="w-5 h-5" />
                     </button>
@@ -323,12 +325,12 @@ export default function NewObservationPage() {
                       type="button"
                       onClick={() => fileInputRef.current?.click()}
                       className="w-10 h-10 rounded-xl bg-sage-100 text-sage-600 hover:bg-sage-200 flex items-center justify-center transition"
-                      title="从相册选择"
+                      title={t('obs_from_album')}
                     >
                       <ImagePlus className="w-5 h-5" />
                     </button>
                   </div>
-                  <p className="text-xs text-sage-400">拍照 / 相册</p>
+                  <p className="text-xs text-sage-400">{t('obs_photo_album')}</p>
                 </div>
               )}
             </div>
@@ -341,7 +343,7 @@ export default function NewObservationPage() {
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-forest-50 text-forest-700 hover:bg-forest-100 border border-forest-200 transition"
                 >
                   <Camera className="w-5 h-5" />
-                  <span className="text-sm font-medium">拍照上传</span>
+                  <span className="text-sm font-medium">{t('obs_take_upload')}</span>
                 </button>
                 <button
                   type="button"
@@ -349,7 +351,7 @@ export default function NewObservationPage() {
                   className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-sage-50 text-sage-700 hover:bg-sage-100 border border-sage-200 transition"
                 >
                   <ImagePlus className="w-5 h-5" />
-                  <span className="text-sm font-medium">从相册选择</span>
+                  <span className="text-sm font-medium">{t('obs_album_upload')}</span>
                 </button>
               </div>
             )}
@@ -357,7 +359,7 @@ export default function NewObservationPage() {
             {uploading && (
               <div className="flex items-center gap-2 text-sm text-forest-600">
                 <div className="w-4 h-4 border-2 border-forest-600 border-t-transparent rounded-full animate-spin" />
-                上传中...
+                {t('obs_uploading')}
               </div>
             )}
           </div>
@@ -367,12 +369,12 @@ export default function NewObservationPage() {
           <div className="card p-5 space-y-4">
             <h2 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2">
               <BirdIcon className="w-5 h-5 text-forest-600" />
-              物种信息 <span className="text-xs text-rose-500 font-sans">*</span>
+              {t('obs_species_info')} <span className="text-xs text-rose-500 font-sans">*</span>
               <button
                 onClick={() => navigate('/bird-id')}
                 className="ml-auto text-xs text-forest-600 hover:text-forest-700 underline underline-offset-2"
               >
-                <span className="inline-flex items-center gap-1"><Sparkles className="w-3.5 h-3.5" />识鸟助手</span>
+                <span className="inline-flex items-center gap-1"><Sparkles className="w-3.5 h-3.5" />{t('obs_bird_id_link')}</span>
               </button>
             </h2>
             <div className="relative">
@@ -382,7 +384,7 @@ export default function NewObservationPage() {
                   setSpeciesName(e.target.value);
                   setSpeciesId(null);
                 }}
-                placeholder="输入鸟类名称，例如：麻雀"
+                placeholder={t('obs_species_placeholder')}
                 className="input-base"
               />
               {speciesSuggestions.length > 0 && (
@@ -407,7 +409,7 @@ export default function NewObservationPage() {
             <div>
               <label className="text-sm text-sage-700 font-medium flex items-center gap-1.5">
                 <Calendar className="w-4 h-4 text-forest-600" />
-                观测时间 *
+                {`${t('obs_time')} *`}
               </label>
               <input type="datetime-local" value={observationTime} onChange={(e) => setObservationTime(e.target.value)} className="input-base mt-1" />
               <div className="text-xs text-sage-400 mt-1">{formatDateShort(fromLocalInputDate(observationTime))}</div>
@@ -416,7 +418,7 @@ export default function NewObservationPage() {
             <div>
               <label className="text-sm text-sage-700 font-medium flex items-center gap-1.5">
                 <CloudRain className="w-4 h-4 text-forest-600" />
-                天气状况
+                {t('obs_weather')}
               </label>
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {WEATHER_OPTIONS.map((w) => (
@@ -428,29 +430,29 @@ export default function NewObservationPage() {
                     }`}
                   >
                     <div className="text-xl">{w.emoji}</div>
-                    <div className="text-xs mt-0.5">{w.label}</div>
+                    <div className="text-xs mt-0.5">{t(w.labelKey)}</div>
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label className="text-sm text-sage-700 font-medium">鸟类行为描述</label>
+              <label className="text-sm text-sage-700 font-medium">{t('obs_behavior')}</label>
               <input
                 value={behavior}
                 onChange={(e) => setBehavior(e.target.value)}
-                placeholder="例如：在地面啄食、枝头鸣唱..."
+                placeholder={t('obs_behavior_placeholder')}
                 className="input-base mt-1"
               />
             </div>
 
             <div>
-              <label className="text-sm text-sage-700 font-medium">观测备注</label>
+              <label className="text-sm text-sage-700 font-medium">{t('obs_notes')}</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
-                placeholder="详细描述你观察到的情况，包括数量、周围环境等..."
+                placeholder={t('obs_notes_placeholder')}
                 className="input-base mt-1 resize-none"
               />
             </div>
@@ -462,7 +464,7 @@ export default function NewObservationPage() {
             className="btn-primary w-full !py-3.5 text-base flex items-center justify-center gap-2 disabled:opacity-50"
           >
             <Send className="w-5 h-5" />
-            {loading ? (isEdit ? '保存中...' : '发布中...') : isEdit ? '保存修改' : '发布观测记录'}
+            {loading ? (isEdit ? t('obs_saving') : t('obs_publishing')) : isEdit ? t('obs_save') : t('obs_publish')}
           </button>
         </div>
       </div>

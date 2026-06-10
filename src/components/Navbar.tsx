@@ -3,12 +3,18 @@ import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bel
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
+import { useT } from '../i18n';
+import { useLanguage } from '../stores/languageStore';
+import { Globe } from 'lucide-react';
 
 export function Navbar() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const { unreadCount, fetchUnreadCount } = useNotificationStore();
+  const t = useT();
+  const { lang, setLang } = useLanguage();
+  const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -19,11 +25,11 @@ export function Navbar() {
   }, [user, fetchUnreadCount]);
 
   const navItems = [
-    { to: '/', label: '观测地图', icon: MapPin, end: true },
-    { to: '/bird-id', label: '识鸟助手', icon: Sparkles },
-    { to: '/analytics', label: '物种分析', icon: BarChart3 },
-    { to: '/challenges', label: '观鸟挑战', icon: Trophy },
-    { to: '/community', label: '观鸟社区', icon: Users },
+    { to: '/', label: t('nav_map'), icon: MapPin, end: true },
+    { to: '/bird-id', label: t('nav_bird_id'), icon: Sparkles },
+    { to: '/analytics', label: t('nav_analytics'), icon: BarChart3 },
+    { to: '/challenges', label: t('nav_challenges'), icon: Trophy },
+    { to: '/community', label: t('nav_community'), icon: Users },
   ];
 
   return (
@@ -34,8 +40,8 @@ export function Navbar() {
             <Bird className="w-6 h-6 text-white" />
           </div>
           <div className="hidden sm:block">
-            <div className="font-display text-xl font-semibold text-forest-800 leading-none">飞羽寻踪</div>
-            <div className="text-[11px] text-sage-500 tracking-wider">BIRD WATCHING</div>
+            <div className="font-display text-xl font-semibold text-forest-800 leading-none">{t('app_name')}</div>
+            <div className="text-[11px] text-sage-500 tracking-wider">{t('app_subname')}</div>
           </div>
         </Link>
 
@@ -67,7 +73,7 @@ export function Navbar() {
             className="btn-primary hidden sm:flex items-center gap-1.5 text-sm py-2 px-4"
           >
             <Plus className="w-4 h-4" />
-            记录观测
+            {t('nav_record')}
           </button>
 
           {user && (
@@ -78,6 +84,16 @@ export function Navbar() {
               )}
             </Link>
           )}
+
+          <div className="relative hidden sm:block">
+            <button
+              onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-sage-50 transition text-sage-600 text-sm"
+            >
+              <Globe className="w-4 h-4" />
+              <span>{lang === 'zh' ? t('lang_en') : t('lang_zh')}</span>
+            </button>
+          </div>
 
           {user ? (
             <div className="relative">
@@ -97,7 +113,7 @@ export function Navbar() {
                     className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
                   >
                     <Bell className="w-4 h-4" />
-                    消息通知
+                    {t('nav_notifications')}
                     {unreadCount > 0 && (
                       <span className="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">{unreadCount > 99 ? '99+' : unreadCount}</span>
                     )}
@@ -108,8 +124,15 @@ export function Navbar() {
                     className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
                   >
                     <User className="w-4 h-4" />
-                    我的主页
+                    {t('nav_profile')}
                   </Link>
+                  <button
+                    onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
+                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
+                  >
+                    <Globe className="w-4 h-4" />
+                    {lang === 'zh' ? t('lang_en') : t('lang_zh')}
+                  </button>
                   <div className="border-t border-sage-100 my-1" />
                   <button
                     onClick={() => {
@@ -120,21 +143,21 @@ export function Navbar() {
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-red-600 hover:bg-red-50 transition"
                   >
                     <LogOut className="w-4 h-4" />
-                    退出登录
+                    {t('nav_logout')}
                   </button>
                 </div>
               )}
             </div>
           ) : (
             <Link to="/login" className="btn-secondary text-sm py-2 px-4 hidden sm:block">
-              登录
+              {t('nav_login')}
             </Link>
           )}
 
           <button
             className="lg:hidden p-2 rounded-xl hover:bg-sage-100"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="菜单"
+            aria-label={t('nav_menu')}
           >
             <Menu className="w-5 h-5 text-sage-700" />
           </button>
@@ -157,16 +180,23 @@ export function Navbar() {
               <span>{item.label}</span>
             </NavLink>
           ))}
+          <button
+            onClick={() => { setLang(lang === 'zh' ? 'en' : 'zh'); setMenuOpen(false); }}
+            className="nav-link flex items-center gap-2"
+          >
+            <Globe className="w-4 h-4" />
+            {lang === 'zh' ? t('lang_en') : t('lang_zh')}
+          </button>
           {!user && (
             <Link to="/login" onClick={() => setMenuOpen(false)} className="nav-link flex items-center gap-2 col-span-2 justify-center">
               <User className="w-4 h-4" />
-              登录 / 注册
+              {t('nav_login_register')}
             </Link>
           )}
           {user && (
             <Link to="/notifications" onClick={() => setMenuOpen(false)} className="nav-link flex items-center gap-2 relative">
               <Bell className="w-4 h-4" />
-              消息通知
+              {t('nav_notifications')}
               {unreadCount > 0 && (
                 <span className="w-2 h-2 bg-red-500 rounded-full" />
               )}

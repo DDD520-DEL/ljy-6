@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Eye, Ruler, Beaker } from 'lucide-react';
 import type { Species, SpeciesMatch } from '../../shared/types';
-import { MIGRATION_LABELS } from '../lib/constants';
+import { getMigrationLabel, getFeatherColorLabel, getBirdSizeLabel, MIGRATION_LABELS } from '../lib/constants';
+import { useT } from '../i18n';
 
 interface Props {
   species: Species | SpeciesMatch;
@@ -10,6 +11,7 @@ interface Props {
 
 export function SpeciesCard({ species, showScore }: Props) {
   const sp = species as any;
+  const t = useT();
   const score = showScore ? sp.matchScore : undefined;
 
   return (
@@ -23,14 +25,14 @@ export function SpeciesCard({ species, showScore }: Props) {
         />
         <div className="absolute top-2 right-2">
           <span className={`chip text-xs !py-1 !px-2 ${MIGRATION_LABELS[species.migrationPattern]?.color || ''}`}>
-            {MIGRATION_LABELS[species.migrationPattern]?.label}
+            {getMigrationLabel(species.migrationPattern)}
           </span>
         </div>
         {score !== undefined && (
           <div className="absolute bottom-2 left-2 right-2">
             <div className="bg-white/90 backdrop-blur rounded-xl px-3 py-2 shadow-card">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-forest-700">匹配度</span>
+                <span className="text-xs font-medium text-forest-700">{t('bird_id_match_score')}</span>
                 <span className="text-sm font-bold text-forest-700">{score}%</span>
               </div>
               <div className="w-full h-1.5 rounded-full bg-sage-100 overflow-hidden">
@@ -51,18 +53,18 @@ export function SpeciesCard({ species, showScore }: Props) {
         <div className="mt-3 flex flex-wrap gap-1.5">
           {species.featherColors.slice(0, 3).map((c) => (
             <span key={c} className="text-[11px] px-2 py-0.5 rounded-full bg-sage-100 text-sage-700 capitalize">
-              {colorLabel(c)}
+              {getFeatherColorLabel(c)}
             </span>
           ))}
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2 text-[11px] text-sage-600">
           <div className="flex items-center gap-1">
             <Ruler className="w-3 h-3 text-forest-500" />
-            {sizeLabel(species.size)}
+            {getBirdSizeLabel(species.size)}
           </div>
           <div className="flex items-center gap-1">
             <Eye className="w-3 h-3 text-forest-500" />
-            稀有度 {rarityLabel(species.rarity)}
+            {t('obs_detail_rarity')} {rarityLabel(species.rarity)}
           </div>
         </div>
       </div>
@@ -70,18 +72,6 @@ export function SpeciesCard({ species, showScore }: Props) {
   );
 }
 
-function colorLabel(c: string) {
-  const map: Record<string, string> = {
-    white: '白', black: '黑', gray: '灰', brown: '棕', chestnut: '栗', rufous: '赤褐',
-    pink: '粉', red: '红', orange: '橙', yellow: '黄', green: '绿', blue: '蓝',
-    purple: '紫', iridescent: '虹彩',
-  };
-  return map[c] || c;
-}
-function sizeLabel(s: string) {
-  const map: Record<string, string> = { small: '小型', medium: '中型', large: '大型', xlarge: '超大型' };
-  return map[s] || s;
-}
 function rarityLabel(r: number) {
   if (r <= 20) return '★';
   if (r <= 40) return '★★';

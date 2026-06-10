@@ -10,6 +10,8 @@ import { ObservationCard } from '../components/ObservationCard';
 import { useAuthStore } from '../stores/authStore';
 import { useMapStore } from '../stores/mapStore';
 import { formatDateTime } from '../lib/format';
+import { useT } from '../i18n';
+import { getMigrationLabel } from '../lib/constants';
 
 function MapEventsHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
   useMapEvents({
@@ -39,6 +41,7 @@ function makeIcon(color = '#2D6A4F') {
 }
 
 export default function MapHomePage() {
+  const t = useT();
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { mapCenter, mapZoom, setMapCenter, setPendingNewObservation, flyTo } = useMapStore();
@@ -79,7 +82,7 @@ export default function MapHomePage() {
       navigate('/login');
       return;
     }
-    setPendingNewObservation({ lat, lng, locationName: '已选位置' });
+    setPendingNewObservation({ lat, lng, locationName: t('map_selected_location') });
     navigate('/observe/new');
   };
 
@@ -89,7 +92,7 @@ export default function MapHomePage() {
         <aside className={`${showSidebar ? 'w-80 xl:w-96' : 'w-0'} transition-all duration-300 border-r border-sage-100 bg-white/80 overflow-hidden flex-shrink-0 flex flex-col`}>
           <div className="p-4 border-b border-sage-100 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="section-title !text-xl">观测地图</h2>
+              <h2 className="section-title !text-xl">{t('map_title')}</h2>
               <button
                 onClick={() => setShowSidebar((v) => !v)}
                 className="p-2 rounded-xl hover:bg-sage-100 text-sage-600 lg:hidden"
@@ -102,7 +105,7 @@ export default function MapHomePage() {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="搜索物种、地点..."
+                placeholder={t('map_search_placeholder')}
                 className="input-base pl-10 !py-2.5"
               />
             </div>
@@ -111,7 +114,7 @@ export default function MapHomePage() {
                 onClick={() => setSpeciesFilter(null)}
                 className={`chip text-xs ${speciesFilter === null ? 'chip-active' : 'chip-default'}`}
               >
-                全部
+                {t('map_filter_all')}
               </button>
               {species.slice(0, 8).map((s) => (
                 <button
@@ -141,8 +144,8 @@ export default function MapHomePage() {
             ) : filteredObs.length === 0 ? (
               <div className="text-center py-16 text-sage-400">
                 <Bird className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>暂无观测记录</p>
-                <p className="text-xs mt-1">点击地图发布第一条观测</p>
+                <p>{t('map_no_observations')}</p>
+                <p className="text-xs mt-1">{t('map_click_to_add')}</p>
               </div>
             ) : (
               filteredObs.map((obs) => (
@@ -186,7 +189,7 @@ export default function MapHomePage() {
                       <div className="font-display font-semibold text-forest-800">{obs.speciesName}</div>
                       <div className="text-xs text-sage-500 flex items-center gap-1 mt-1">
                         <MapPin className="w-3 h-3" />
-                        {obs.locationName || '未知位置'}
+                        {obs.locationName || t('map_unknown_location')}
                       </div>
                       <div className="text-xs text-sage-500 flex items-center gap-1 mt-0.5">
                         <Calendar className="w-3 h-3" />
@@ -196,7 +199,7 @@ export default function MapHomePage() {
                         to={`/observe/${obs.id}`}
                         className="mt-3 block text-center py-2 text-sm rounded-xl bg-forest-600 text-white hover:bg-forest-700 transition"
                       >
-                        查看详情
+                        {t('map_view_detail')}
                       </Link>
                     </div>
                   </div>
@@ -219,13 +222,13 @@ export default function MapHomePage() {
             className="absolute bottom-6 right-6 z-[1000] btn-primary !rounded-full !px-5 !py-3.5 shadow-card-hover flex items-center gap-2 animate-float"
           >
             <Plus className="w-5 h-5" />
-            记录观测
+            {t('nav_record')}
           </button>
 
           <div className="absolute bottom-6 left-6 z-[1000] card !px-4 !py-3 flex items-center gap-2 text-sm text-sage-700">
             <Bird className="w-4 h-4 text-forest-600" />
             <span>
-              共 <strong className="text-forest-700">{filteredObs.length}</strong> 条观测记录
+              {t('map_count_word')} <strong className="text-forest-700">{filteredObs.length}</strong> {t('map_total_observations')}
             </span>
           </div>
         </div>

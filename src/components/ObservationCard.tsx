@@ -3,9 +3,10 @@ import { Heart, MessageCircle, MapPin, Calendar, Share2, User as UserIcon } from
 import { useState } from 'react';
 import type { Observation } from '../../shared/types';
 import { timeAgo, formatDateShort } from '../lib/format';
-import { MIGRATION_LABELS } from '../lib/constants';
+import { getMigrationLabel, MIGRATION_LABELS } from '../lib/constants';
 import { useAuthStore } from '../stores/authStore';
 import api from '../lib/api';
+import { useT } from '../i18n';
 
 interface Props {
   observation: Observation;
@@ -15,6 +16,7 @@ interface Props {
 
 export function ObservationCard({ observation, compact = false, onUpdate }: Props) {
   const { user: curUser } = useAuthStore();
+  const t = useT();
   const [likeLoading, setLikeLoading] = useState(false);
   const [showComment, setShowComment] = useState(false);
   const [commentText, setCommentText] = useState('');
@@ -62,7 +64,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
             {sp && (
               <div className="absolute top-3 left-3">
                 <span className={`chip chip-active !text-xs ${MIGRATION_LABELS[sp.migrationPattern]?.color || ''}`}>
-                  {MIGRATION_LABELS[sp.migrationPattern]?.label}
+                  {getMigrationLabel(sp.migrationPattern)}
                 </span>
               </div>
             )}
@@ -106,7 +108,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-sage-500">
           <div className="flex items-center gap-1">
             <MapPin className="w-3.5 h-3.5 text-forest-500" />
-            {observation.locationName || '未知位置'}
+            {observation.locationName || t('map_unknown_location')}
           </div>
           <div className="flex items-center gap-1">
             <Calendar className="w-3.5 h-3.5 text-forest-500" />
@@ -140,7 +142,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
           </button>
           <button className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-sm text-sage-600 hover:bg-sage-50 transition">
             <Share2 className="w-4 h-4" />
-            <span className="font-medium sm:inline hidden">分享</span>
+            <span className="font-medium sm:inline hidden">{t('share')}</span>
           </button>
         </div>
 
@@ -162,7 +164,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
                   <input
                     value={commentText}
                     onChange={(e) => setCommentText(e.target.value)}
-                    placeholder="写下你的评论..."
+                    placeholder={t('obs_detail_comment_placeholder')}
                     className="input-base !py-2 !text-sm"
                   />
                   <button
@@ -170,7 +172,7 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
                     disabled={commentLoading || !commentText.trim()}
                     className="btn-primary !py-2 !px-4 text-sm disabled:opacity-50"
                   >
-                    发送
+                    {t('obs_detail_send')}
                   </button>
                 </div>
               </div>

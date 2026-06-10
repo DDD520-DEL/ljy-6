@@ -8,7 +8,8 @@ import { TrendingUp, BarChart3, Calendar, Flame, Eye, Bird, Download, MapPin } f
 import api from '../lib/api';
 import type { Species, SeasonalItem, FrequencyItem } from '../../shared/types';
 import { SpeciesCard } from '../components/SpeciesCard';
-import { MONTHS } from '../lib/constants';
+import { getMonths } from '../lib/constants';
+import { useT } from '../i18n';
 
 const HEAT_GRADIENT = {
   '0.2': '#2D6A4F',
@@ -35,6 +36,7 @@ function calcSeasonSum(seasonal: SeasonalItem[], months: number[]) {
 }
 
 export default function AnalyticsPage() {
+  const t = useT();
   const [overview, setOverview] = useState<any>(null);
   const [freq, setFreq] = useState<FrequencyItem[]>([]);
   const [seasonal, setSeasonal] = useState<SeasonalItem[]>([]);
@@ -87,14 +89,14 @@ export default function AnalyticsPage() {
       const link = document.createElement('a');
       link.href = url;
       const dateStr = new Date().toISOString().slice(0, 10);
-      link.setAttribute('download', `观测记录_${dateStr}.xlsx`);
+      link.setAttribute('download', `${t('analytics_total_obs')}_${dateStr}.xlsx`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('导出失败:', err);
-      alert('导出失败，请重试');
+      alert(t('analytics_export_failed'));
     } finally {
       setExporting(false);
     }
@@ -130,7 +132,7 @@ export default function AnalyticsPage() {
   const seasonOption = {
     tooltip: { trigger: 'axis' },
     grid: { left: 40, right: 20, top: 40, bottom: 30 },
-    xAxis: { type: 'category', data: MONTHS, axisLine: { lineStyle: { color: '#8FC0A0' } } },
+    xAxis: { type: 'category', data: getMonths(), axisLine: { lineStyle: { color: '#8FC0A0' } } },
     yAxis: { type: 'value', axisLine: { lineStyle: { color: '#8FC0A0' } } },
     series: [{
       type: 'line',
@@ -156,10 +158,10 @@ export default function AnalyticsPage() {
     tooltip: { trigger: 'item' },
     radar: {
       indicator: [
-        { name: '春 (3-5)' },
-        { name: '夏 (6-8)' },
-        { name: '秋 (9-11)' },
-        { name: '冬 (12-2)' },
+        { name: t('season_spring') },
+        { name: t('season_summer') },
+        { name: t('season_autumn') },
+        { name: t('season_winter') },
       ],
       shape: 'circle',
       splitArea: { areaStyle: { color: ['rgba(143,192,160,0.08)', 'rgba(221,236,226,0.15)'] } },
@@ -167,7 +169,7 @@ export default function AnalyticsPage() {
     series: [{
       type: 'radar',
       data: [{
-        name: '出现次数',
+        name: t('season_appearances'),
         value: [springSum, summerSum, autumnSum, winterSum],
         areaStyle: { color: 'rgba(85,167,128,0.5)' },
         lineStyle: { color: '#2D6A4F', width: 2 },
@@ -181,18 +183,18 @@ export default function AnalyticsPage() {
       <div className="mb-10 text-center animate-fade-in">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium mb-4">
           <BarChart3 className="w-4 h-4" />
-          数据洞察
+          {t('analytics_data_insight')}
         </div>
-        <h1 className="section-title !text-3xl md:!text-4xl">物种分析 · 城市野鸟数据中心</h1>
-        <p className="text-sage-600 mt-3">观测数据的频率排行、季节性规律与迁徙热力图</p>
+        <h1 className="section-title !text-3xl md:!text-4xl">{t('analytics_title')}</h1>
+        <p className="text-sage-600 mt-3">{t('analytics_subtitle')}</p>
       </div>
 
       <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         {[
-          { icon: Eye, label: '观测记录', value: overview?.totalObservations || 0, color: 'from-forest-400 to-forest-600' },
-          { icon: Bird, label: '物种数量', value: overview?.totalSpecies || 0, color: 'from-sky-400 to-sky-600' },
-          { icon: TrendingUp, label: '活跃观鸟者', value: overview?.totalUsers || 0, color: 'from-earth-400 to-earth-600' },
-          { icon: Flame, label: '社区评论', value: overview?.totalComments || 0, color: 'from-rose-400 to-rose-600' },
+          { icon: Eye, label: t('analytics_total_obs'), value: overview?.totalObservations || 0, color: 'from-forest-400 to-forest-600' },
+          { icon: Bird, label: t('analytics_total_species'), value: overview?.totalSpecies || 0, color: 'from-sky-400 to-sky-600' },
+          { icon: TrendingUp, label: t('analytics_active_users'), value: overview?.totalUsers || 0, color: 'from-earth-400 to-earth-600' },
+          { icon: Flame, label: t('analytics_total_comments'), value: overview?.totalComments || 0, color: 'from-rose-400 to-rose-600' },
         ].map((s, i) => (
           <div key={i} className="card p-5 animate-slide-up" style={{ animationDelay: `${i * 60}ms` }}>
             <div className="flex items-start justify-between mb-4">
@@ -212,22 +214,22 @@ export default function AnalyticsPage() {
             <Download className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="font-display text-xl font-semibold text-forest-800">数据导出</h2>
-            <p className="text-sm text-sage-500">按条件筛选后导出观测记录为 Excel 文件</p>
+            <h2 className="font-display text-xl font-semibold text-forest-800">{t('analytics_export')}</h2>
+            <p className="text-sm text-sage-500">{t('analytics_export_desc')}</p>
           </div>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
           <div>
             <label className="block text-sm font-medium text-sage-700 mb-1.5">
               <Bird className="w-3.5 h-3.5 inline mr-1" />
-              物种类型
+              {t('analytics_species_type')}
             </label>
             <select
               value={exportSpeciesId ?? ''}
               onChange={(e) => setExportSpeciesId(e.target.value ? Number(e.target.value) : null)}
               className="input-base w-full"
             >
-              <option value="">全部物种</option>
+              <option value="">{t('analytics_all_species')}</option>
               {species.map((s) => (
                 <option key={s.id} value={s.id}>{s.name}</option>
               ))}
@@ -236,7 +238,7 @@ export default function AnalyticsPage() {
           <div>
             <label className="block text-sm font-medium text-sage-700 mb-1.5">
               <Calendar className="w-3.5 h-3.5 inline mr-1" />
-              开始日期
+              {t('analytics_start_date')}
             </label>
             <input
               type="date"
@@ -248,7 +250,7 @@ export default function AnalyticsPage() {
           <div>
             <label className="block text-sm font-medium text-sage-700 mb-1.5">
               <Calendar className="w-3.5 h-3.5 inline mr-1" />
-              结束日期
+              {t('analytics_end_date')}
             </label>
             <input
               type="date"
@@ -260,11 +262,11 @@ export default function AnalyticsPage() {
           <div>
             <label className="block text-sm font-medium text-sage-700 mb-1.5">
               <MapPin className="w-3.5 h-3.5 inline mr-1" />
-              观测地点
+              {t('analytics_location')}
             </label>
             <input
               type="text"
-              placeholder="输入地点关键词"
+              placeholder={t('analytics_location_placeholder')}
               value={exportLocationName}
               onChange={(e) => setExportLocationName(e.target.value)}
               className="input-base w-full"
@@ -273,7 +275,7 @@ export default function AnalyticsPage() {
         </div>
         <div className="flex items-center justify-between">
           <p className="text-sm text-sage-500">
-            提示：不填写筛选条件将导出全部观测记录
+            {t('analytics_export_hint')}
           </p>
           <button
             onClick={handleExport}
@@ -281,7 +283,7 @@ export default function AnalyticsPage() {
             className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             <Download className="w-4 h-4" />
-            {exporting ? '导出中...' : '导出 Excel'}
+            {exporting ? t('analytics_exporting') : t('analytics_export_excel')}
           </button>
         </div>
       </div>
@@ -291,11 +293,11 @@ export default function AnalyticsPage() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
             <h2 className="font-display text-xl font-semibold text-forest-800 flex items-center gap-2">
               <Flame className="w-5 h-5 text-rose-500" />
-              物种出现频率排行
+              {t('analytics_freq_ranking')}
             </h2>
             <div className="flex items-center gap-2">
               <select value={speciesId ?? ''} onChange={(e) => setSpeciesId(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">全部物种</option>
+                <option value="">{t('analytics_all_species')}</option>
                 {species.map((s) => { return <option key={s.id} value={s.id}>{s.name}</option>; })}
               </select>
             </div>
@@ -306,13 +308,13 @@ export default function AnalyticsPage() {
         <div className="card p-5">
           <h2 className="font-display text-xl font-semibold text-forest-800 mb-5 flex items-center gap-2">
             <Calendar className="w-5 h-5 text-sky-500" />
-            月度出现规律
+            {t('analytics_monthly_pattern')}
           </h2>
           <ReactECharts option={seasonOption} style={{ height: 300 }} />
         </div>
 
         <div className="card p-5">
-          <h2 className="font-display text-xl font-semibold text-forest-800 mb-5">四季分布</h2>
+          <h2 className="font-display text-xl font-semibold text-forest-800 mb-5">{t('analytics_season_distribution')}</h2>
           <ReactECharts option={monthSeasonOption} style={{ height: 300 }} />
         </div>
 
@@ -320,16 +322,16 @@ export default function AnalyticsPage() {
           <div className="p-5 flex flex-wrap items-center justify-between gap-4 border-b border-sage-100">
             <h2 className="font-display text-xl font-semibold text-forest-800 flex items-center gap-2">
               <Flame className="w-5 h-5 text-rose-500" />
-              迁徙热力图
+              {t('analytics_migration_heatmap')}
             </h2>
             <div className="flex flex-wrap items-center gap-2">
               <select value={speciesId ?? ''} onChange={(e) => setSpeciesId(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">全部物种</option>
+                <option value="">{t('analytics_all_species')}</option>
                 {species.map((s) => { return <option key={s.id} value={s.id}>{s.name}</option>; })}
               </select>
               <select value={month ?? ''} onChange={(e) => setMonth(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">全年</option>
-                {MONTHS.map((m, i) => { return <option key={i + 1} value={i + 1}>{m}</option>; })}
+                <option value="">{t('analytics_all_year')}</option>
+                {getMonths().map((m, i) => { return <option key={i + 1} value={i + 1}>{m}</option>; })}
               </select>
             </div>
           </div>
@@ -342,7 +344,7 @@ export default function AnalyticsPage() {
         </div>
 
         <div className="lg:col-span-2">
-          <h2 className="font-display text-xl font-semibold text-forest-800 mb-5 mt-2">常见物种图鉴</h2>
+          <h2 className="font-display text-xl font-semibold text-forest-800 mb-5 mt-2">{t('analytics_species_guide')}</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {species.slice(0, 8).map((sp, i) => (
               <div key={sp.id} style={{ animationDelay: `${i * 60}ms` }} className="animate-slide-up">

@@ -5,12 +5,12 @@ import api from '../lib/api';
 import type { ChallengeWithProgress, ChallengeRankingItem, Badge, UserChallengeProgress } from '../../shared/types';
 import { useAuthStore } from '../stores/authStore';
 import { formatDateShort } from '../lib/format';
-import { RARITY_COLORS, RARITY_LABELS } from '../lib/constants';
-
-const MONTH_NAMES = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+import { RARITY_COLORS, getRarityLabel as getRarityLabelConst, getMonthNames } from '../lib/constants';
+import { useT } from '../i18n';
 
 export default function ChallengesPage() {
   const { user } = useAuthStore();
+  const t = useT();
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
@@ -97,9 +97,9 @@ export default function ChallengesPage() {
           <div>
             <h1 className="font-display text-3xl sm:text-4xl font-bold text-forest-800 flex items-center gap-3">
               <Trophy className="w-10 h-10 text-amber-500" />
-              观鸟挑战
+              {t('challenges_title')}
             </h1>
-            <p className="text-sage-600 mt-2">完成月度挑战，收集专属徽章，与全国观鸟爱好者一较高下</p>
+            <p className="text-sage-600 mt-2">{t('challenges_subtitle')}</p>
           </div>
           {user && (
             <button
@@ -108,7 +108,7 @@ export default function ChallengesPage() {
               className="btn-secondary flex items-center gap-2 self-start sm:self-auto"
             >
               <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-              刷新进度
+              {t('challenges_refresh')}
             </button>
           )}
         </div>
@@ -123,10 +123,10 @@ export default function ChallengesPage() {
           <div className="flex items-center gap-4">
             <div className="text-center">
               <div className="font-display text-2xl font-bold text-forest-800">
-                {year} 年 {MONTH_NAMES[month]}
+                {year} {getMonthNames()[month]}
               </div>
               {isCurrentMonth && (
-                <span className="chip bg-forest-100 text-forest-700 text-xs">当前月份</span>
+                <span className="chip bg-forest-100 text-forest-700 text-xs">{t('challenges_current_month')}</span>
               )}
             </div>
           </div>
@@ -147,18 +147,18 @@ export default function ChallengesPage() {
                 #{myRank.rank}
               </div>
               <div>
-                <div className="font-display text-lg font-semibold text-forest-800">我的排名</div>
+                <div className="font-display text-lg font-semibold text-forest-800">{t('challenges_my_rank')}</div>
                 <div className="text-sm text-sage-600">
-                  已完成 <span className="font-bold text-forest-700">{myRank.completedCount}</span> / {challenges.length} 个挑战
+                  {t('challenges_completed')} <span className="font-bold text-forest-700">{myRank.completedCount}</span> / {challenges.length} {t('challenges_challenges_unit')}
                   <span className="mx-2">·</span>
-                  总进度 <span className="font-bold text-forest-700">{myRank.totalProgress}%</span>
+                  {t('challenges_total_progress')} <span className="font-bold text-forest-700">{myRank.totalProgress}%</span>
                 </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
               <Crown className={`w-6 h-6 ${myRank.rank <= 3 ? 'text-amber-500' : 'text-sage-300'}`} />
               <span className="text-sm text-sage-600">
-                {myRank.rank <= 3 ? '太棒了！保持领先！' : myRank.rank <= 10 ? '加油！冲击前十名！' : '继续努力！'}
+                {myRank.rank <= 3 ? t('challenges_keep_lead') : myRank.rank <= 10 ? t('challenges_push_top10') : t('challenges_keep_going')}
               </span>
             </div>
           </div>
@@ -167,20 +167,20 @@ export default function ChallengesPage() {
 
       <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
         <TabBtn active={tab === 'challenges'} onClick={() => setTab('challenges')} icon={<Target className="w-4 h-4" />}>
-          本月挑战 ({challenges.length})
+          {t('challenges_month_challenges')} ({challenges.length})
         </TabBtn>
         <TabBtn active={tab === 'rankings'} onClick={() => setTab('rankings')} icon={<TrendingUp className="w-4 h-4" />}>
-          排行榜 ({rankings.length})
+          {t('challenges_rankings')} ({rankings.length})
         </TabBtn>
         <TabBtn active={tab === 'badges'} onClick={() => setTab('badges')} icon={<Award className="w-4 h-4" />}>
-          徽章图鉴 ({badges.length})
+          {t('challenges_badge_guide')} ({badges.length})
         </TabBtn>
       </div>
 
       <div className="animate-fade-in">
         {tab === 'challenges' && (
           challenges.length === 0 ? (
-            <EmptyCard icon={<Target className="w-12 h-12" />} title="本月暂无挑战" desc="系统将在月初自动生成新挑战" />
+            <EmptyCard icon={<Target className="w-12 h-12" />} title={t('challenges_no_challenges')} desc={t('challenges_auto_generate')} />
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
               {challenges.map((challenge, i) => (
@@ -195,13 +195,13 @@ export default function ChallengesPage() {
             <div className="p-4 border-b border-sage-100 bg-sage-50">
               <h3 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2">
                 <Crown className="w-5 h-5 text-amber-500" />
-                {year} 年 {MONTH_NAMES[month]} 挑战排行榜
+                {year} {getMonthNames()[month]} {t('challenges_challenge_ranking')}
               </h3>
             </div>
             {rankings.length === 0 ? (
               <div className="p-12 text-center text-sage-400">
                 <Medal className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                暂无排行数据
+                {t('challenges_no_ranking')}
               </div>
             ) : (
               <div className="divide-y divide-sage-100">
@@ -226,6 +226,7 @@ export default function ChallengesPage() {
 }
 
 function ChallengeCard({ challenge, index }: { challenge: ChallengeWithProgress; index: number }) {
+  const t = useT();
   const progress = challenge.progress as UserChallengeProgress | null;
   const currentValue = progress?.currentValue || 0;
   const isCompleted = progress?.completed || false;
@@ -261,7 +262,7 @@ function ChallengeCard({ challenge, index }: { challenge: ChallengeWithProgress;
 
         <div className="mb-3">
           <div className="flex items-center justify-between text-sm mb-1.5">
-            <span className="text-sage-600">当前进度</span>
+            <span className="text-sage-600">{t('challenges_current_progress')}</span>
             <span className="font-bold text-forest-800">
               {currentValue} / {challenge.target} {challenge.unit}
             </span>
@@ -281,7 +282,7 @@ function ChallengeCard({ challenge, index }: { challenge: ChallengeWithProgress;
         {progress?.completedAt && (
           <div className="text-xs text-emerald-600 bg-emerald-50 rounded-lg px-3 py-2 flex items-center gap-1.5">
             <Award className="w-4 h-4" />
-            已于 {formatDateShort(progress.completedAt)} 完成
+            {t('challenges_completed_at')} {formatDateShort(progress.completedAt)} {t('challenges_completed_end')}
           </div>
         )}
       </div>
@@ -290,6 +291,7 @@ function ChallengeCard({ challenge, index }: { challenge: ChallengeWithProgress;
 }
 
 function RankingRow({ item, isMe }: { item: ChallengeRankingItem; isMe: boolean }) {
+  const t = useT();
   const progressPct = Math.min(100, item.totalProgress / 3);
 
   return (
@@ -328,10 +330,10 @@ function RankingRow({ item, isMe }: { item: ChallengeRankingItem; isMe: boolean 
         <div className="min-w-0">
           <div className="font-medium text-forest-800 truncate flex items-center gap-2">
             {item.user.username}
-            {isMe && <span className="chip bg-amber-100 text-amber-700 text-[10px]">我</span>}
+            {isMe && <span className="chip bg-amber-100 text-amber-700 text-[10px]">{t('challenges_me')}</span>}
           </div>
           <div className="text-xs text-sage-500">
-            {item.user.observationsCount} 次观测 · {item.user.speciesCount} 种发现
+            {item.user.observationsCount} {t('challenges_obs_count')} · {item.user.speciesCount} {t('species_found')}
           </div>
         </div>
       </Link>
@@ -342,7 +344,7 @@ function RankingRow({ item, isMe }: { item: ChallengeRankingItem; isMe: boolean 
             {item.completedCount}
             <span className="text-sm font-normal text-sage-500"> / 3</span>
           </div>
-          <div className="text-xs text-sage-500">已完成</div>
+          <div className="text-xs text-sage-500">{t('challenges_completed')}</div>
         </div>
         <div className="w-20">
           <div className="w-full h-2 rounded-full bg-sage-100 overflow-hidden">
@@ -384,7 +386,7 @@ function BadgeCard({ badge, index }: { badge: Badge; index: number }) {
             : 'bg-gray-100 text-gray-600'
         }`}
       >
-        {RARITY_LABELS[badge.rarity]}
+        {getRarityLabelConst(badge.rarity)}
       </span>
     </div>
   );

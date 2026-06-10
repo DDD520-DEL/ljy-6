@@ -7,12 +7,14 @@ import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
 import { formatDateShort } from '../lib/format';
 import { useAuthStore } from '../stores/authStore';
-import { MIGRATION_LABELS, RARITY_COLORS, RARITY_LABELS } from '../lib/constants';
+import { MIGRATION_LABELS, RARITY_COLORS, getMigrationLabel, getRarityLabel as getRarityLabelConst, getHabitatLabel, getBirdSizeLabel, getBeakLabel } from '../lib/constants';
+import { useT } from '../i18n';
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user: curUser } = useAuthStore();
+  const t = useT();
   const id = Number(userId);
 
   const [profile, setProfile] = useState<any>(null);
@@ -103,11 +105,11 @@ export default function ProfilePage() {
               <div className="sm:pb-2">
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
                   {profile.username}
-                  {isSelf && <span className="ml-2 text-sm font-sans font-normal text-white/80">(我)</span>}
+                  {isSelf && <span className="ml-2 text-sm font-sans font-normal text-white/80">{t('profile_me')}</span>}
                 </h1>
                 <div className="flex items-center gap-2 mt-1 text-white/90 text-sm">
                   <Calendar className="w-4 h-4" />
-                  加入于 {formatDateShort(profile.createdAt)}
+                  {t('profile_joined')} {formatDateShort(profile.createdAt)}
                 </div>
               </div>
             </div>
@@ -115,19 +117,19 @@ export default function ProfilePage() {
             <div className="flex gap-2">
               {!isSelf && curUser ? (
                 <button onClick={toggleFollow} className={profile.isFollowing ? 'btn-secondary' : 'btn-primary'}>
-                  {profile.isFollowing ? '取消关注' : '+ 关注'}
+                  {profile.isFollowing ? t('profile_unfollow') : t('profile_follow')}
                 </button>
               ) : null}
               {!curUser && (
                 <button onClick={() => navigate('/login')} className="btn-primary flex items-center gap-1.5">
                   <LogIn className="w-4 h-4" />
-                  登录
+                  {t('nav_login')}
                 </button>
               )}
               {isSelf && (
                 <button onClick={() => navigate('/observe/new')} className="btn-primary flex items-center gap-1.5">
                   <Plus className="w-4 h-4" />
-                  记录观测
+                  {t('nav_record')}
                 </button>
               )}
             </div>
@@ -140,19 +142,19 @@ export default function ProfilePage() {
           )}
 
           <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-            <Stat icon={<Binoculars className="w-5 h-5" />} label="观测记录" value={profile.observationsCount} color="bg-forest-100 text-forest-600" />
-            <Stat icon={<Eye className="w-5 h-5" />} label="发现物种" value={profile.speciesCount} color="bg-sky-100 text-sky-600" />
-            <Stat icon={<BookOpen className="w-5 h-5" />} label="图鉴收藏" value={collectionsTotal} color="bg-amber-100 text-amber-600" />
-            <Stat icon={<Trophy className="w-5 h-5" />} label="获得徽章" value={badgesTotal} color="bg-purple-100 text-purple-600" />
-            <Stat icon={<Target className="w-5 h-5" />} label="关注" value={profile.followingCount} color="bg-earth-100 text-earth-600" />
-            <Stat icon={<Award className="w-5 h-5" />} label="粉丝" value={profile.followersCount} color="bg-rose-100 text-rose-600" />
+            <Stat icon={<Binoculars className="w-5 h-5" />} label={t('profile_observations')} value={profile.observationsCount} color="bg-forest-100 text-forest-600" />
+            <Stat icon={<Eye className="w-5 h-5" />} label={t('profile_species_found')} value={profile.speciesCount} color="bg-sky-100 text-sky-600" />
+            <Stat icon={<BookOpen className="w-5 h-5" />} label={t('profile_collection')} value={collectionsTotal} color="bg-amber-100 text-amber-600" />
+            <Stat icon={<Trophy className="w-5 h-5" />} label={t('profile_badges')} value={badgesTotal} color="bg-purple-100 text-purple-600" />
+            <Stat icon={<Target className="w-5 h-5" />} label={t('profile_following')} value={profile.followingCount} color="bg-earth-100 text-earth-600" />
+            <Stat icon={<Award className="w-5 h-5" />} label={t('profile_followers')} value={profile.followersCount} color="bg-rose-100 text-rose-600" />
           </div>
 
           <div className="mt-6">
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2">
                 <Award className="w-5 h-5 text-forest-600" />
-                {year} 年观鸟清单
+                {`${year} ${t('profile_year_list')}`}
               </h3>
               <div className="flex items-center gap-1">
                 {[2026, 2025, 2024].map((y) => (
@@ -170,7 +172,7 @@ export default function ProfilePage() {
             </div>
             <div className="bg-gradient-to-r from-forest-500 to-forest-600 text-white p-5 rounded-2xl shadow-card">
               <div className="flex items-baseline justify-between mb-3">
-                <span className="text-sm opacity-90">年度收集进度</span>
+                <span className="text-sm opacity-90">{t('profile_year_progress')}</span>
                 <span className="font-display text-3xl font-bold">{yearTotal}</span>
               </div>
               <div className="w-full h-3 rounded-full bg-white/20 overflow-hidden">
@@ -180,7 +182,7 @@ export default function ProfilePage() {
                 />
               </div>
               <div className="mt-3 text-xs opacity-80 flex justify-between">
-                <span>目标 50 种</span>
+                <span>{`${t('profile_target')} 50 ${t('profile_species_unit')}`}</span>
                 <span>{Math.round(progressPct)}%</span>
               </div>
             </div>
@@ -189,28 +191,28 @@ export default function ProfilePage() {
       </div>
 
       <div className="flex items-center gap-2 mb-5 overflow-x-auto pb-2">
-        <TabBtn active={tab === 'list'} onClick={() => setTab('list')}>年度清单 ({yearTotal})</TabBtn>
-        <TabBtn active={tab === 'obs'} onClick={() => setTab('obs')}>观测记录 ({observations.length})</TabBtn>
+        <TabBtn active={tab === 'list'} onClick={() => setTab('list')}>{t('profile_tab_list')} ({yearTotal})</TabBtn>
+        <TabBtn active={tab === 'obs'} onClick={() => setTab('obs')}>{t('profile_tab_obs')} ({observations.length})</TabBtn>
         <TabBtn active={tab === 'collections'} onClick={() => setTab('collections')}>
           <span className="flex items-center gap-1.5">
             <BookOpen className="w-4 h-4" />
-            图鉴收藏 ({collectionsTotal})
+            {t('profile_tab_collections')} ({collectionsTotal})
           </span>
         </TabBtn>
         <TabBtn active={tab === 'badges'} onClick={() => setTab('badges')}>
           <span className="flex items-center gap-1.5">
             <Trophy className="w-4 h-4" />
-            获得徽章 ({badgesTotal})
+            {t('profile_tab_badges')} ({badgesTotal})
           </span>
         </TabBtn>
-        <TabBtn active={tab === 'following'} onClick={() => setTab('following')}>关注 ({following.length})</TabBtn>
-        <TabBtn active={tab === 'followers'} onClick={() => setTab('followers')}>粉丝 ({followers.length})</TabBtn>
+        <TabBtn active={tab === 'following'} onClick={() => setTab('following')}>{t('profile_tab_following')} ({following.length})</TabBtn>
+        <TabBtn active={tab === 'followers'} onClick={() => setTab('followers')}>{t('profile_tab_followers')} ({followers.length})</TabBtn>
       </div>
 
       <div className="animate-fade-in">
         {tab === 'list' && (
           yearList.length === 0 ? (
-            <EmptyCard icon={<Award className="w-12 h-12" />} title="还没有年度记录" desc="快去记录你的第一只鸟吧！" to={isSelf ? '/observe/new' : undefined} />
+            <EmptyCard icon={<Award className="w-12 h-12" />} title={t('profile_no_year_records')} desc={t('profile_go_record')} to={isSelf ? '/observe/new' : undefined} />
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {yearList.map((item, i) => (
@@ -230,11 +232,11 @@ export default function ProfilePage() {
                     <div className="flex items-center gap-3 mt-2 text-xs text-sage-500">
                       <span className="flex items-center gap-1">
                         <Binoculars className="w-3 h-3" />
-                        {item.count}次
+                        {item.count}{t('profile_times')}
                       </span>
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
-                        首次{formatDateShort(item.firstDate)}
+                        {t('profile_first')}{formatDateShort(item.firstDate)}
                       </span>
                     </div>
                   </div>
@@ -245,7 +247,7 @@ export default function ProfilePage() {
         )}
         {tab === 'obs' && (
           observations.length === 0 ? (
-            <EmptyCard icon={<MapPin className="w-12 h-12" />} title="暂无观测记录" desc={isSelf ? '快去发布第一条记录吧' : ''} />
+            <EmptyCard icon={<MapPin className="w-12 h-12" />} title={t('profile_no_observations')} desc={isSelf ? t('profile_add_first') : ''} />
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {observations.map((obs, i) => (
@@ -260,8 +262,8 @@ export default function ProfilePage() {
           collectionsGrouped.length === 0 ? (
             <EmptyCard
               icon={<BookOpen className="w-12 h-12" />}
-              title="图鉴收藏为空"
-              desc={isSelf ? '去物种详情页收藏你喜欢的鸟类吧' : ''}
+              title={t('profile_empty_collection')}
+              desc={isSelf ? t('profile_go_collect') : ''}
               to={isSelf ? '/bird-id' : undefined}
             />
           ) : (
@@ -275,7 +277,7 @@ export default function ProfilePage() {
                       {orderGroup.order}
                     </h3>
                     <span className="chip !py-1 !px-2.5 bg-forest-100 text-forest-700 text-sm font-medium">
-                      {orderGroup.orderCount} 种
+                      {orderGroup.orderCount} {t('profile_species_unit')}
                     </span>
                   </div>
                   <div className="space-y-5">
@@ -286,7 +288,7 @@ export default function ProfilePage() {
                             <span className="w-2 h-2 rounded-full bg-amber-500" />
                             {familyGroup.family}
                           </h4>
-                          <span className="text-xs text-sage-500">{familyGroup.count} 种</span>
+                          <span className="text-xs text-sage-500">{familyGroup.count} {t('profile_species_unit')}</span>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                           {familyGroup.collections.map((c, ci) => {
@@ -307,7 +309,7 @@ export default function ProfilePage() {
                                   />
                                   <div className="absolute top-2 left-2">
                                     <span className={`chip text-[10px] !py-0.5 !px-1.5 ${MIGRATION_LABELS[sp.migrationPattern]?.color || ''}`}>
-                                      {MIGRATION_LABELS[sp.migrationPattern]?.label}
+                                      {getMigrationLabel(sp.migrationPattern)}
                                     </span>
                                   </div>
                                 </div>
@@ -320,7 +322,7 @@ export default function ProfilePage() {
                                   </div>
                                   <div className="flex items-center justify-between mt-2">
                                     <div className="text-[10px] text-sage-500">
-                                      稀有度 {'★'.repeat(Math.max(1, Math.ceil(sp.rarity / 20)))}
+                                      {t('obs_detail_rarity')} {'★'.repeat(Math.max(1, Math.ceil(sp.rarity / 20)))}
                                     </div>
                                     <div className="text-[10px] text-sage-400">
                                       {formatDateShort(c.createdAt)}
@@ -343,8 +345,8 @@ export default function ProfilePage() {
           badges.length === 0 ? (
             <EmptyCard
               icon={<Trophy className="w-12 h-12" />}
-              title="还没有获得徽章"
-              desc={isSelf ? '去挑战页面完成月度挑战吧！' : 'TA 还没有完成任何挑战'}
+              title={t('profile_no_badges')}
+              desc={isSelf ? t('profile_go_challenges') : t('profile_no_badges_other')}
               to={isSelf ? '/challenges' : undefined}
             />
           ) : (
@@ -379,7 +381,7 @@ export default function ProfilePage() {
                           : 'bg-gray-100 text-gray-600'
                       }`}
                     >
-                      {RARITY_LABELS[badge.rarity]}
+                      {getRarityLabelConst(badge.rarity)}
                     </span>
                   </div>
                 );
@@ -389,7 +391,7 @@ export default function ProfilePage() {
         )}
         {tab === 'following' && (
           following.length === 0 ? (
-            <EmptyCard icon={<Target className="w-12 h-12" />} title="还没有关注的观鸟者" />
+            <EmptyCard icon={<Target className="w-12 h-12" />} title={t('profile_no_following')} />
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {following.map((u, i) => (
@@ -402,7 +404,7 @@ export default function ProfilePage() {
         )}
         {tab === 'followers' && (
           followers.length === 0 ? (
-            <EmptyCard icon={<Award className="w-12 h-12" />} title="还没有粉丝关注" />
+            <EmptyCard icon={<Award className="w-12 h-12" />} title={t('profile_no_followers')} />
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {followers.map((u, i) => (

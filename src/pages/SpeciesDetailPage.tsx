@@ -6,8 +6,9 @@ import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star,
 import api from '../lib/api';
 import type { Species, Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
-import { FEATHER_COLORS, BIRD_SIZES, BEAK_SHAPES, HABITATS, MIGRATION_LABELS } from '../lib/constants';
+import { FEATHER_COLORS, BIRD_SIZES, BEAK_SHAPES, HABITATS, MIGRATION_LABELS, getMigrationLabel, getBirdSizeLabel, getBirdSizeDesc, getBeakLabel, getBeakDesc, getFeatherColorLabel, getHabitatLabel } from '../lib/constants';
 import { useAuthStore } from '../stores/authStore';
+import { useT } from '../i18n';
 
 const markerIcon = L.divIcon({
   className: '',
@@ -20,6 +21,7 @@ export default function SpeciesDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user: curUser } = useAuthStore();
+  const t = useT();
   const [species, setSpecies] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isCollected, setIsCollected] = useState(false);
@@ -75,8 +77,8 @@ export default function SpeciesDetailPage() {
     return (
       <div className="max-w-5xl mx-auto px-4 py-20">
         <div className="card py-20 text-center text-sage-400">
-          <p className="text-xl">物种不存在</p>
-          <Link to="/bird-id" className="btn-primary mt-6 inline-flex">返回识鸟助手</Link>
+          <p className="text-xl">{t('species_not_found')}</p>
+          <Link to="/bird-id" className="btn-primary mt-6 inline-flex">{t('species_back_bird_id')}</Link>
         </div>
       </div>
     );
@@ -84,14 +86,12 @@ export default function SpeciesDetailPage() {
 
   const sp = species as Species & { observations: Observation[] };
   const observations = sp.observations || [];
-  const sizeInfo = BIRD_SIZES.find((s) => s.value === sp.size);
-  const beakInfo = BEAK_SHAPES.find((b) => b.value === sp.beakShape);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-sage-600 hover:text-forest-700 mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
-        返回
+        {t('obs_back')}
       </button>
 
       <div className="card overflow-hidden animate-fade-in mb-8">
@@ -100,10 +100,10 @@ export default function SpeciesDetailPage() {
             <img src={sp.imageUrl} alt={sp.name} className="w-full h-full object-cover" />
             <div className="absolute top-4 left-4 space-y-2">
               <span className={`chip !py-1.5 !px-3 text-sm font-medium ${MIGRATION_LABELS[sp.migrationPattern]?.color}`}>
-                {MIGRATION_LABELS[sp.migrationPattern]?.label}
+                {getMigrationLabel(sp.migrationPattern)}
               </span>
               <div className="chip !py-1.5 !px-3 text-sm font-medium bg-white/90 backdrop-blur text-forest-700 shadow-card">
-                稀有度 {'★'.repeat(Math.max(1, Math.ceil(sp.rarity / 20)))}
+                {t('obs_detail_rarity')} {'★'.repeat(Math.max(1, Math.ceil(sp.rarity / 20)))}
               </div>
             </div>
           </div>
@@ -130,12 +130,12 @@ export default function SpeciesDetailPage() {
                 {isCollected ? (
                   <>
                     <BookmarkCheck className="w-5 h-5" />
-                    <span>已收藏</span>
+                    <span>{t('species_collected')}</span>
                   </>
                 ) : (
                   <>
                     <Bookmark className="w-5 h-5" />
-                    <span>收藏</span>
+                    <span>{t('species_collect')}</span>
                   </>
                 )}
               </button>
@@ -147,9 +147,9 @@ export default function SpeciesDetailPage() {
                   <Ruler className="w-5 h-5 text-forest-700" />
                 </div>
                 <div>
-                  <div className="text-xs text-sage-500">体型大小</div>
-                  <div className="font-semibold text-sage-800">{sizeInfo?.label || sp.size}</div>
-                  <div className="text-xs text-sage-500 mt-0.5">{sizeInfo?.desc}</div>
+                  <div className="text-xs text-sage-500">{t('species_size')}</div>
+                  <div className="font-semibold text-sage-800">{getBirdSizeLabel(sp.size)}</div>
+                  <div className="text-xs text-sage-500 mt-0.5">{getBirdSizeDesc(sp.size)}</div>
                 </div>
               </div>
 
@@ -158,15 +158,15 @@ export default function SpeciesDetailPage() {
                   <Beaker className="w-5 h-5 text-sky-700" />
                 </div>
                 <div>
-                  <div className="text-xs text-sage-500">喙的形状</div>
-                  <div className="font-semibold text-sage-800">{beakInfo?.label || sp.beakShape}</div>
-                  <div className="text-xs text-sage-500 mt-0.5">{beakInfo?.desc}</div>
+                  <div className="text-xs text-sage-500">{t('species_beak')}</div>
+                  <div className="font-semibold text-sage-800">{getBeakLabel(sp.beakShape)}</div>
+                  <div className="text-xs text-sage-500 mt-0.5">{getBeakDesc(sp.beakShape)}</div>
                 </div>
               </div>
             </div>
 
             <div className="mt-5">
-              <h3 className="text-sm font-semibold text-sage-700 mb-2.5">羽毛颜色</h3>
+              <h3 className="text-sm font-semibold text-sage-700 mb-2.5">{t('species_feather_color')}</h3>
               <div className="flex flex-wrap gap-2">
                 {sp.featherColors.map((c) => {
                   const info = FEATHER_COLORS.find((f) => f.value === c);
@@ -179,7 +179,7 @@ export default function SpeciesDetailPage() {
                         className="w-3 h-3 rounded-full border border-white shadow-inner"
                         style={{ background: info?.color || '#888' }}
                       />
-                      {info?.label || c}
+                      {getFeatherColorLabel(c)}
                     </span>
                   );
                 })}
@@ -189,14 +189,14 @@ export default function SpeciesDetailPage() {
             <div className="mt-5">
               <h3 className="text-sm font-semibold text-sage-700 mb-2.5 flex items-center gap-1.5">
                 <Leaf className="w-4 h-4 text-forest-500" />
-                栖息地
+                {t('species_habitat')}
               </h3>
               <div className="flex flex-wrap gap-1.5">
                 {sp.habitat.map((h) => {
                   const info = HABITATS.find((x) => x.value === h);
                   return (
                     <span key={h} className="chip !py-1 !px-2.5 text-xs bg-forest-50 text-forest-700">
-                      {info?.emoji} {info?.label || h}
+                      {info?.emoji} {getHabitatLabel(h)}
                     </span>
                   );
                 })}
@@ -206,7 +206,7 @@ export default function SpeciesDetailPage() {
             <div className="mt-6 p-5 rounded-2xl bg-gradient-to-br from-forest-50 to-white border border-forest-100">
               <h3 className="font-display text-lg font-semibold text-forest-800 mb-2 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-forest-600" />
-                物种简介
+                {t('species_description')}
               </h3>
               <p className="text-sage-700 leading-relaxed">{sp.description}</p>
             </div>
@@ -218,7 +218,7 @@ export default function SpeciesDetailPage() {
         <>
           <h2 className="section-title mb-6 flex items-center gap-2">
             <MapPin className="w-6 h-6 text-forest-600" />
-            观测地点分布
+            {t('species_obs_locations')}
           </h2>
           <div className="card overflow-hidden mb-8">
             <div className="h-80">
@@ -246,7 +246,7 @@ export default function SpeciesDetailPage() {
 
           <h2 className="section-title mb-6 flex items-center gap-2">
             <Calendar className="w-6 h-6 text-forest-600" />
-            社区观测记录 <span className="text-base font-sans text-sage-500">({observations.length})</span>
+            {t('species_community_obs')} <span className="text-base font-sans text-sage-500">({observations.length})</span>
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {observations.map((o, i) => (

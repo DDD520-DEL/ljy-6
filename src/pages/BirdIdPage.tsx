@@ -3,9 +3,11 @@ import { Sparkles, Bird, ChevronRight, RefreshCw } from 'lucide-react';
 import api from '../lib/api';
 import type { BirdSize, BeakShape, SpeciesMatch } from '../../shared/types';
 import { SpeciesCard } from '../components/SpeciesCard';
-import { BIRD_SIZES, BEAK_SHAPES, FEATHER_COLORS, HABITATS } from '../lib/constants';
+import { BIRD_SIZES, BEAK_SHAPES, FEATHER_COLORS, HABITATS, getBirdSizeLabel, getBirdSizeDesc, getBeakLabel, getBeakDesc, getFeatherColorLabel, getHabitatLabel } from '../lib/constants';
+import { useT } from '../i18n';
 
 export default function BirdIdPage() {
+  const t = useT();
   const [size, setSize] = useState<BirdSize | ''>('');
   const [beak, setBeak] = useState<BeakShape | ''>('');
   const [colors, setColors] = useState<string[]>([]);
@@ -52,11 +54,11 @@ export default function BirdIdPage() {
       <div className="text-center mb-10 animate-fade-in">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-forest-100 text-forest-700 text-sm font-medium mb-4">
           <Sparkles className="w-4 h-4" />
-          AI 辅助识鸟
+          {t('bird_id_label')}
         </div>
-        <h1 className="section-title !text-3xl md:!text-4xl">基于特征筛选 · 辅助识鸟</h1>
+        <h1 className="section-title !text-3xl md:!text-4xl">{t('bird_id_title')}</h1>
         <p className="text-sage-600 mt-3 max-w-2xl mx-auto">
-          选择你观察到的鸟类特征，系统将自动匹配最相似的物种。特征选择越多，识别越精准！
+          {t('bird_id_subtitle')}
         </p>
       </div>
 
@@ -66,21 +68,21 @@ export default function BirdIdPage() {
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2">
                 <Bird className="w-5 h-5" />
-                特征筛选器
+                {t('bird_id_filter')}
               </h2>
               <button onClick={reset} className="text-xs text-sage-500 hover:text-forest-700 flex items-center gap-1 transition">
                 <RefreshCw className="w-3.5 h-3.5" />
-                重置
+                {t('bird_id_reset')}
               </button>
             </div>
 
             {filtersCount > 0 && (
               <div className="text-sm p-3 rounded-xl bg-forest-50 text-forest-700">
-                已选择 <strong>{filtersCount}</strong> 个特征条件
+                {t('bird_id_selected')} <strong>{filtersCount}</strong> {t('bird_id_conditions')}
               </div>
             )}
 
-            <FilterGroup title="体型大小" hint="BIRD_SIZE">
+            <FilterGroup title={t('bird_id_size')} hint="BIRD_SIZE">
               <div className="grid grid-cols-2 gap-2">
                 {BIRD_SIZES.map((b) => (
                   <button
@@ -91,14 +93,14 @@ export default function BirdIdPage() {
                     }`}
                   >
                     <div className="text-2xl">{b.icon}</div>
-                    <div className="text-sm font-semibold mt-1">{b.label}</div>
-                    <div className="text-[11px] opacity-70">{b.desc}</div>
+                    <div className="text-sm font-semibold mt-1">{t(b.labelKey)}</div>
+                    <div className="text-[11px] opacity-70">{t(b.descKey)}</div>
                   </button>
                 ))}
               </div>
             </FilterGroup>
 
-            <FilterGroup title="喙的形状" hint="BEAK">
+            <FilterGroup title={t('bird_id_beak')} hint="BEAK">
               <div className="grid grid-cols-1 gap-2">
                 {BEAK_SHAPES.map((b) => (
                   <button
@@ -109,8 +111,8 @@ export default function BirdIdPage() {
                     }`}
                   >
                     <div>
-                      <div className="text-sm font-semibold">{b.label}</div>
-                      <div className="text-[11px] opacity-70">{b.desc}</div>
+                      <div className="text-sm font-semibold">{t(b.labelKey)}</div>
+                      <div className="text-[11px] opacity-70">{t(b.descKey)}</div>
                     </div>
                     <ChevronRight className={`w-4 h-4 transition ${beak === b.value ? 'opacity-100' : 'opacity-30'}`} />
                   </button>
@@ -118,7 +120,7 @@ export default function BirdIdPage() {
               </div>
             </FilterGroup>
 
-            <FilterGroup title={`羽毛颜色 (${colors.length})`} hint="COLOR">
+            <FilterGroup title={`${t('bird_id_colors')} (${colors.length})`} hint="COLOR">
               <div className="flex flex-wrap gap-2">
                 {FEATHER_COLORS.map((c) => {
                   const active = colors.includes(c.value);
@@ -132,14 +134,14 @@ export default function BirdIdPage() {
                       style={active ? {} : { background: c.color + '15' }}
                     >
                       <span className="w-3.5 h-3.5 rounded-full border border-white shadow-inner" style={{ background: c.color }} />
-                      <span className="text-xs">{c.label}</span>
+                      <span className="text-xs">{t(c.labelKey)}</span>
                     </button>
                   );
                 })}
               </div>
             </FilterGroup>
 
-            <FilterGroup title={`栖息地 (${habitats.length})`} hint="HABITAT">
+            <FilterGroup title={`${t('bird_id_habitat')} (${habitats.length})`} hint="HABITAT">
               <div className="flex flex-wrap gap-1.5">
                 {HABITATS.map((h) => {
                   const active = habitats.includes(h.value);
@@ -152,7 +154,7 @@ export default function BirdIdPage() {
                       }`}
                     >
                       <span>{h.emoji}</span>
-                      <span>{h.label}</span>
+                      <span>{t(h.labelKey)}</span>
                     </button>
                   );
                 })}
@@ -161,7 +163,7 @@ export default function BirdIdPage() {
 
             <button onClick={search} disabled={loading} className="btn-primary w-full !py-3 flex items-center justify-center gap-2">
               <Sparkles className="w-4 h-4" />
-              {loading ? '匹配中...' : '开始识别匹配'}
+              {loading ? t('bird_id_matching') : t('bird_id_start_match')}
             </button>
           </div>
         </aside>
@@ -169,7 +171,7 @@ export default function BirdIdPage() {
         <section className="lg:col-span-8 xl:col-span-9">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="font-display text-xl font-semibold text-forest-800">
-              候选物种 <span className="text-sm font-sans text-sage-500">({results.length} 种)</span>
+              {t('bird_id_candidates')} <span className="text-sm font-sans text-sage-500">({results.length} {t('profile_species_unit')})</span>
             </h2>
           </div>
           {loading ? (
@@ -187,8 +189,8 @@ export default function BirdIdPage() {
           ) : results.length === 0 ? (
             <div className="card py-20 text-center text-sage-400">
               <Bird className="w-16 h-16 mx-auto mb-4 opacity-40" />
-              <p className="text-lg font-medium">没有找到匹配物种</p>
-              <p className="text-sm mt-2">尝试减少筛选条件，或选择其他特征</p>
+              <p className="text-lg font-medium">{t('bird_id_no_match')}</p>
+              <p className="text-sm mt-2">{t('bird_id_try_reduce')}</p>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">

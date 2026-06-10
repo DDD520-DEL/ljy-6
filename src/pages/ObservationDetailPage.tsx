@@ -6,7 +6,8 @@ import type { Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { useAuthStore } from '../stores/authStore';
 import { timeAgo, formatDateTime } from '../lib/format';
-import { MIGRATION_LABELS } from '../lib/constants';
+import { MIGRATION_LABELS, getMigrationLabel, getWeatherLabel } from '../lib/constants';
+import { useT } from '../i18n';
 
 function Lightbox({ photos, initialIndex, onClose }: { photos: string[]; initialIndex: number; onClose: () => void }) {
   const [index, setIndex] = useState(initialIndex);
@@ -66,6 +67,7 @@ export default function ObservationDetailPage() {
   const [commentLoading, setCommentLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const t = useT();
 
   const fetchData = async () => {
     setLoading(true);
@@ -121,8 +123,8 @@ export default function ObservationDetailPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
         <div className="card py-20 text-sage-400">
-          <p className="text-xl font-medium">观测记录不存在</p>
-          <button onClick={() => navigate('/')} className="btn-primary mt-6">返回地图</button>
+          <p className="text-xl font-medium">{t('obs_detail_not_found')}</p>
+          <button onClick={() => navigate('/')} className="btn-primary mt-6">{t('obs_detail_back_map')}</button>
         </div>
       </div>
     );
@@ -138,7 +140,7 @@ export default function ObservationDetailPage() {
     <div className="max-w-5xl mx-auto px-4 py-8">
       <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-sage-600 hover:text-forest-700 mb-6 transition">
         <ArrowLeft className="w-4 h-4" />
-        返回
+        {t('obs_back')}
       </button>
 
       <div className="card overflow-hidden animate-fade-in">
@@ -175,11 +177,11 @@ export default function ObservationDetailPage() {
             {sp && (
               <div className="absolute top-4 left-4 flex gap-2">
                 <span className={`chip text-xs !py-1.5 !px-3 ${MIGRATION_LABELS[sp.migrationPattern]?.color || ''}`}>
-                  {MIGRATION_LABELS[sp.migrationPattern]?.label}
+                  {getMigrationLabel(sp.migrationPattern)}
                 </span>
                 {sp && (
                   <span className="chip text-xs !py-1.5 !px-3 bg-forest-600 text-white">
-                    稀有度 {'★'.repeat(Math.ceil(sp.rarity / 20))}
+                    {t('obs_detail_rarity')} {'★'.repeat(Math.ceil(sp.rarity / 20))}
                   </span>
                 )}
               </div>
@@ -190,7 +192,7 @@ export default function ObservationDetailPage() {
                 className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1.5 bg-white/90 hover:bg-white text-forest-700 rounded-xl text-sm font-medium shadow transition"
               >
                 <Pencil className="w-3.5 h-3.5" />
-                编辑
+                {t('obs_detail_edit')}
               </Link>
             )}
           </div>
@@ -203,7 +205,7 @@ export default function ObservationDetailPage() {
               className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-sage-100 text-forest-700 rounded-xl text-sm font-medium border border-sage-200 transition"
             >
               <Pencil className="w-3.5 h-3.5" />
-              编辑
+              {t('obs_detail_edit')}
             </Link>
           </div>
         )}
@@ -218,7 +220,7 @@ export default function ObservationDetailPage() {
                 <Link to={`/profile/${u.id}`} className="font-display text-xl font-semibold text-forest-800 hover:text-forest-600">
                   {u.username}
                 </Link>
-                <div className="text-sm text-sage-500 mt-0.5">{timeAgo(obs.observationTime)} 发布</div>
+                <div className="text-sm text-sage-500 mt-0.5">{timeAgo(obs.observationTime)} {t('obs_detail_published')}</div>
               </div>
               <button onClick={handleLike} disabled={likeLoading} className={`flex items-center gap-2 px-4 py-2 rounded-xl transition ${obs.isLiked ? 'bg-rose-50 text-rose-600' : 'bg-sage-50 text-sage-700 hover:bg-sage-100'}`}>
                 <Heart className={`w-5 h-5 ${obs.isLiked ? 'fill-current' : ''}`} />
@@ -233,16 +235,16 @@ export default function ObservationDetailPage() {
           </h1>
 
           <div className="mt-5 grid sm:grid-cols-3 gap-3">
-            <InfoItem icon={<MapPin className="w-4 h-4 text-forest-500" />} label="观测地点" value={obs.locationName || '未知'} />
-            <InfoItem icon={<Calendar className="w-4 h-4 text-forest-500" />} label="观测时间" value={formatDateTime(obs.observationTime)} />
-            <InfoItem icon={<CloudRain className="w-4 h-4 text-forest-500" />} label="天气" value={weatherLabel(obs.weather)} />
+            <InfoItem icon={<MapPin className="w-4 h-4 text-forest-500" />} label={t('obs_detail_location')} value={obs.locationName || t('map_unknown_location')} />
+            <InfoItem icon={<Calendar className="w-4 h-4 text-forest-500" />} label={t('obs_detail_time')} value={formatDateTime(obs.observationTime)} />
+            <InfoItem icon={<CloudRain className="w-4 h-4 text-forest-500" />} label={t('obs_detail_weather')} value={getWeatherLabel(obs.weather)} />
           </div>
 
           {obs.behavior && (
             <div className="mt-5">
               <h3 className="text-sm font-semibold text-sage-700 mb-1.5 flex items-center gap-1.5">
                 <Binoculars className="w-4 h-4 text-forest-500" />
-                鸟类行为
+                {t('obs_detail_behavior')}
               </h3>
               <p className="text-sage-700 bg-sage-50 px-4 py-3 rounded-xl">{obs.behavior}</p>
             </div>
@@ -250,7 +252,7 @@ export default function ObservationDetailPage() {
 
           {obs.description && (
             <div className="mt-5">
-              <h3 className="text-sm font-semibold text-sage-700 mb-1.5">观测备注</h3>
+              <h3 className="text-sm font-semibold text-sage-700 mb-1.5">{t('obs_detail_notes')}</h3>
               <p className="text-sage-700 leading-relaxed bg-forest-50/40 px-4 py-4 rounded-2xl">
                 {obs.description}
               </p>
@@ -259,7 +261,7 @@ export default function ObservationDetailPage() {
 
           {photos.length > 1 && (
             <div className="mt-5">
-              <h3 className="text-sm font-semibold text-sage-700 mb-3">观测照片</h3>
+              <h3 className="text-sm font-semibold text-sage-700 mb-3">{t('obs_detail_photos')}</h3>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {photos.map((url, i) => (
                   <div
@@ -290,7 +292,7 @@ export default function ObservationDetailPage() {
                   </div>
                   <Link to={`/species/${sp.id}`} className="btn-primary !py-2 !px-3 text-sm flex items-center gap-1">
                     <Sparkles className="w-3.5 h-3.5" />
-                    物种详情
+                    {t('obs_detail_species')}
                   </Link>
                 </div>
                 <p className="mt-3 text-sm text-sage-700 line-clamp-3">{sp.description}</p>
@@ -301,7 +303,7 @@ export default function ObservationDetailPage() {
           <div className="mt-8 pt-6 border-t border-sage-100">
             <h3 className="font-display text-lg font-semibold text-forest-800 flex items-center gap-2 mb-5">
               <MessageCircle className="w-5 h-5" />
-              社区评论 <span className="text-sm text-sage-400 font-sans">({obs.comments?.length || 0})</span>
+              {t('obs_detail_comments')} <span className="text-sm text-sage-400 font-sans">({obs.comments?.length || 0})</span>
             </h3>
 
             {curUser && (
@@ -311,7 +313,7 @@ export default function ObservationDetailPage() {
                   <input
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="写下你的评论..."
+                    placeholder={t('obs_detail_comment_placeholder')}
                     className="input-base !py-2.5 bg-white"
                   />
                   <button
@@ -320,7 +322,7 @@ export default function ObservationDetailPage() {
                     className="btn-primary !py-2.5 !px-4 flex items-center gap-1.5 disabled:opacity-50"
                   >
                     <Send className="w-4 h-4" />
-                    发送
+                    {t('obs_detail_send')}
                   </button>
                 </div>
               </div>
@@ -329,7 +331,7 @@ export default function ObservationDetailPage() {
             <div className="space-y-4">
               {(obs.comments || []).length === 0 ? (
                 <div className="text-center py-8 text-sage-400 text-sm">
-                  还没有评论，快来抢沙发吧～
+                  {t('obs_detail_no_comments')}
                 </div>
               ) : (
                 obs.comments!.map((c) => (
@@ -375,11 +377,4 @@ function InfoItem({ icon, label, value }: { icon: React.ReactNode; label: string
       </div>
     </div>
   );
-}
-
-function weatherLabel(w: string) {
-  const map: Record<string, string> = {
-    sunny: '☀️ 晴朗', cloudy: '⛅ 多云', rainy: '🌧️ 下雨', foggy: '🌫️ 雾天', snowy: '❄️ 下雪', windy: '💨 大风',
-  };
-  return map[w] || w;
 }

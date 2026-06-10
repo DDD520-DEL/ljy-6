@@ -13,9 +13,11 @@ import SpeciesDetailPage from './pages/SpeciesDetailPage';
 import NotificationsPage from './pages/NotificationsPage';
 import ChallengesPage from './pages/ChallengesPage';
 import { useAuthStore } from './stores/authStore';
+import { useLanguage } from './stores/languageStore';
 
 function AppRoutes() {
   const restoreAuth = useAuthStore((s) => s.restoreAuth);
+  useLanguage((s) => s.lang);
   useEffect(() => {
     restoreAuth();
   }, [restoreAuth]);

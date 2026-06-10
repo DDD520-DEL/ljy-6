@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Bird, LogIn, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../stores/authStore';
+import { useT } from '../i18n';
 
 export default function LoginPage() {
+  const t = useT();
   const navigate = useNavigate();
   const { login, register, loading } = useAuthStore();
   const [mode, setMode] = useState<'login' | 'register'>('login');
@@ -18,10 +20,10 @@ export default function LoginPage() {
     setMessage(null);
     const res = mode === 'login' ? await login(username, password) : await register(username, password, bio);
     if (res.success) {
-      setMessage({ type: 'success', text: mode === 'login' ? '登录成功，欢迎回来！' : '注册成功，欢迎加入！' });
+      setMessage({ type: 'success', text: mode === 'login' ? t('login_success_login') : t('login_success_register') });
       setTimeout(() => navigate('/'), 800);
     } else {
-      setMessage({ type: 'error', text: res.message || '操作失败' });
+      setMessage({ type: 'error', text: res.message || t('login_failed') });
     }
   };
 
@@ -32,8 +34,8 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-br from-forest-500 to-forest-700 shadow-card-hover mb-5 animate-float">
             <Bird className="w-10 h-10 text-white" />
           </div>
-          <h1 className="font-display text-3xl font-bold text-forest-800">飞羽寻踪</h1>
-          <p className="text-sage-600 mt-2">城市野鸟观测社区</p>
+          <h1 className="font-display text-3xl font-bold text-forest-800">{t('login_title')}</h1>
+          <p className="text-sage-600 mt-2">{t('login_subtitle')}</p>
         </div>
 
         <form onSubmit={submit} className="card p-7 animate-slide-up">
@@ -45,7 +47,7 @@ export default function LoginPage() {
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <LogIn className="w-4 h-4" />
-                登录
+                {t('login_tab_login')}
               </span>
             </button>
             <button
@@ -55,30 +57,30 @@ export default function LoginPage() {
             >
               <span className="inline-flex items-center justify-center gap-2">
                 <UserPlus className="w-4 h-4" />
-                注册
+                {t('login_tab_register')}
               </span>
             </button>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-sage-700">用户名</label>
+              <label className="text-sm font-medium text-sage-700">{t('login_username')}</label>
               <input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="输入你的用户名"
+                placeholder={t('login_username_placeholder')}
                 className="input-base mt-1"
                 required
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-sage-700">密码</label>
+              <label className="text-sm font-medium text-sage-700">{t('login_password')}</label>
               <div className="relative mt-1">
                 <input
                   type={showPwd ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={mode === 'login' ? '至少6位密码' : '设置至少6位密码'}
+                  placeholder={mode === 'login' ? t('login_password_placeholder_login') : t('login_password_placeholder_register')}
                   className="input-base pr-12"
                   required
                   minLength={6}
@@ -95,11 +97,11 @@ export default function LoginPage() {
 
             {mode === 'register' && (
               <div className="animate-fade-in">
-                <label className="text-sm font-medium text-sage-700">个人简介（选填）</label>
+                <label className="text-sm font-medium text-sage-700">{t('login_bio_label')}</label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  placeholder="介绍一下你自己吧"
+                  placeholder={t('login_bio_placeholder')}
                   rows={3}
                   className="input-base mt-1 resize-none"
                 />
@@ -112,13 +114,13 @@ export default function LoginPage() {
               </div>
             )}
             <button type="submit" disabled={loading} className="btn-primary w-full !py-3 text-base disabled:opacity-50">
-              {loading ? '处理中...' : mode === 'login' ? '登录' : '创建账号'}
+              {loading ? t('login_processing') : mode === 'login' ? t('login_submit_login') : t('login_submit_register')}
             </button>
           </div>
         </form>
 
         <div className="mt-6 text-center text-sm text-sage-500">
-          <p className="mb-2">Demo 测试账号：</p>
+          <p className="mb-2">{t('login_demo_accounts')}</p>
         </div>
         <div className="card p-4 text-xs text-sage-500 space-y-2">
           <div className="flex justify-between">
@@ -132,7 +134,7 @@ export default function LoginPage() {
           </div>
         </div>
         <div className="mt-4 text-center">
-          <Link to="/" className="text-sm text-forest-600 hover:underline underline-offset-2">返回首页</Link>
+          <Link to="/" className="text-sm text-forest-600 hover:underline underline-offset-2">{t('login_back_home')}</Link>
         </div>
       </div>
     </div>

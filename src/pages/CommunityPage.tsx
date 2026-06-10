@@ -4,10 +4,12 @@ import api from '../lib/api';
 import type { Observation, User } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { UserCard } from '../components/UserCard';
+import { useT } from '../i18n';
 
 type TabType = 'feed' | 'users';
 
 export default function CommunityPage() {
+  const t = useT();
   const [tab, setTab] = useState<TabType>('feed');
   const [observations, setObservations] = useState<Observation[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -43,10 +45,10 @@ export default function CommunityPage() {
       <div className="mb-10 text-center animate-fade-in">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-100 text-violet-700 text-sm font-medium mb-4">
           <Users className="w-4 h-4" />
-          观鸟社区
+          {t('community_label')}
         </div>
-        <h1 className="section-title !text-3xl md:!text-4xl">发现同好 · 分享飞羽之美</h1>
-        <p className="text-sage-600 mt-3">浏览观鸟爱好者的最新动态和精选记录</p>
+        <h1 className="section-title !text-3xl md:!text-4xl">{t('community_title')}</h1>
+        <p className="text-sage-600 mt-3">{t('community_subtitle')}</p>
       </div>
 
       <div className="flex items-center justify-center mb-8">
@@ -58,7 +60,7 @@ export default function CommunityPage() {
             }`}
           >
             <MessageCircle className="w-4 h-4" />
-            动态广场
+            {t('community_feed')}
           </button>
           <button
             onClick={() => setTab('users')}
@@ -67,7 +69,7 @@ export default function CommunityPage() {
             }`}
           >
             <Users className="w-4 h-4" />
-            观鸟者
+            {t('community_users')}
           </button>
         </div>
       </div>
@@ -93,7 +95,7 @@ export default function CommunityPage() {
         observations.length === 0 ? (
           <div className="card py-20 text-center text-sage-400">
             <Sparkles className="w-16 h-16 mx-auto mb-4 opacity-40" />
-            <p className="text-lg font-medium">还没有观测动态</p>
+            <p className="text-lg font-medium">{t('community_no_feed')}</p>
           </div>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
