@@ -1,5 +1,6 @@
 import { getDb } from '../db/storage.js';
 import type { Species, SpeciesMatch, BirdSize, BeakShape } from '../../shared/types.js';
+import { ObservationService } from './observationService.js';
 
 const SIZE_WEIGHT = 25;
 const BEAK_WEIGHT = 25;
@@ -42,7 +43,6 @@ export const SpeciesService = {
   getDetail(id: number) {
     const sp = this.getById(id);
     if (!sp) return null;
-    const { ObservationService } = require('./observationService.js');
     const obs = ObservationService.list({ speciesId: id, limit: 20 });
     return { ...(sp as Species), observations: obs.data };
   },

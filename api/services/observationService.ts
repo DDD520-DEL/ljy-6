@@ -3,7 +3,6 @@ import type { Observation, Comment } from '../../shared/types.js';
 import { UserService } from './userService.js';
 
 function enrichUser(userId?: number) {
-  const { UserService } = require('./userService.js');
   return (row: any): Observation => {
     const db = getDb();
     const user = db.users.find((u) => u.id === row.userId);
