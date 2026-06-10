@@ -21,8 +21,8 @@ export const SpeciesService = {
     if (options.habitat && options.habitat.length > 0) {
       list = list.filter((s) => options.habitat!.some((h) => s.habitat.includes(h)));
     }
-    if (options.search) {
-      const q = options.search.toLowerCase();
+    if (options.search && options.search.trim()) {
+      const q = options.search.trim().toLowerCase();
       list = list.filter(
         (s) =>
           s.name.toLowerCase().includes(q) ||
@@ -30,8 +30,9 @@ export const SpeciesService = {
           s.description.toLowerCase().includes(q),
       );
     }
+    const total = list.length;
     if (options.limit) list = list.slice(0, options.limit);
-    return { data: list as Species[], total: list.length };
+    return { data: list as Species[], total };
   },
 
   getById(id: number) {

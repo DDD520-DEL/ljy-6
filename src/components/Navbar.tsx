@@ -1,6 +1,6 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
 import { useT } from '../i18n';
@@ -14,7 +14,6 @@ export function Navbar() {
   const { unreadCount, fetchUnreadCount } = useNotificationStore();
   const t = useT();
   const { lang, setLang } = useLanguage();
-  const [langOpen, setLangOpen] = useState(false);
 
   useEffect(() => {
     if (user) {

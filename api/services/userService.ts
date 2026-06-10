@@ -57,16 +57,17 @@ export const UserService = {
   search(options: { q?: string; limit?: number; currentUserId?: number } = {}) {
     const db = getDb();
     let list = db.users;
-    if (options.q) {
-      const ql = options.q.toLowerCase();
+    if (options.q && options.q.trim()) {
+      const ql = options.q.trim().toLowerCase();
       list = list.filter(
         (u) =>
           u.username.toLowerCase().includes(ql) ||
           (u.bio && u.bio.toLowerCase().includes(ql)),
       );
     }
+    const total = list.length;
     if (options.limit) list = list.slice(0, options.limit);
-    return { data: list.map((u) => toPublicUser(u, options.currentUserId)), total: list.length };
+    return { data: list.map((u) => toPublicUser(u, options.currentUserId)), total };
   },
 
   create(data: { username: string; passwordHash: string; avatar?: string; bio?: string }) {

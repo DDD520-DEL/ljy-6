@@ -3,47 +3,46 @@
     {
       "id": 1,
       "username": "观鸟达人",
-      "passwordHash": "$2a$08$PWEb3OkI4qVo80cu1JUPu.GsoMfU3gJYCHdGvro4eG8ncZqNhtZGm",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder1&backgroundColor=b6e3f4",
       "bio": "十年观鸟经验，热爱记录城市飞羽之美。常驻北京朝阳公园。",
-      "createdAt": "2026-05-11T14:26:10.120Z"
+      "passwordHash": "testhash",
+      "createdAt": "2026-06-09T18:55:09.180Z"
     },
     {
       "id": 2,
       "username": "林间寻羽",
-      "passwordHash": "$2a$08$d3EtGwQRypHEWZsUItU7cO8QTClH7wVO82qUZBEZMwHbToMQMhN3S",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder2&backgroundColor=c0aede",
       "bio": "自然摄影师，专注鸟类摄影五年。喜欢迁徙季追鸟。",
-      "createdAt": "2026-04-11T14:26:10.143Z"
+      "passwordHash": "testhash",
+      "createdAt": "2026-06-08T18:55:09.180Z"
     },
     {
       "id": 3,
       "username": "麻雀观察员",
-      "passwordHash": "$2a$08$FumhLWujrHn.iwZajPkj..dXwqc5XEg4WDJwPaB7eNeXacFfBG.fG",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder3&backgroundColor=ffd5dc",
       "bio": "城市观鸟入门者，从常见鸟开始积累。上海人。",
-      "createdAt": "2026-03-12T14:26:10.168Z"
+      "passwordHash": "testhash",
+      "createdAt": "2026-06-07T18:55:09.180Z"
     },
     {
       "id": 4,
       "username": "羽影随行",
-      "passwordHash": "$2a$08$ZJ2wOh9H44Nhc4ET7dlqS.9GvDcguvspXFVJnHI2f.YXc8i/n622e",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder4&backgroundColor=ffdfbf",
       "bio": "生态保护工作者，深圳湾水鸟调查志愿者。",
-      "createdAt": "2026-02-10T14:26:10.193Z"
+      "passwordHash": "testhash",
+      "createdAt": "2026-06-06T18:55:09.180Z"
     },
     {
       "id": 5,
       "username": "白头鹎爱好者",
-      "passwordHash": "$2a$08$K6/T0yveu7u9lIbulJmECeCKZ5axyAp0sC0oW7Bvuwpz722KrO/Xm",
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder5&backgroundColor=d1d4f9",
       "bio": "成都观鸟协会会员，每周公园巡礼。",
-      "createdAt": "2026-01-11T14:26:10.216Z"
+      "passwordHash": "testhash",
+      "createdAt": "2026-06-05T18:55:09.180Z"
     }
   ],
   "species": [
     {
-      "id": 1,
       "name": "麻雀",
       "scientificName": "Passer montanus",
       "order": "雀形目",
@@ -64,10 +63,10 @@
       "description": "城市最常见鸟类，体型小巧，头顶及后颈栗褐色，背部褐色具黑斑。喜群居，以谷物及昆虫为食。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=sparrow%20bird%20perched%20on%20branch%20natural%20light%20high%20quality%20photo&image_size=square",
       "rarity": 10,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 1
     },
     {
-      "id": 2,
       "name": "白头鹎",
       "scientificName": "Pycnonotus sinensis",
       "order": "雀形目",
@@ -89,10 +88,10 @@
       "description": "城市常见鸣禽，头顶白色，枕部有醒目白色羽冠。背部灰绿色，鸣声清脆多变。杂食性。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=light-vented%20bulbul%20bird%20white%20head%20green%20wings%20photography&image_size=square",
       "rarity": 15,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 2
     },
     {
-      "id": 3,
       "name": "珠颈斑鸠",
       "scientificName": "Spilopelia chinensis",
       "order": "鸽形目",
@@ -115,10 +114,10 @@
       "description": "城市常见鸠类，颈部有黑白珠点斑纹。常在地面觅食，鸣声低沉重复。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spotted%20dove%20bird%20pearl%20necklace%20markings%20photography&image_size=square",
       "rarity": 20,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 3
     },
     {
-      "id": 4,
       "name": "喜鹊",
       "scientificName": "Pica serica",
       "order": "雀形目",
@@ -141,10 +140,10 @@
       "description": "常见留鸟，黑白配色，尾羽修长。具金属光泽。聪明适应力强，筑巢于高大乔木。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=oriental%20magpie%20black%20white%20iridescent%20perched%20on%20branch&image_size=square",
       "rarity": 25,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 4
     },
     {
-      "id": 5,
       "name": "八哥",
       "scientificName": "Acridotheres cristatellus",
       "order": "雀形目",
@@ -165,10 +164,10 @@
       "description": "通体黑色，额前有冠羽，飞行时翼下白斑明显。善于鸣唱，可模仿声音。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=crested%20myna%20bird%20black%20plumage%20white%20wing%20patches&image_size=square",
       "rarity": 35,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 5
     },
     {
-      "id": 6,
       "name": "白鹭",
       "scientificName": "Egretta garzetta",
       "order": "鹈形目",
@@ -190,10 +189,10 @@
       "description": "全身洁白，繁殖期具丝状饰羽。黑腿黄趾，常见于湿地浅水区。以鱼虾为食。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20egret%20white%20heron%20wading%20in%20water%20elegant&image_size=square",
       "rarity": 45,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 6
     },
     {
-      "id": 7,
       "name": "夜鹭",
       "scientificName": "Nycticorax nycticorax",
       "order": "鹈形目",
@@ -216,10 +215,10 @@
       "description": "体型粗壮，头顶背黑色，下体灰白色。红眼。夜行性，白天常群栖树上。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-crowned%20night%20heron%20red%20eyes%20perched%20near%20water&image_size=square",
       "rarity": 55,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 7
     },
     {
-      "id": 8,
       "name": "小䴙䴘",
       "scientificName": "Tachybaptus ruficollis",
       "order": "䴙䴘目",
@@ -242,10 +241,10 @@
       "description": "水鸟，体小矮扁。繁殖期喉及前颈栗红色。擅长潜水，遇惊扰潜入水中。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20grebe%20duckling%20brown%20swimming%20in%20pond%20cute&image_size=square",
       "rarity": 50,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 8
     },
     {
-      "id": 9,
       "name": "家燕",
       "scientificName": "Hirundo rustica",
       "order": "雀形目",
@@ -268,10 +267,10 @@
       "description": "夏候鸟。上体金属蓝黑色，喉栗红色，叉形尾。空中飞行捕虫。春季北上繁殖。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=barn%20swallow%20in%20flight%20forked%20tail%20blue%20black&image_size=square",
       "rarity": 30,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "id": 9
     },
     {
-      "id": 10,
       "name": "戴胜",
       "scientificName": "Upupa epops",
       "order": "犀鸟目",
@@ -295,10 +294,10 @@
       "description": "具标志性棕栗色羽冠，展开呈扇形。体羽粉褐相间，长而细尖的喙略弯。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hoopoe%20bird%20crown%20feathers%20long%20beak%20colorful&image_size=square",
       "rarity": 70,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "id": 10
     },
     {
-      "id": 11,
       "name": "大山雀",
       "scientificName": "Parus minor",
       "order": "雀形目",
@@ -322,10 +321,10 @@
       "description": "小型鸣禽，头黑色，两颊具大白斑。背部黄绿色，腹面黄。活泼好动，食虫益鸟。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20tit%20bird%20yellow%20belly%20black%20cap%20cute&image_size=square",
       "rarity": 40,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 11
     },
     {
-      "id": 12,
       "name": "红嘴蓝鹊",
       "scientificName": "Urocissa erythroryncha",
       "order": "雀形目",
@@ -349,10 +348,10 @@
       "description": "羽色艳丽，红嘴红脚，长尾蓝灰相间。头顶至颈背黑色。性活泼嘈杂，常结群。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=red-billed%20blue%20magpie%20colorful%20long%20tail%20perched&image_size=square",
       "rarity": 65,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 12
     },
     {
-      "id": 13,
       "name": "普通翠鸟",
       "scientificName": "Alcedo atthis",
       "order": "佛法僧目",
@@ -377,10 +376,10 @@
       "description": "羽色艳丽，上体金属蓝绿色，下体橙棕色。长喙粗直。临水而立，俯冲入水捕鱼。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=common%20kingfisher%20bright%20blue%20orange%20perched%20by%20water&image_size=square",
       "rarity": 75,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 13
     },
     {
-      "id": 14,
       "name": "黑卷尾",
       "scientificName": "Dicrurus macrocercus",
       "order": "雀形目",
@@ -402,10 +401,10 @@
       "description": "通体黑色具金属光泽，尾深叉形。性情凶猛，敢围攻猛禽。夏季繁殖候鸟。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black%20drongo%20forked%20tail%20silhouette%20perched%20on%20wire&image_size=square",
       "rarity": 60,
-      "migrationPattern": "summer"
+      "migrationPattern": "summer",
+      "id": 14
     },
     {
-      "id": 15,
       "name": "棕背伯劳",
       "scientificName": "Lanius schach",
       "order": "雀形目",
@@ -429,10 +428,10 @@
       "description": "具黑眼罩，头顶及尾灰色，背棕红色，翅黑。鸣禽中的猛禽，常将猎物穿刺于刺上。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=long-tailed%20shrike%20rufous%20back%20black%20mask%20perched&image_size=square",
       "rarity": 68,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 15
     },
     {
-      "id": 16,
       "name": "灰喜鹊",
       "scientificName": "Cyanopica cyanus",
       "order": "雀形目",
@@ -454,10 +453,10 @@
       "description": "头黑色，背灰色，翼尾蓝色。比喜鹊体型小。常见于城市公园，集群活动。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=azure-winged%20magpie%20gray%20black%20blue%20flock&image_size=square",
       "rarity": 32,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 16
     },
     {
-      "id": 17,
       "name": "红头长尾山雀",
       "scientificName": "Aegithalos concinnus",
       "order": "雀形目",
@@ -481,10 +480,10 @@
       "description": "体型极小。头顶栗红色，过眼纹宽黑。下体白，胸带栗色。活泼跳跃，结群活动。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-throated%20bushtit%20red%20head%20tiny%20cute%20fluffy&image_size=square",
       "rarity": 58,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 17
     },
     {
-      "id": 18,
       "name": "乌鸫",
       "scientificName": "Turdus mandarinus",
       "order": "雀形目",
@@ -506,10 +505,10 @@
       "description": "雄鸟通体乌黑，眼圈及喙黄色。鸣声婉转多变，善模仿。常见于城市草地觅食蚯蚓。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20blackbird%20male%20yellow%20beak%20singing&image_size=square",
       "rarity": 28,
-      "migrationPattern": "resident"
+      "migrationPattern": "resident",
+      "id": 18
     },
     {
-      "id": 19,
       "name": "鸳鸯",
       "scientificName": "Aix galericulata",
       "order": "雁形目",
@@ -535,10 +534,10 @@
       "description": "雄鸟艳丽无比，具标志性橙色帆状饰羽。雌鸟朴素褐色。传统爱情象征。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mandarin%20duck%20male%20colorful%20plumage%20swimming&image_size=square",
       "rarity": 82,
-      "migrationPattern": "winter"
+      "migrationPattern": "winter",
+      "id": 19
     },
     {
-      "id": 20,
       "name": "鸬鹚",
       "scientificName": "Phalacrocorax carbo",
       "order": "鲣鸟目",
@@ -563,7 +562,8 @@
       "description": "大型水鸟，通体黑色具金属绿光泽。喙粗长带钩。善潜水捕鱼，渔民常驯其捕鱼。",
       "imageUrl": "https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=great%20cormorant%20black%20diving%20bird%20perched%20on%20water&image_size=square",
       "rarity": 72,
-      "migrationPattern": "winter"
+      "migrationPattern": "winter",
+      "id": 20
     }
   ],
   "observations": [
@@ -575,15 +575,16 @@
       "latitude": 39.9087,
       "longitude": 116.3975,
       "locationName": "北京·天安门广场",
-      "observationTime": "2026-06-09T01:37:00.000Z",
+      "observationTime": "2026-06-10T01:00:00.000Z",
       "weather": "sunny",
       "behavior": "在地面啄食谷物碎屑，不惧行人",
       "photoUrls": [
         "https://picsum.photos/seed/bird1/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "十几只麻雀在广场上觅食，游客投喂时蜂拥而至。",
-      "likes": 6,
-      "createdAt": "2026-06-09T01:37:00.000Z"
+      "likes": 8,
+      "createdAt": "2026-06-09T18:55:09.180Z"
     },
     {
       "id": 2,
@@ -593,15 +594,16 @@
       "latitude": 39.9339,
       "longitude": 116.4728,
       "locationName": "北京·朝阳公园",
-      "observationTime": "2026-06-07T23:35:00.000Z",
+      "observationTime": "2026-06-08T23:00:00.000Z",
       "weather": "cloudy",
       "behavior": "在高大杨树上鸣唱",
       "photoUrls": [
         "https://picsum.photos/seed/bird2/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "清晨的鸣唱大赛，数只白头鹎此起彼伏。",
-      "likes": 6,
-      "createdAt": "2026-06-07T23:35:00.000Z"
+      "likes": 7,
+      "createdAt": "2026-06-08T18:55:09.180Z"
     },
     {
       "id": 3,
@@ -611,15 +613,16 @@
       "latitude": 39.9882,
       "longitude": 116.4692,
       "locationName": "北京·奥林匹克森林公园",
-      "observationTime": "2026-06-07T08:19:00.000Z",
+      "observationTime": "2026-06-08T08:00:00.000Z",
       "weather": "sunny",
       "behavior": "地面成对行走觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird3/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一对斑鸠在草坪散步，时不时互相依偎。",
-      "likes": 6,
-      "createdAt": "2026-06-07T08:19:00.000Z"
+      "likes": 7,
+      "createdAt": "2026-06-07T18:55:09.180Z"
     },
     {
       "id": 4,
@@ -629,15 +632,16 @@
       "latitude": 31.2304,
       "longitude": 121.4737,
       "locationName": "上海·人民广场",
-      "observationTime": "2026-06-09T02:07:00.000Z",
+      "observationTime": "2026-06-10T02:00:00.000Z",
       "weather": "sunny",
       "behavior": "在梧桐树上筑巢",
       "photoUrls": [
         "https://picsum.photos/seed/bird4/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "喜鹊夫妇正在街旁梧桐树上衔枝筑巢，非常忙碌。",
-      "likes": 6,
-      "createdAt": "2026-06-09T02:07:00.000Z"
+      "likes": 7,
+      "createdAt": "2026-06-09T18:55:09.180Z"
     },
     {
       "id": 5,
@@ -647,15 +651,16 @@
       "latitude": 31.2397,
       "longitude": 121.4998,
       "locationName": "上海·豫园",
-      "observationTime": "2026-06-06T10:08:00.000Z",
+      "observationTime": "2026-06-07T10:00:00.000Z",
       "weather": "cloudy",
       "behavior": "屋檐下聚集鸣唱",
       "photoUrls": [
         "https://picsum.photos/seed/bird5/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "黄昏时分，一群八哥停在古建筑屋顶，叫声嘈杂。",
-      "likes": 6,
-      "createdAt": "2026-06-06T10:08:00.000Z"
+      "likes": 5,
+      "createdAt": "2026-06-06T18:55:09.180Z"
     },
     {
       "id": 6,
@@ -665,15 +670,16 @@
       "latitude": 22.5431,
       "longitude": 114.0579,
       "locationName": "深圳·深圳湾公园",
-      "observationTime": "2026-06-10T00:06:00.000Z",
+      "observationTime": "2026-06-11T00:00:00.000Z",
       "weather": "sunny",
       "behavior": "浅滩涉水觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird6/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "十多只白鹭在退潮后的泥滩上踱步，偶尔啄食小蟹。",
-      "likes": 6,
-      "createdAt": "2026-06-10T00:06:00.000Z"
+      "likes": 4,
+      "createdAt": "2026-06-10T18:55:09.180Z"
     },
     {
       "id": 7,
@@ -683,15 +689,16 @@
       "latitude": 22.528,
       "longitude": 113.9996,
       "locationName": "深圳·华侨城湿地",
-      "observationTime": "2026-06-05T09:45:00.000Z",
+      "observationTime": "2026-06-06T09:00:00.000Z",
       "weather": "windy",
       "behavior": "群栖大树",
       "photoUrls": [
         "https://picsum.photos/seed/bird7/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "数十只夜鹭挤在一棵大榕树上休息，红眼醒目。",
-      "likes": 6,
-      "createdAt": "2026-06-05T09:45:00.000Z"
+      "likes": 5,
+      "createdAt": "2026-06-05T18:55:09.180Z"
     },
     {
       "id": 8,
@@ -701,15 +708,16 @@
       "latitude": 30.5728,
       "longitude": 104.0668,
       "locationName": "成都·浣花溪公园",
-      "observationTime": "2026-06-08T06:19:00.000Z",
+      "observationTime": "2026-06-09T06:00:00.000Z",
       "weather": "rainy",
       "behavior": "湖中潜水捕鱼",
       "photoUrls": [
         "https://picsum.photos/seed/bird8/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一只小䴙䴘反复潜入水中，每次出水都带着小鱼。",
-      "likes": 6,
-      "createdAt": "2026-06-08T06:19:00.000Z"
+      "likes": 2,
+      "createdAt": "2026-06-08T18:55:09.180Z"
     },
     {
       "id": 9,
@@ -719,15 +727,16 @@
       "latitude": 39.9087,
       "longitude": 116.3975,
       "locationName": "北京·故宫护城河畔",
-      "observationTime": "2026-06-04T04:34:00.000Z",
+      "observationTime": "2026-06-05T04:00:00.000Z",
       "weather": "sunny",
       "behavior": "低空飞行捕虫",
       "photoUrls": [
         "https://picsum.photos/seed/bird9/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一群家燕在护城河上空穿梭，飞行技艺精湛。",
       "likes": 6,
-      "createdAt": "2026-06-04T04:34:00.000Z"
+      "createdAt": "2026-06-04T18:55:09.180Z"
     },
     {
       "id": 10,
@@ -737,15 +746,16 @@
       "latitude": 30.6598,
       "longitude": 104.0633,
       "locationName": "成都·熊猫基地",
-      "observationTime": "2026-06-03T03:34:00.000Z",
+      "observationTime": "2026-06-04T03:00:00.000Z",
       "weather": "sunny",
       "behavior": "草地啄食昆虫",
       "photoUrls": [
         "https://picsum.photos/seed/bird10/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "戴胜用细长弯喙在草地上翻找昆虫幼虫，羽冠时而展开。",
-      "likes": 4,
-      "createdAt": "2026-06-03T03:34:00.000Z"
+      "likes": 7,
+      "createdAt": "2026-06-03T18:55:09.180Z"
     },
     {
       "id": 11,
@@ -755,15 +765,16 @@
       "latitude": 39.9924,
       "longitude": 116.275,
       "locationName": "北京·香山公园",
-      "observationTime": "2026-06-02T01:26:00.000Z",
+      "observationTime": "2026-06-03T01:00:00.000Z",
       "weather": "cloudy",
       "behavior": "树枝间跳跃觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird11/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "大山雀活泼好动，在松树枝间跳跃，不时发出清脆叫声。",
-      "likes": 6,
-      "createdAt": "2026-06-02T01:26:00.000Z"
+      "likes": 1,
+      "createdAt": "2026-06-02T18:55:09.180Z"
     },
     {
       "id": 12,
@@ -773,15 +784,16 @@
       "latitude": 30.2571,
       "longitude": 120.136,
       "locationName": "杭州·西湖风景区",
-      "observationTime": "2026-06-07T07:41:00.000Z",
+      "observationTime": "2026-06-08T07:00:00.000Z",
       "weather": "sunny",
       "behavior": "林间穿梭群飞",
       "photoUrls": [
         "https://picsum.photos/seed/bird12/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一群红嘴蓝鹊从苏堤上空飞过，长尾飘逸极为壮观。",
-      "likes": 6,
-      "createdAt": "2026-06-07T07:41:00.000Z"
+      "likes": 0,
+      "createdAt": "2026-06-07T18:55:09.180Z"
     },
     {
       "id": 13,
@@ -791,15 +803,16 @@
       "latitude": 22.5431,
       "longitude": 114.0579,
       "locationName": "深圳·洪湖公园",
-      "observationTime": "2026-06-06T02:21:00.000Z",
+      "observationTime": "2026-06-07T02:00:00.000Z",
       "weather": "sunny",
       "behavior": "枝头静待捕鱼",
       "photoUrls": [
         "https://picsum.photos/seed/bird13/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "翠鸟停在荷花茎上一动不动，闪电般冲入水中叼起小鱼。",
-      "likes": 6,
-      "createdAt": "2026-06-06T02:21:00.000Z"
+      "likes": 4,
+      "createdAt": "2026-06-06T18:55:09.180Z"
     },
     {
       "id": 14,
@@ -809,15 +822,16 @@
       "latitude": 31.2304,
       "longitude": 121.4737,
       "locationName": "上海·世纪公园",
-      "observationTime": "2026-06-05T08:54:00.000Z",
+      "observationTime": "2026-06-06T08:00:00.000Z",
       "weather": "windy",
       "behavior": "空中翻飞捕虫",
       "photoUrls": [
         "https://picsum.photos/seed/bird14/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "黑卷尾像黑色闪电在空中翻飞，追逐飞虫。",
-      "likes": 6,
-      "createdAt": "2026-06-05T08:54:00.000Z"
+      "likes": 2,
+      "createdAt": "2026-06-05T18:55:09.180Z"
     },
     {
       "id": 15,
@@ -827,15 +841,16 @@
       "latitude": 30.2571,
       "longitude": 120.136,
       "locationName": "杭州·西溪湿地",
-      "observationTime": "2026-06-01T05:18:00.000Z",
+      "observationTime": "2026-06-02T05:00:00.000Z",
       "weather": "sunny",
       "behavior": "高枝瞭望",
       "photoUrls": [
         "https://picsum.photos/seed/bird15/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "伯劳站在光秃秃的高枝上俯视四周，准备捕食。",
       "likes": 6,
-      "createdAt": "2026-06-01T05:18:00.000Z"
+      "createdAt": "2026-06-01T18:55:09.180Z"
     },
     {
       "id": 16,
@@ -845,15 +860,16 @@
       "latitude": 39.9339,
       "longitude": 116.4728,
       "locationName": "北京·团结湖公园",
-      "observationTime": "2026-05-31T00:04:00.000Z",
+      "observationTime": "2026-06-01T00:00:00.000Z",
       "weather": "sunny",
       "behavior": "群飞觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird16/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一大群灰喜鹊从湖面掠过，然后落在草地上。",
-      "likes": 6,
-      "createdAt": "2026-05-31T00:04:00.000Z"
+      "likes": 2,
+      "createdAt": "2026-05-31T18:55:09.180Z"
     },
     {
       "id": 17,
@@ -863,15 +879,16 @@
       "latitude": 30.5728,
       "longitude": 104.0668,
       "locationName": "成都·望江楼公园",
-      "observationTime": "2026-05-29T23:39:00.000Z",
+      "observationTime": "2026-05-30T23:00:00.000Z",
       "weather": "foggy",
       "behavior": "竹梢集群跳跃",
       "photoUrls": [
         "https://picsum.photos/seed/bird17/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "数十只红头长尾山雀在竹林顶端跳跃翻飞，如移动的彩色珍珠。",
-      "likes": 6,
-      "createdAt": "2026-05-29T23:39:00.000Z"
+      "likes": 9,
+      "createdAt": "2026-05-30T18:55:09.180Z"
     },
     {
       "id": 18,
@@ -881,15 +898,16 @@
       "latitude": 39.9339,
       "longitude": 116.4728,
       "locationName": "北京·朝阳公园",
-      "observationTime": "2026-05-29T02:53:00.000Z",
+      "observationTime": "2026-05-30T02:00:00.000Z",
       "weather": "sunny",
       "behavior": "草地翻土找蚯蚓",
       "photoUrls": [
         "https://picsum.photos/seed/bird18/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "乌鸫在草坪上认真地翻动草皮，不时抬头张望警惕。",
-      "likes": 6,
-      "createdAt": "2026-05-29T02:53:00.000Z"
+      "likes": 2,
+      "createdAt": "2026-05-29T18:55:09.180Z"
     },
     {
       "id": 19,
@@ -899,15 +917,16 @@
       "latitude": 30.2571,
       "longitude": 120.136,
       "locationName": "杭州·西湖孤山",
-      "observationTime": "2026-05-26T06:38:00.000Z",
+      "observationTime": "2026-05-27T06:00:00.000Z",
       "weather": "cloudy",
       "behavior": "湖中结伴游泳",
       "photoUrls": [
         "https://picsum.photos/seed/bird19/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "一对鸳鸯在西湖里悠闲游弋，从不分离。",
-      "likes": 6,
-      "createdAt": "2026-05-26T06:38:00.000Z"
+      "likes": 9,
+      "createdAt": "2026-05-26T18:55:09.180Z"
     },
     {
       "id": 20,
@@ -917,15 +936,16 @@
       "latitude": 22.5431,
       "longitude": 114.0579,
       "locationName": "深圳·深圳湾红树林",
-      "observationTime": "2026-05-28T07:14:00.000Z",
+      "observationTime": "2026-05-29T07:00:00.000Z",
       "weather": "windy",
       "behavior": "水中潜水捕鱼",
       "photoUrls": [
         "https://picsum.photos/seed/bird20/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "几只鸬鹚在海湾里反复潜水，出水后展开翅膀晒太阳。",
-      "likes": 6,
-      "createdAt": "2026-05-28T07:14:00.000Z"
+      "likes": 1,
+      "createdAt": "2026-05-28T18:55:09.180Z"
     },
     {
       "id": 21,
@@ -935,15 +955,16 @@
       "latitude": 31.2304,
       "longitude": 121.4737,
       "locationName": "上海·南京路步行街",
-      "observationTime": "2026-05-27T04:02:00.000Z",
+      "observationTime": "2026-05-28T04:00:00.000Z",
       "weather": "sunny",
       "behavior": "食肆门口争抢食物",
       "photoUrls": [
         "https://picsum.photos/seed/bird1/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "麻雀们在餐厅门口捡食掉落的米粒和面包屑。",
-      "likes": 6,
-      "createdAt": "2026-05-27T04:02:00.000Z"
+      "likes": 9,
+      "createdAt": "2026-05-27T18:55:09.180Z"
     },
     {
       "id": 22,
@@ -953,15 +974,16 @@
       "latitude": 30.5728,
       "longitude": 104.0668,
       "locationName": "成都·春熙路",
-      "observationTime": "2026-05-25T00:30:00.000Z",
+      "observationTime": "2026-05-26T00:00:00.000Z",
       "weather": "sunny",
       "behavior": "行道树间鸣唱",
       "photoUrls": [
         "https://picsum.photos/seed/bird2/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "城市中心也能听到白头鹎悦耳的歌声。",
       "likes": 6,
-      "createdAt": "2026-05-25T00:30:00.000Z"
+      "createdAt": "2026-05-25T18:55:09.180Z"
     },
     {
       "id": 23,
@@ -971,15 +993,16 @@
       "latitude": 30.2571,
       "longitude": 120.136,
       "locationName": "杭州·西湖断桥",
-      "observationTime": "2026-05-24T01:07:00.000Z",
+      "observationTime": "2026-05-25T01:00:00.000Z",
       "weather": "sunny",
       "behavior": "湖面低飞",
       "photoUrls": [
         "https://picsum.photos/seed/bird6/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "白鹭贴着湖面优雅地滑翔，引得游人驻足。",
-      "likes": 6,
-      "createdAt": "2026-05-24T01:07:00.000Z"
+      "likes": 3,
+      "createdAt": "2026-05-24T18:55:09.180Z"
     },
     {
       "id": 24,
@@ -989,15 +1012,16 @@
       "latitude": 31.2304,
       "longitude": 121.4737,
       "locationName": "上海·外滩",
-      "observationTime": "2026-05-23T09:54:00.000Z",
+      "observationTime": "2026-05-24T09:00:00.000Z",
       "weather": "cloudy",
       "behavior": "黄浦江上空飞翔",
       "photoUrls": [
         "https://picsum.photos/seed/bird9/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "家燕在江面上飞，忽高忽低。",
-      "likes": 6,
-      "createdAt": "2026-05-23T09:54:00.000Z"
+      "likes": 5,
+      "createdAt": "2026-05-23T18:55:09.180Z"
     },
     {
       "id": 25,
@@ -1007,15 +1031,16 @@
       "latitude": 30.2571,
       "longitude": 120.136,
       "locationName": "杭州·灵隐寺",
-      "observationTime": "2026-05-20T22:09:00.000Z",
+      "observationTime": "2026-05-21T22:00:00.000Z",
       "weather": "foggy",
       "behavior": "古树枝间活动",
       "photoUrls": [
         "https://picsum.photos/seed/bird11/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "古木参天中，大山雀灵动地穿梭。",
-      "likes": 6,
-      "createdAt": "2026-05-20T22:09:00.000Z"
+      "likes": 0,
+      "createdAt": "2026-05-21T18:55:09.180Z"
     },
     {
       "id": 26,
@@ -1025,15 +1050,16 @@
       "latitude": 22.5431,
       "longitude": 114.0579,
       "locationName": "深圳·莲花山公园",
-      "observationTime": "2026-05-22T08:04:00.000Z",
+      "observationTime": "2026-05-23T08:00:00.000Z",
       "weather": "sunny",
       "behavior": "山坡草地觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird3/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "斑鸠们在草地上咕咕叫着漫步。",
-      "likes": 6,
-      "createdAt": "2026-05-22T08:04:00.000Z"
+      "likes": 9,
+      "createdAt": "2026-05-22T18:55:09.180Z"
     },
     {
       "id": 27,
@@ -1043,15 +1069,16 @@
       "latitude": 39.9087,
       "longitude": 116.4074,
       "locationName": "北京·景山公园",
-      "observationTime": "2026-05-20T03:08:00.000Z",
+      "observationTime": "2026-05-21T03:00:00.000Z",
       "weather": "sunny",
       "behavior": "古松上筑巢",
       "photoUrls": [
         "https://picsum.photos/seed/bird4/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "喜鹊在几百年的古松顶端搭建巨巢。",
-      "likes": 6,
-      "createdAt": "2026-05-20T03:08:00.000Z"
+      "likes": 1,
+      "createdAt": "2026-05-20T18:55:09.180Z"
     },
     {
       "id": 28,
@@ -1061,15 +1088,16 @@
       "latitude": 31.2397,
       "longitude": 121.4998,
       "locationName": "上海·豫园商城",
-      "observationTime": "2026-05-19T07:56:00.000Z",
+      "observationTime": "2026-05-20T07:00:00.000Z",
       "weather": "cloudy",
       "behavior": "园林树木间活动",
       "photoUrls": [
         "https://picsum.photos/seed/bird16/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "灰喜鹊群在古典园林中飞来飞去。",
-      "likes": 6,
-      "createdAt": "2026-05-19T07:56:00.000Z"
+      "likes": 5,
+      "createdAt": "2026-05-19T18:55:09.180Z"
     },
     {
       "id": 29,
@@ -1079,15 +1107,16 @@
       "latitude": 31.2304,
       "longitude": 121.45,
       "locationName": "上海·外滩源",
-      "observationTime": "2026-05-18T10:03:00.000Z",
+      "observationTime": "2026-05-19T10:00:00.000Z",
       "weather": "rainy",
       "behavior": "苏州河岸边伫立",
       "photoUrls": [
         "https://picsum.photos/seed/bird7/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "灰蓝色的夜鹭在雨中一动不动地等待。",
-      "likes": 6,
-      "createdAt": "2026-05-18T10:03:00.000Z"
+      "likes": 5,
+      "createdAt": "2026-05-18T18:55:09.180Z"
     },
     {
       "id": 30,
@@ -1097,1556 +1126,39 @@
       "latitude": 30.5728,
       "longitude": 104.0668,
       "locationName": "成都·锦里古街",
-      "observationTime": "2026-05-17T05:42:00.000Z",
+      "observationTime": "2026-05-18T05:00:00.000Z",
       "weather": "sunny",
       "behavior": "古街青石板间觅食",
       "photoUrls": [
         "https://picsum.photos/seed/bird18/600/400"
       ],
+      "thumbnailUrls": [],
       "description": "乌鸫在人群中穿行，毫不畏惧。",
-      "likes": 4,
-      "createdAt": "2026-05-17T05:42:00.000Z"
+      "likes": 7,
+      "createdAt": "2026-05-17T18:55:09.180Z"
     }
   ],
-  "comments": [
-    {
-      "id": 1,
-      "observationId": 1,
-      "userId": 2,
-      "content": "经典城市鸟种，我家楼下天天见！",
-      "createdAt": "2026-06-09T03:35:00.000Z"
-    },
-    {
-      "id": 2,
-      "observationId": 1,
-      "userId": 3,
-      "content": "哈哈这张太可爱了，麻雀抢食真厉害",
-      "createdAt": "2026-06-09T05:50:00.000Z"
-    },
-    {
-      "id": 3,
-      "observationId": 2,
-      "userId": 5,
-      "content": "白头鹎的叫声太治愈了，每天清晨的闹钟",
-      "createdAt": "2026-06-07T23:49:00.000Z"
-    },
-    {
-      "id": 4,
-      "observationId": 6,
-      "userId": 1,
-      "content": "羡慕深圳湾这么多白鹭！北京很少见",
-      "createdAt": "2026-06-10T04:29:00.000Z"
-    },
-    {
-      "id": 5,
-      "observationId": 6,
-      "userId": 3,
-      "content": "太美了，下次去深圳一定要去看",
-      "createdAt": "2026-06-10T03:03:00.000Z"
-    },
-    {
-      "id": 6,
-      "observationId": 13,
-      "userId": 1,
-      "content": "翠鸟真的是神鸟，羽毛像宝石一样",
-      "createdAt": "2026-06-06T07:12:00.000Z"
-    },
-    {
-      "id": 7,
-      "observationId": 13,
-      "userId": 5,
-      "content": "拍得好！我每次想拍翠鸟都来不及",
-      "createdAt": "2026-06-06T05:57:00.000Z"
-    },
-    {
-      "id": 8,
-      "observationId": 20,
-      "userId": 2,
-      "content": "深圳湾鸬鹚群非常壮观，冬天特别多",
-      "createdAt": "2026-05-28T07:57:00.000Z"
-    },
-    {
-      "id": 9,
-      "observationId": 10,
-      "userId": 4,
-      "content": "戴胜！城市里不太容易见到呢",
-      "createdAt": "2026-06-03T06:03:00.000Z"
-    },
-    {
-      "id": 10,
-      "observationId": 19,
-      "userId": 1,
-      "content": "鸳鸯好美，西湖的明星鸟种",
-      "createdAt": "2026-05-26T06:48:00.000Z"
-    },
-    {
-      "id": 11,
-      "observationId": 7,
-      "userId": 3,
-      "content": "夜鹭的红眼好酷，吸血鬼既视感",
-      "createdAt": "2026-06-05T14:11:00.000Z"
-    },
-    {
-      "id": 12,
-      "observationId": 17,
-      "userId": 2,
-      "content": "这一群太壮观了！红头长尾山雀真的可爱",
-      "createdAt": "2026-05-30T02:37:00.000Z"
-    }
-  ],
-  "follows": [
-    {
-      "id": 1,
-      "followerId": 1,
-      "followingId": 2,
-      "createdAt": "2026-05-26T14:26:10.218Z"
-    },
-    {
-      "id": 2,
-      "followerId": 1,
-      "followingId": 3,
-      "createdAt": "2026-05-29T14:26:10.218Z"
-    },
-    {
-      "id": 3,
-      "followerId": 2,
-      "followingId": 1,
-      "createdAt": "2026-05-29T14:26:10.218Z"
-    },
-    {
-      "id": 4,
-      "followerId": 2,
-      "followingId": 4,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 5,
-      "followerId": 3,
-      "followingId": 1,
-      "createdAt": "2026-05-27T14:26:10.218Z"
-    },
-    {
-      "id": 6,
-      "followerId": 4,
-      "followingId": 1,
-      "createdAt": "2026-05-25T14:26:10.218Z"
-    },
-    {
-      "id": 7,
-      "followerId": 4,
-      "followingId": 2,
-      "createdAt": "2026-05-21T14:26:10.218Z"
-    },
-    {
-      "id": 8,
-      "followerId": 5,
-      "followingId": 1,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 9,
-      "followerId": 5,
-      "followingId": 2,
-      "createdAt": "2026-05-23T14:26:10.218Z"
-    },
-    {
-      "id": 10,
-      "followerId": 5,
-      "followingId": 3,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    }
-  ],
-  "likes": [
-    {
-      "id": 1,
-      "userId": 2,
-      "observationId": 1,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "observationId": 1,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 3,
-      "userId": 5,
-      "observationId": 1,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 4,
-      "userId": 1,
-      "observationId": 1,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 5,
-      "userId": 4,
-      "observationId": 1,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 6,
-      "userId": 1,
-      "observationId": 1,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 7,
-      "userId": 1,
-      "observationId": 2,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 8,
-      "userId": 1,
-      "observationId": 2,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 9,
-      "userId": 2,
-      "observationId": 2,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 10,
-      "userId": 3,
-      "observationId": 2,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 11,
-      "userId": 3,
-      "observationId": 2,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 12,
-      "userId": 1,
-      "observationId": 2,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 13,
-      "userId": 3,
-      "observationId": 3,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 14,
-      "userId": 5,
-      "observationId": 3,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 15,
-      "userId": 4,
-      "observationId": 3,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 16,
-      "userId": 2,
-      "observationId": 3,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 17,
-      "userId": 3,
-      "observationId": 3,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 18,
-      "userId": 2,
-      "observationId": 3,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 19,
-      "userId": 3,
-      "observationId": 4,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 20,
-      "userId": 3,
-      "observationId": 4,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 21,
-      "userId": 1,
-      "observationId": 4,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 22,
-      "userId": 1,
-      "observationId": 4,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 23,
-      "userId": 4,
-      "observationId": 4,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 24,
-      "userId": 4,
-      "observationId": 4,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 25,
-      "userId": 5,
-      "observationId": 5,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 26,
-      "userId": 4,
-      "observationId": 5,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 27,
-      "userId": 4,
-      "observationId": 5,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 28,
-      "userId": 5,
-      "observationId": 5,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 29,
-      "userId": 1,
-      "observationId": 5,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 30,
-      "userId": 2,
-      "observationId": 5,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 31,
-      "userId": 4,
-      "observationId": 6,
-      "createdAt": "2026-06-04T14:26:10.218Z"
-    },
-    {
-      "id": 32,
-      "userId": 3,
-      "observationId": 6,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 33,
-      "userId": 1,
-      "observationId": 6,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 34,
-      "userId": 4,
-      "observationId": 6,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 35,
-      "userId": 2,
-      "observationId": 6,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 36,
-      "userId": 4,
-      "observationId": 6,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 37,
-      "userId": 4,
-      "observationId": 7,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 38,
-      "userId": 5,
-      "observationId": 7,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 39,
-      "userId": 1,
-      "observationId": 7,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 40,
-      "userId": 4,
-      "observationId": 7,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 41,
-      "userId": 3,
-      "observationId": 7,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 42,
-      "userId": 4,
-      "observationId": 7,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 43,
-      "userId": 3,
-      "observationId": 8,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 44,
-      "userId": 2,
-      "observationId": 8,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 45,
-      "userId": 2,
-      "observationId": 8,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 46,
-      "userId": 1,
-      "observationId": 8,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 47,
-      "userId": 3,
-      "observationId": 8,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 48,
-      "userId": 4,
-      "observationId": 8,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 49,
-      "userId": 1,
-      "observationId": 9,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 50,
-      "userId": 2,
-      "observationId": 9,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 51,
-      "userId": 1,
-      "observationId": 9,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 52,
-      "userId": 3,
-      "observationId": 9,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 53,
-      "userId": 2,
-      "observationId": 9,
-      "createdAt": "2026-06-08T14:26:10.218Z"
-    },
-    {
-      "id": 54,
-      "userId": 5,
-      "observationId": 9,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 55,
-      "userId": 4,
-      "observationId": 10,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 56,
-      "userId": 2,
-      "observationId": 10,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 57,
-      "userId": 4,
-      "observationId": 10,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 58,
-      "userId": 3,
-      "observationId": 10,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 59,
-      "userId": 4,
-      "observationId": 11,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 60,
-      "userId": 2,
-      "observationId": 11,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 61,
-      "userId": 1,
-      "observationId": 11,
-      "createdAt": "2026-06-10T14:26:10.218Z"
-    },
-    {
-      "id": 62,
-      "userId": 4,
-      "observationId": 11,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 63,
-      "userId": 3,
-      "observationId": 11,
-      "createdAt": "2026-06-07T14:26:10.218Z"
-    },
-    {
-      "id": 64,
-      "userId": 5,
-      "observationId": 11,
-      "createdAt": "2026-06-09T14:26:10.218Z"
-    },
-    {
-      "id": 65,
-      "userId": 3,
-      "observationId": 12,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 66,
-      "userId": 5,
-      "observationId": 12,
-      "createdAt": "2026-06-05T14:26:10.218Z"
-    },
-    {
-      "id": 67,
-      "userId": 1,
-      "observationId": 12,
-      "createdAt": "2026-06-03T14:26:10.218Z"
-    },
-    {
-      "id": 68,
-      "userId": 4,
-      "observationId": 12,
-      "createdAt": "2026-06-06T14:26:10.218Z"
-    },
-    {
-      "id": 69,
-      "userId": 4,
-      "observationId": 12,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 70,
-      "userId": 2,
-      "observationId": 12,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 71,
-      "userId": 2,
-      "observationId": 13,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 72,
-      "userId": 5,
-      "observationId": 13,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 73,
-      "userId": 1,
-      "observationId": 13,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 74,
-      "userId": 4,
-      "observationId": 13,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 75,
-      "userId": 3,
-      "observationId": 13,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 76,
-      "userId": 2,
-      "observationId": 13,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 77,
-      "userId": 1,
-      "observationId": 14,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 78,
-      "userId": 1,
-      "observationId": 14,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 79,
-      "userId": 5,
-      "observationId": 14,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 80,
-      "userId": 3,
-      "observationId": 14,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 81,
-      "userId": 2,
-      "observationId": 14,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 82,
-      "userId": 5,
-      "observationId": 14,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 83,
-      "userId": 5,
-      "observationId": 15,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 84,
-      "userId": 3,
-      "observationId": 15,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 85,
-      "userId": 3,
-      "observationId": 15,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 86,
-      "userId": 4,
-      "observationId": 15,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 87,
-      "userId": 3,
-      "observationId": 15,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 88,
-      "userId": 3,
-      "observationId": 15,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 89,
-      "userId": 3,
-      "observationId": 16,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 90,
-      "userId": 5,
-      "observationId": 16,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 91,
-      "userId": 2,
-      "observationId": 16,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 92,
-      "userId": 4,
-      "observationId": 16,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 93,
-      "userId": 3,
-      "observationId": 16,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 94,
-      "userId": 5,
-      "observationId": 16,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 95,
-      "userId": 1,
-      "observationId": 17,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 96,
-      "userId": 4,
-      "observationId": 17,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 97,
-      "userId": 2,
-      "observationId": 17,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 98,
-      "userId": 5,
-      "observationId": 17,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 99,
-      "userId": 2,
-      "observationId": 17,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 100,
-      "userId": 4,
-      "observationId": 17,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 101,
-      "userId": 2,
-      "observationId": 18,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 102,
-      "userId": 5,
-      "observationId": 18,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 103,
-      "userId": 2,
-      "observationId": 18,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 104,
-      "userId": 5,
-      "observationId": 18,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 105,
-      "userId": 2,
-      "observationId": 18,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 106,
-      "userId": 3,
-      "observationId": 18,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 107,
-      "userId": 5,
-      "observationId": 19,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 108,
-      "userId": 2,
-      "observationId": 19,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 109,
-      "userId": 2,
-      "observationId": 19,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 110,
-      "userId": 4,
-      "observationId": 19,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 111,
-      "userId": 5,
-      "observationId": 19,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 112,
-      "userId": 4,
-      "observationId": 19,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 113,
-      "userId": 3,
-      "observationId": 20,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 114,
-      "userId": 2,
-      "observationId": 20,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 115,
-      "userId": 2,
-      "observationId": 20,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 116,
-      "userId": 1,
-      "observationId": 20,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 117,
-      "userId": 4,
-      "observationId": 20,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 118,
-      "userId": 2,
-      "observationId": 20,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 119,
-      "userId": 1,
-      "observationId": 21,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 120,
-      "userId": 5,
-      "observationId": 21,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 121,
-      "userId": 5,
-      "observationId": 21,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 122,
-      "userId": 2,
-      "observationId": 21,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 123,
-      "userId": 1,
-      "observationId": 21,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 124,
-      "userId": 5,
-      "observationId": 21,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 125,
-      "userId": 1,
-      "observationId": 22,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 126,
-      "userId": 3,
-      "observationId": 22,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 127,
-      "userId": 1,
-      "observationId": 22,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 128,
-      "userId": 1,
-      "observationId": 22,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 129,
-      "userId": 4,
-      "observationId": 22,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 130,
-      "userId": 5,
-      "observationId": 22,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 131,
-      "userId": 3,
-      "observationId": 23,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 132,
-      "userId": 4,
-      "observationId": 23,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 133,
-      "userId": 2,
-      "observationId": 23,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 134,
-      "userId": 4,
-      "observationId": 23,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 135,
-      "userId": 5,
-      "observationId": 23,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 136,
-      "userId": 3,
-      "observationId": 23,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 137,
-      "userId": 3,
-      "observationId": 24,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 138,
-      "userId": 1,
-      "observationId": 24,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 139,
-      "userId": 5,
-      "observationId": 24,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 140,
-      "userId": 2,
-      "observationId": 24,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 141,
-      "userId": 5,
-      "observationId": 24,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 142,
-      "userId": 5,
-      "observationId": 24,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 143,
-      "userId": 5,
-      "observationId": 25,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 144,
-      "userId": 1,
-      "observationId": 25,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 145,
-      "userId": 4,
-      "observationId": 25,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 146,
-      "userId": 5,
-      "observationId": 25,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 147,
-      "userId": 1,
-      "observationId": 25,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 148,
-      "userId": 5,
-      "observationId": 25,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 149,
-      "userId": 2,
-      "observationId": 26,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 150,
-      "userId": 4,
-      "observationId": 26,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 151,
-      "userId": 3,
-      "observationId": 26,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 152,
-      "userId": 3,
-      "observationId": 26,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 153,
-      "userId": 4,
-      "observationId": 26,
-      "createdAt": "2026-06-07T14:26:10.219Z"
-    },
-    {
-      "id": 154,
-      "userId": 5,
-      "observationId": 26,
-      "createdAt": "2026-06-10T14:26:10.219Z"
-    },
-    {
-      "id": 155,
-      "userId": 1,
-      "observationId": 27,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 156,
-      "userId": 2,
-      "observationId": 27,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 157,
-      "userId": 4,
-      "observationId": 27,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 158,
-      "userId": 3,
-      "observationId": 27,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 159,
-      "userId": 4,
-      "observationId": 27,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 160,
-      "userId": 3,
-      "observationId": 27,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 161,
-      "userId": 2,
-      "observationId": 28,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 162,
-      "userId": 5,
-      "observationId": 28,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 163,
-      "userId": 1,
-      "observationId": 28,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 164,
-      "userId": 2,
-      "observationId": 28,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 165,
-      "userId": 3,
-      "observationId": 28,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 166,
-      "userId": 5,
-      "observationId": 28,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 167,
-      "userId": 3,
-      "observationId": 29,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 168,
-      "userId": 5,
-      "observationId": 29,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 169,
-      "userId": 1,
-      "observationId": 29,
-      "createdAt": "2026-06-03T14:26:10.219Z"
-    },
-    {
-      "id": 170,
-      "userId": 5,
-      "observationId": 29,
-      "createdAt": "2026-06-09T14:26:10.219Z"
-    },
-    {
-      "id": 171,
-      "userId": 1,
-      "observationId": 29,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 172,
-      "userId": 3,
-      "observationId": 29,
-      "createdAt": "2026-06-08T14:26:10.219Z"
-    },
-    {
-      "id": 173,
-      "userId": 4,
-      "observationId": 30,
-      "createdAt": "2026-06-05T14:26:10.219Z"
-    },
-    {
-      "id": 174,
-      "userId": 3,
-      "observationId": 30,
-      "createdAt": "2026-06-06T14:26:10.219Z"
-    },
-    {
-      "id": 175,
-      "userId": 5,
-      "observationId": 30,
-      "createdAt": "2026-06-04T14:26:10.219Z"
-    },
-    {
-      "id": 176,
-      "userId": 4,
-      "observationId": 30,
-      "createdAt": "2026-06-08T14:26:10.220Z"
-    }
-  ],
-  "notifications": [
-    {
-      "id": 1,
-      "type": "follow",
-      "fromUserId": 1,
-      "toUserId": 2,
-      "observationId": null,
-      "commentId": null,
-      "read": false,
-      "createdAt": "2026-06-10T14:26:10.223Z"
-    },
-    {
-      "id": 2,
-      "type": "follow",
-      "fromUserId": 1,
-      "toUserId": 3,
-      "observationId": null,
-      "commentId": null,
-      "read": false,
-      "createdAt": "2026-06-10T14:26:10.223Z"
-    },
-    {
-      "id": 3,
-      "type": "follow",
-      "fromUserId": 1,
-      "toUserId": 4,
-      "observationId": null,
-      "commentId": null,
-      "read": false,
-      "createdAt": "2026-06-10T14:26:10.224Z"
-    },
-    {
-      "id": 4,
-      "type": "follow",
-      "fromUserId": 1,
-      "toUserId": 5,
-      "observationId": null,
-      "commentId": null,
-      "read": false,
-      "createdAt": "2026-06-10T14:26:10.224Z"
-    }
-  ],
+  "comments": [],
+  "follows": [],
+  "likes": [],
+  "notifications": [],
   "collections": [],
-  "challenges": [
-    {
-      "id": 1,
-      "month": "2026-06",
-      "year": 2026,
-      "type": "observation_count",
-      "title": "10 次观鸟打卡挑战",
-      "description": "保持热情，记录 10 次美好瞬间",
-      "target": 10,
-      "unit": "次",
-      "badgeId": 4,
-      "createdAt": "2026-06-10T14:26:10.222Z"
-    },
-    {
-      "id": 2,
-      "month": "2026-06",
-      "year": 2026,
-      "type": "habitat_variety",
-      "title": "探索 5 种栖息地",
-      "description": "体验多样生态环境，探索 5 种栖息地",
-      "target": 5,
-      "unit": "种",
-      "badgeId": 6,
-      "createdAt": "2026-06-10T14:26:10.222Z"
-    },
-    {
-      "id": 3,
-      "month": "2026-06",
-      "year": 2026,
-      "type": "rarity_sum",
-      "title": "稀有鸟类收集家",
-      "description": "寻找并记录稀有鸟类，累计 200 点稀有度",
-      "target": 200,
-      "unit": "点",
-      "badgeId": 5,
-      "createdAt": "2026-06-10T14:26:10.222Z"
-    }
-  ],
-  "badges": [
-    {
-      "id": 1,
-      "name": "观鸟新手",
-      "description": "完成首次月度挑战",
-      "icon": "🌱",
-      "rarity": "common",
-      "color": "bg-green-500"
-    },
-    {
-      "id": 2,
-      "name": "物种探索者",
-      "description": "月度观测 5 种不同鸟类",
-      "icon": "🔍",
-      "rarity": "common",
-      "color": "bg-blue-500"
-    },
-    {
-      "id": 3,
-      "name": "城市游侠",
-      "description": "在 3 个不同城市观测",
-      "icon": "🏙️",
-      "rarity": "rare",
-      "color": "bg-purple-500"
-    },
-    {
-      "id": 4,
-      "name": "勤奋观鸟人",
-      "description": "月度记录 10 次观测",
-      "icon": "📝",
-      "rarity": "common",
-      "color": "bg-amber-500"
-    },
-    {
-      "id": 5,
-      "name": "稀有猎手",
-      "description": "累计稀有度达到 200",
-      "icon": "💎",
-      "rarity": "rare",
-      "color": "bg-rose-500"
-    },
-    {
-      "id": 6,
-      "name": "生态专家",
-      "description": "在 4 种不同栖息地观测",
-      "icon": "🌿",
-      "rarity": "epic",
-      "color": "bg-emerald-500"
-    },
-    {
-      "id": 7,
-      "name": "观鸟大师",
-      "description": "连续完成 3 个月挑战",
-      "icon": "🏆",
-      "rarity": "epic",
-      "color": "bg-yellow-500"
-    },
-    {
-      "id": 8,
-      "name": "飞羽传奇",
-      "description": "完成所有类型挑战",
-      "icon": "👑",
-      "rarity": "legendary",
-      "color": "bg-gradient-to-r from-yellow-400 to-orange-500"
-    }
-  ],
-  "userChallengeProgress": [
-    {
-      "id": 1,
-      "userId": 1,
-      "challengeId": 1,
-      "currentValue": 3,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 2,
-      "userId": 1,
-      "challengeId": 2,
-      "currentValue": 7,
-      "completed": true,
-      "completedAt": "2026-06-10T14:26:10.222Z",
-      "badgeAwarded": true
-    },
-    {
-      "id": 3,
-      "userId": 1,
-      "challengeId": 3,
-      "currentValue": 55,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 4,
-      "userId": 2,
-      "challengeId": 1,
-      "currentValue": 4,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 5,
-      "userId": 2,
-      "challengeId": 2,
-      "currentValue": 8,
-      "completed": true,
-      "completedAt": "2026-06-10T14:26:10.223Z",
-      "badgeAwarded": true
-    },
-    {
-      "id": 6,
-      "userId": 2,
-      "challengeId": 3,
-      "currentValue": 193,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 7,
-      "userId": 3,
-      "challengeId": 1,
-      "currentValue": 3,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 8,
-      "userId": 3,
-      "challengeId": 2,
-      "currentValue": 6,
-      "completed": true,
-      "completedAt": "2026-06-10T14:26:10.223Z",
-      "badgeAwarded": true
-    },
-    {
-      "id": 9,
-      "userId": 3,
-      "challengeId": 3,
-      "currentValue": 120,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 10,
-      "userId": 4,
-      "challengeId": 1,
-      "currentValue": 3,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 11,
-      "userId": 4,
-      "challengeId": 2,
-      "currentValue": 7,
-      "completed": true,
-      "completedAt": "2026-06-10T14:26:10.224Z",
-      "badgeAwarded": true
-    },
-    {
-      "id": 12,
-      "userId": 4,
-      "challengeId": 3,
-      "currentValue": 175,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 13,
-      "userId": 5,
-      "challengeId": 1,
-      "currentValue": 2,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    },
-    {
-      "id": 14,
-      "userId": 5,
-      "challengeId": 2,
-      "currentValue": 9,
-      "completed": true,
-      "completedAt": "2026-06-10T14:26:10.224Z",
-      "badgeAwarded": true
-    },
-    {
-      "id": 15,
-      "userId": 5,
-      "challengeId": 3,
-      "currentValue": 120,
-      "completed": false,
-      "completedAt": null,
-      "badgeAwarded": false
-    }
-  ],
-  "userBadges": [
-    {
-      "id": 1,
-      "userId": 1,
-      "badgeId": 6,
-      "challengeId": 2,
-      "awardedAt": "2026-06-10T14:26:10.222Z"
-    },
-    {
-      "id": 2,
-      "userId": 2,
-      "badgeId": 6,
-      "challengeId": 2,
-      "awardedAt": "2026-06-10T14:26:10.223Z"
-    },
-    {
-      "id": 3,
-      "userId": 3,
-      "badgeId": 6,
-      "challengeId": 2,
-      "awardedAt": "2026-06-10T14:26:10.223Z"
-    },
-    {
-      "id": 4,
-      "userId": 4,
-      "badgeId": 6,
-      "challengeId": 2,
-      "awardedAt": "2026-06-10T14:26:10.224Z"
-    },
-    {
-      "id": 5,
-      "userId": 5,
-      "badgeId": 6,
-      "challengeId": 2,
-      "awardedAt": "2026-06-10T14:26:10.224Z"
-    }
-  ],
+  "challenges": [],
+  "badges": [],
+  "userChallengeProgress": [],
+  "userBadges": [],
   "_counters": {
     "users": 5,
     "species": 20,
     "observations": 30,
-    "comments": 12,
-    "follows": 10,
-    "likes": 176,
-    "notifications": 4,
+    "comments": 0,
+    "follows": 0,
+    "likes": 0,
+    "notifications": 0,
     "collections": 0,
-    "challenges": 3,
-    "badges": 8,
-    "userChallengeProgress": 15,
-    "userBadges": 5
+    "challenges": 0,
+    "badges": 0,
+    "userChallengeProgress": 0,
+    "userBadges": 0
   }
 }

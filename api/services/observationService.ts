@@ -57,8 +57,8 @@ export const ObservationService = {
     if (options.userId) list = list.filter((o) => o.userId === options.userId);
     if (options.startDate) list = list.filter((o) => o.observationTime >= options.startDate);
     if (options.endDate) list = list.filter((o) => o.observationTime <= options.endDate);
-    if (options.search) {
-      const q = options.search.toLowerCase();
+    if (options.search && options.search.trim()) {
+      const q = options.search.trim().toLowerCase();
       list = list.filter(
         (o) =>
           o.speciesName.toLowerCase().includes(q) ||
@@ -82,9 +82,10 @@ export const ObservationService = {
       });
     }
     list.sort((a, b) => b.observationTime.localeCompare(a.observationTime));
+    const total = list.length;
     if (options.limit) list = list.slice(0, options.limit);
     const enrich = enrichUser(options.currentUserId);
-    return { data: list.map(enrich), total: list.length };
+    return { data: list.map(enrich), total };
   },
 
   getById(id: number, currentUserId?: number) {
