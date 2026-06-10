@@ -1,6 +1,6 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
 import { useT } from '../i18n';
@@ -23,6 +23,17 @@ export function Navbar() {
       return () => clearInterval(interval);
     }
   }, [user, fetchUnreadCount]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        navigate('/search');
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [navigate]);
 
   const navItems = [
     { to: '/', label: t('nav_map'), icon: MapPin, end: true },
@@ -61,7 +72,24 @@ export function Navbar() {
           ))}
         </nav>
 
+        <button
+          onClick={() => navigate('/search')}
+          className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-xl border border-sage-200 bg-sage-50/60 hover:bg-sage-100 text-sage-400 hover:text-sage-600 transition text-sm min-w-[180px]"
+        >
+          <Search className="w-4 h-4 shrink-0" />
+          <span>{t('search_placeholder')}</span>
+          <kbd className="ml-auto text-[10px] bg-white border border-sage-200 rounded px-1.5 py-0.5 text-sage-400 font-mono">⌘K</kbd>
+        </button>
+
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/search')}
+            className="lg:hidden p-2 rounded-xl hover:bg-sage-50 transition"
+            aria-label={t('search_title')}
+          >
+            <Search className="w-5 h-5 text-sage-600" />
+          </button>
+
           <button
             onClick={() => {
               if (!user) {
@@ -166,6 +194,14 @@ export function Navbar() {
 
       {menuOpen && (
         <nav className="lg:hidden border-t border-sage-100 bg-white px-4 py-3 grid grid-cols-2 gap-2">
+          <Link
+            to="/search"
+            onClick={() => setMenuOpen(false)}
+            className="nav-link flex items-center gap-2 col-span-2 justify-center"
+          >
+            <Search className="w-4 h-4" />
+            {t('search_title')}
+          </Link>
           {navItems.map((item) => (
             <NavLink
               key={item.to}

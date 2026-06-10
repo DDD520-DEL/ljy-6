@@ -54,6 +54,21 @@ export const UserService = {
     return db.users.map((u) => toPublicUser(u, currentUserId));
   },
 
+  search(options: { q?: string; limit?: number; currentUserId?: number } = {}) {
+    const db = getDb();
+    let list = db.users;
+    if (options.q) {
+      const ql = options.q.toLowerCase();
+      list = list.filter(
+        (u) =>
+          u.username.toLowerCase().includes(ql) ||
+          (u.bio && u.bio.toLowerCase().includes(ql)),
+      );
+    }
+    if (options.limit) list = list.slice(0, options.limit);
+    return { data: list.map((u) => toPublicUser(u, options.currentUserId)), total: list.length };
+  },
+
   create(data: { username: string; passwordHash: string; avatar?: string; bio?: string }) {
     const id = nextId('users');
     const db = getDb();

@@ -12,6 +12,7 @@ import ObservationDetailPage from './pages/ObservationDetailPage';
 import SpeciesDetailPage from './pages/SpeciesDetailPage';
 import NotificationsPage from './pages/NotificationsPage';
 import ChallengesPage from './pages/ChallengesPage';
+import SearchPage from './pages/SearchPage';
 import { useAuthStore } from './stores/authStore';
 import { useLanguage } from './stores/languageStore';
 
@@ -36,6 +37,7 @@ function AppRoutes() {
         <Route path="/observe/:id" element={<ObservationDetailPage />} />
         <Route path="/species/:id" element={<SpeciesDetailPage />} />
         <Route path="/notifications" element={<NotificationsPage />} />
+        <Route path="/search" element={<SearchPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>
     </Routes>

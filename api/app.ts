@@ -13,6 +13,7 @@ import notificationRoutes from './routes/notifications.js';
 import collectionRoutes from './routes/collections.js';
 import challengeRoutes from './routes/challenges.js';
 import uploadRoutes from './routes/uploads.js';
+import searchRoutes from './routes/search.js';
 
 config();
 
@@ -35,6 +36,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/collections', collectionRoutes);
 app.use('/api/challenges', challengeRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/search', searchRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: '观鸟社区API服务正常运行 🐦' });
