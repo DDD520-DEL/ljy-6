@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload, Thermometer, Wind, RefreshCw, Tag as TagIcon } from 'lucide-react';
+import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload, Thermometer, Wind, RefreshCw, Tag as TagIcon, Save } from 'lucide-react';
 import api from '../lib/api';
 import { WEATHER_OPTIONS } from '../lib/constants';
 import { fromLocalInputDate, toLocalInputDate, formatDateShort } from '../lib/format';
@@ -13,6 +13,7 @@ import { useLanguage } from '../stores/languageStore';
 import { fetchWeatherByCoords, getWindDirectionLabel } from '../lib/weather';
 import type { Species, WeatherInfo } from '../../shared/types';
 import { TagSelector } from '../components/TagSelector';
+import offlineCache, { type ObservationDraft, type ObservationDraftPhoto } from '../lib/offlineCache';
 
 const clickIcon = L.divIcon({
   className: '',
@@ -20,6 +21,20 @@ const clickIcon = L.divIcon({
   iconSize: [28, 28],
   iconAnchor: [14, 14],
 });
+
+const blobToBase64 = (blobUrl: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    fetch(blobUrl)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      })
+      .catch(reject);
+  });
+};
 
 function ClickHandler({ setPos, onPosChange }: { setPos: (p: [number, number]) => void; onPosChange?: (lat: number, lng: number) => void }) {
   useMapEvents({
@@ -66,7 +81,11 @@ export default function NewObservationPage() {
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [searchTimer, setSearchTimer] = useState<any>(null);
-  const [pageLoading, setPageLoading] = useState(isEdit);
+  const [pageLoading, setPageLoading] = useState(isEdit || !isEdit);
+  const [hasDraft, setHasDraft] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
+  const [showDraftRestored, setShowDraftRestored] = useState(false);
+  const autoSaveTimerRef = useRef<any>(null);
 
   const loadWeather = useCallback(async (lat: number, lng: number) => {
     if (isEdit) return;
@@ -84,18 +103,6 @@ export default function NewObservationPage() {
   useEffect(() => {
     if (!user) navigate('/login');
   }, [user, navigate]);
-
-  useEffect(() => {
-    if (!isEdit && !pendingNewObservation) {
-      loadWeather(pos[0], pos[1]);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (pendingNewObservation && !isEdit) {
-      loadWeather(pendingNewObservation.lat, pendingNewObservation.lng);
-    }
-  }, [pendingNewObservation, isEdit, loadWeather]);
 
   useEffect(() => {
     if (isEdit && editId) {
@@ -126,8 +133,49 @@ export default function NewObservationPage() {
           setPageLoading(false);
         }
       })();
+    } else if (user) {
+      (async () => {
+        const draft = offlineCache.getObservationDraft(user.id);
+        if (draft) {
+          setPos(draft.pos);
+          setLocationName(draft.locationName);
+          setSpeciesName(draft.speciesName);
+          setSpeciesId(draft.speciesId);
+          setObservationTime(draft.observationTime);
+          setWeather(draft.weather);
+          setTemperature(draft.temperature);
+          setWindDirection(draft.windDirection);
+          setBehavior(draft.behavior);
+          setDescription(draft.description);
+          setTagNames(draft.tagNames);
+          setPhotos(
+            draft.photos.map((p) => ({
+              url: p.url,
+              thumbnailUrl: p.thumbnailUrl,
+              preview: p.preview,
+            })),
+          );
+          setHasDraft(true);
+          setLastSavedAt(draft.savedAt);
+          setShowDraftRestored(true);
+          setTimeout(() => setShowDraftRestored(false), 3000);
+        } else if (pendingNewObservation) {
+          setPos([pendingNewObservation.lat, pendingNewObservation.lng]);
+          setLocationName(pendingNewObservation.locationName || '');
+          loadWeather(pendingNewObservation.lat, pendingNewObservation.lng);
+        } else {
+          loadWeather(pos[0], pos[1]);
+        }
+        setPageLoading(false);
+      })();
     }
-  }, [editId, isEdit]);
+  }, [editId, isEdit, user, pendingNewObservation, loadWeather, pos]);
+
+  useEffect(() => {
+    if (pendingNewObservation && !isEdit && !hasDraft) {
+      loadWeather(pendingNewObservation.lat, pendingNewObservation.lng);
+    }
+  }, [pendingNewObservation, isEdit, loadWeather, hasDraft]);
 
   useEffect(() => {
     if (!speciesName || speciesName.length < 1) {
@@ -146,6 +194,88 @@ export default function NewObservationPage() {
     setSearchTimer(timer);
     return () => clearTimeout(timer);
   }, [speciesName]);
+
+  useEffect(() => {
+    if (isEdit || !user || pageLoading) return;
+
+    const saveDraft = async () => {
+      try {
+        const draftPhotos: ObservationDraftPhoto[] = [];
+        for (const photo of photos) {
+          if (photo.preview && photo.preview.startsWith('blob:')) {
+            try {
+              const base64 = await blobToBase64(photo.preview);
+              draftPhotos.push({
+                url: photo.url,
+                thumbnailUrl: photo.thumbnailUrl,
+                preview: base64,
+              });
+            } catch {
+              draftPhotos.push({
+                url: photo.url,
+                thumbnailUrl: photo.thumbnailUrl,
+              });
+            }
+          } else {
+            draftPhotos.push({
+              url: photo.url,
+              thumbnailUrl: photo.thumbnailUrl,
+              preview: photo.preview,
+            });
+          }
+        }
+
+        const draft: ObservationDraft = {
+          pos,
+          locationName,
+          speciesName,
+          speciesId,
+          observationTime,
+          weather,
+          temperature,
+          windDirection,
+          behavior,
+          description,
+          photos: draftPhotos,
+          tagNames,
+          savedAt: Date.now(),
+        };
+
+        offlineCache.setObservationDraft(user.id, draft);
+        setHasDraft(true);
+        setLastSavedAt(Date.now());
+      } catch (err) {
+        console.warn('保存草稿失败:', err);
+      }
+    };
+
+    clearTimeout(autoSaveTimerRef.current);
+    autoSaveTimerRef.current = setTimeout(saveDraft, 1000);
+
+    return () => clearTimeout(autoSaveTimerRef.current);
+  }, [
+    isEdit,
+    user,
+    pageLoading,
+    pos,
+    locationName,
+    speciesName,
+    speciesId,
+    observationTime,
+    weather,
+    temperature,
+    windDirection,
+    behavior,
+    description,
+    photos,
+    tagNames,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(autoSaveTimerRef.current);
+    };
+  }, []);
 
   const selectSpecies = (s: Species) => {
     setSpeciesName(s.name);
@@ -180,27 +310,57 @@ export default function NewObservationPage() {
 
   const uploadFiles = async (): Promise<PhotoItem[]> => {
     const toUpload = photos.filter((p) => p.file);
-    const existing = photos.filter((p) => !p.file);
+    const existing = photos.filter((p) => !p.file && p.url);
+    const needReupload = photos.filter((p) => !p.file && !p.url && p.preview);
 
-    if (toUpload.length === 0) return existing;
+    const allUploaded: PhotoItem[] = [...existing];
 
-    setUploading(true);
-    try {
-      const formData = new FormData();
-      toUpload.forEach((p) => {
-        if (p.file) formData.append('photos', p.file);
-      });
-      const { data } = await api.post('/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      const uploaded: PhotoItem[] = (data.data || []).map((item: any) => ({
-        url: item.url,
-        thumbnailUrl: item.thumbnailUrl,
-      }));
-      return [...existing, ...uploaded];
-    } finally {
-      setUploading(false);
+    if (toUpload.length > 0) {
+      setUploading(true);
+      try {
+        const formData = new FormData();
+        toUpload.forEach((p) => {
+          if (p.file) formData.append('photos', p.file);
+        });
+        const { data } = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        const uploaded: PhotoItem[] = (data.data || []).map((item: any) => ({
+          url: item.url,
+          thumbnailUrl: item.thumbnailUrl,
+        }));
+        allUploaded.push(...uploaded);
+      } finally {
+        setUploading(false);
+      }
     }
+
+    if (needReupload.length > 0) {
+      setUploading(true);
+      try {
+        const formData = new FormData();
+        for (const p of needReupload) {
+          if (p.preview) {
+            const res = await fetch(p.preview);
+            const blob = await res.blob();
+            const file = new File([blob], `draft_photo_${Date.now()}.jpg`, { type: blob.type });
+            formData.append('photos', file);
+          }
+        }
+        const { data } = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+        const uploaded: PhotoItem[] = (data.data || []).map((item: any) => ({
+          url: item.url,
+          thumbnailUrl: item.thumbnailUrl,
+        }));
+        allUploaded.push(...uploaded);
+      } finally {
+        setUploading(false);
+      }
+    }
+
+    return allUploaded;
   };
 
   const submit = async () => {
@@ -230,13 +390,41 @@ export default function NewObservationPage() {
 
       if (isEdit && editId) {
         const { data } = await api.put(`/observations/${editId}`, body);
-        if (data.success) navigate(`/observe/${editId}`);
+        if (data.success) {
+          navigate(`/observe/${editId}`);
+        }
       } else {
         const { data } = await api.post('/observations', body);
-        if (data.success) navigate(`/observe/${data.data.id}`);
+        if (data.success) {
+          if (user) {
+            offlineCache.clearObservationDraft(user.id);
+          }
+          navigate(`/observe/${data.data.id}`);
+        }
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const clearDraft = () => {
+    if (user) {
+      offlineCache.clearObservationDraft(user.id);
+      setHasDraft(false);
+      setLastSavedAt(null);
+      setPos([39.9087, 116.3975]);
+      setLocationName('');
+      setSpeciesName('');
+      setSpeciesId(null);
+      setObservationTime(toLocalInputDate(new Date().toISOString()));
+      setWeather('sunny');
+      setTemperature(undefined);
+      setWindDirection(undefined);
+      setBehavior('');
+      setDescription('');
+      setPhotos([]);
+      setTagNames([]);
+      loadWeather(39.9087, 116.3975);
     }
   };
 
@@ -263,10 +451,48 @@ export default function NewObservationPage() {
       </button>
 
       <div className="mb-8">
-        <h1 className="section-title">{isEdit ? t('obs_edit_title') : t('obs_new_title')}</h1>
-        <p className="text-sage-600 mt-2">
-          {isEdit ? t('obs_edit_desc') : t('obs_new_desc')}
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="section-title">{isEdit ? t('obs_edit_title') : t('obs_new_title')}</h1>
+            <p className="text-sage-600 mt-2">
+              {isEdit ? t('obs_edit_desc') : t('obs_new_desc')}
+            </p>
+          </div>
+          {!isEdit && hasDraft && (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 text-xs text-sage-500 bg-sage-50 px-3 py-1.5 rounded-full">
+                <Save className="w-3.5 h-3.5 text-forest-500" />
+                <span>
+                  {lastSavedAt ? `已自动保存于 ${new Date(lastSavedAt).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}` : '已保存草稿'}
+                </span>
+              </div>
+              <button
+                onClick={clearDraft}
+                className="text-xs text-rose-500 hover:text-rose-600 hover:bg-rose-50 px-2 py-1 rounded transition"
+              >
+                清除草稿
+              </button>
+            </div>
+          )}
+        </div>
+
+        {showDraftRestored && (
+          <div className="mt-4 bg-forest-50 border border-forest-200 text-forest-700 px-4 py-3 rounded-xl flex items-center gap-3 animate-fade-in">
+            <Save className="w-5 h-5 text-forest-500 flex-shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-medium">已恢复上次未完成的草稿</p>
+              <p className="text-xs text-forest-600 mt-0.5">
+                内容将自动保存，提交成功后会自动清除
+              </p>
+            </div>
+            <button
+              onClick={() => setShowDraftRestored(false)}
+              className="text-forest-500 hover:text-forest-600"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid lg:grid-cols-5 gap-6">

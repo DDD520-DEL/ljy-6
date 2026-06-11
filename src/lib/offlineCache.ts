@@ -13,6 +13,7 @@ export enum CacheKey {
   LOCATION_FAVORITES = 'location_favorites',
   TAGS_LIST = 'tags_list',
   CACHE_META = 'cache_meta',
+  OBSERVATION_DRAFT_PREFIX = 'observation_draft_',
 }
 
 interface CacheMeta {
@@ -521,6 +522,45 @@ export const offlineCache = {
       lastSync: meta?.lastSyncTime || null,
     };
   },
+
+  setObservationDraft(userId: number, draft: ObservationDraft): void {
+    localStorage.setItem(
+      getFullKey(`${CacheKey.OBSERVATION_DRAFT_PREFIX}${userId}`),
+      serialize(draft),
+    );
+  },
+
+  getObservationDraft(userId: number): ObservationDraft | null {
+    const raw = localStorage.getItem(getFullKey(`${CacheKey.OBSERVATION_DRAFT_PREFIX}${userId}`));
+    const entry = deserialize<ObservationDraft>(raw);
+    return entry?.data ?? null;
+  },
+
+  clearObservationDraft(userId: number): void {
+    localStorage.removeItem(getFullKey(`${CacheKey.OBSERVATION_DRAFT_PREFIX}${userId}`));
+  },
 };
+
+export interface ObservationDraftPhoto {
+  url: string;
+  thumbnailUrl: string;
+  preview?: string;
+}
+
+export interface ObservationDraft {
+  pos: [number, number];
+  locationName: string;
+  speciesName: string;
+  speciesId: number | null;
+  observationTime: string;
+  weather: string;
+  temperature: number | undefined;
+  windDirection: string | undefined;
+  behavior: string;
+  description: string;
+  photos: ObservationDraftPhoto[];
+  tagNames: string[];
+  savedAt: number;
+}
 
 export default offlineCache;
