@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy, Activity } from 'lucide-react';
+import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy, Activity, Database } from 'lucide-react';
 import api from '../lib/api';
 import type { User, YearListItem, Observation, Collection, UserBadge, Activity as ActivityType } from '../../shared/types';
 import { UserCard } from '../components/UserCard';
@@ -10,11 +10,14 @@ import { formatDateShort } from '../lib/format';
 import { useAuthStore } from '../stores/authStore';
 import { MIGRATION_LABELS, RARITY_COLORS, getMigrationLabel, getRarityLabel as getRarityLabelConst, getHabitatLabel, getBirdSizeLabel, getBeakLabel } from '../lib/constants';
 import { useT } from '../i18n';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { offlineCache } from '../lib/offlineCache';
 
 export default function ProfilePage() {
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user: curUser } = useAuthStore();
+  const isOnline = useOnlineStatus();
   const t = useT();
   const id = Number(userId);
 
@@ -37,10 +40,40 @@ export default function ProfilePage() {
   const [badgesTotal, setBadgesTotal] = useState(0);
   const [activities, setActivities] = useState<ActivityType[]>([]);
   const [activitiesTotal, setActivitiesTotal] = useState(0);
+  const [usingCache, setUsingCache] = useState(false);
+
+  const buildCollectionsGrouped = (collections: Collection[]) => {
+    const orderMap = new Map<string, Map<string, Collection[]>>();
+    collections.forEach((c) => {
+      if (!c.species) return;
+      const orderName = c.species.order || 'Unknown';
+      const familyName = c.species.family || 'Unknown';
+      if (!orderMap.has(orderName)) orderMap.set(orderName, new Map());
+      const familyMap = orderMap.get(orderName)!;
+      if (!familyMap.has(familyName)) familyMap.set(familyName, []);
+      familyMap.get(familyName)!.push(c);
+    });
+    const result: {
+      order: string;
+      families: { family: string; collections: Collection[]; count: number }[];
+      orderCount: number;
+    }[] = [];
+    orderMap.forEach((familyMap, orderName) => {
+      const families: { family: string; collections: Collection[]; count: number }[] = [];
+      let orderCount = 0;
+      familyMap.forEach((cols, familyName) => {
+        families.push({ family: familyName, collections: cols, count: cols.length });
+        orderCount += cols.length;
+      });
+      result.push({ order: orderName, families, orderCount });
+    });
+    return result.sort((a, b) => b.orderCount - a.orderCount);
+  };
 
   const fetchAll = async () => {
     if (!id) return;
     setLoading(true);
+    setUsingCache(false);
     try {
       const reqs: Promise<any>[] = [
         api.get(`/users/${id}`),
@@ -52,10 +85,11 @@ export default function ProfilePage() {
         api.get(`/users/${id}/activities`),
       ];
       const [pRes, yRes, fFollowing, fFollowers, cRes, bRes, aRes] = await Promise.all(reqs);
-      setProfile(pRes.data.data);
+      const profileData = pRes.data.data;
+      setProfile(profileData);
       setYearList(yRes.data.data || []);
       setYearTotal(yRes.data.total || 0);
-      setObservations(pRes.data.data?.observations || []);
+      setObservations(profileData?.observations || offlineCache.getObservationsByUser(id));
       setFollowing(fFollowing.data.data || []);
       setFollowers(fFollowers.data.data || []);
       setCollectionsGrouped(cRes.data.data || []);
@@ -64,6 +98,39 @@ export default function ProfilePage() {
       setBadgesTotal(bRes.data.total || 0);
       setActivities(aRes.data.data || []);
       setActivitiesTotal(aRes.data.total || 0);
+
+      if (profileData) offlineCache.addUserToCache(profileData);
+      const cachedObs = profileData?.observations || offlineCache.getObservationsByUser(id);
+      if (cachedObs && cachedObs.length > 0) {
+        const allObs = offlineCache.getObservationsBasic() || [];
+        const obsSet = new Map(allObs.map((o) => [o.id, o]));
+        cachedObs.forEach((o: Observation) => obsSet.set(o.id, o));
+        offlineCache.setObservationsBasic(Array.from(obsSet.values()));
+      }
+    } catch (err) {
+      console.warn('从服务器加载用户数据失败，尝试使用缓存:', err);
+      let usedCache = false;
+
+      const cachedProfile = offlineCache.getUsersBasic()?.find((u) => u.id === id);
+      if (cachedProfile) {
+        setProfile(cachedProfile);
+        usedCache = true;
+      }
+
+      const cachedObs = offlineCache.getObservationsByUser(id);
+      if (cachedObs.length > 0) {
+        setObservations(cachedObs);
+        usedCache = true;
+      }
+
+      const cachedCollections = offlineCache.getUserCollections(id);
+      if (cachedCollections && cachedCollections.length > 0) {
+        setCollectionsGrouped(buildCollectionsGrouped(cachedCollections));
+        setCollectionsTotal(cachedCollections.length);
+        usedCache = true;
+      }
+
+      if (usedCache) setUsingCache(true);
     } finally {
       setLoading(false);
     }
@@ -72,6 +139,27 @@ export default function ProfilePage() {
   useEffect(() => {
     fetchAll();
   }, [id, year]);
+
+  useEffect(() => {
+    if (!isOnline && !loading && !profile) {
+      const cachedProfile = offlineCache.getUsersBasic()?.find((u) => u.id === id);
+      if (cachedProfile) {
+        setProfile(cachedProfile);
+        setUsingCache(true);
+      }
+      const cachedObs = offlineCache.getObservationsByUser(id);
+      if (cachedObs.length > 0) {
+        setObservations(cachedObs);
+        setUsingCache(true);
+      }
+      const cachedCollections = offlineCache.getUserCollections(id);
+      if (cachedCollections && cachedCollections.length > 0) {
+        setCollectionsGrouped(buildCollectionsGrouped(cachedCollections));
+        setCollectionsTotal(cachedCollections.length);
+        setUsingCache(true);
+      }
+    }
+  }, [isOnline, id, loading, profile]);
 
   const isSelf = curUser?.id === id;
 
@@ -109,10 +197,18 @@ export default function ProfilePage() {
             <div className="flex flex-col sm:flex-row sm:items-end gap-4">
               <img src={profile.avatar} alt="" className="w-28 h-28 rounded-2xl border-4 border-white shadow-card bg-white" />
               <div className="sm:pb-2">
-                <h1 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
-                  {profile.username}
-                  {isSelf && <span className="ml-2 text-sm font-sans font-normal text-white/80">{t('profile_me')}</span>}
-                </h1>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
+                    {profile.username}
+                    {isSelf && <span className="ml-2 text-sm font-sans font-normal text-white/80">{t('profile_me')}</span>}
+                  </h1>
+                  {usingCache && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-white/20 backdrop-blur text-white border border-white/30 font-medium">
+                      <Database className="w-3 h-3" />
+                      {t('offline_cached_label')}
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center gap-2 mt-1 text-white/90 text-sm">
                   <Calendar className="w-4 h-4" />
                   {t('profile_joined')} {formatDateShort(profile.createdAt)}

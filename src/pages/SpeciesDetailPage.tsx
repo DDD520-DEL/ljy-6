@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star, Bookmark, BookmarkCheck } from 'lucide-react';
+import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star, Bookmark, BookmarkCheck, Database } from 'lucide-react';
 import api from '../lib/api';
 import type { Species, Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { FEATHER_COLORS, BIRD_SIZES, BEAK_SHAPES, HABITATS, MIGRATION_LABELS, getMigrationLabel, getBirdSizeLabel, getBirdSizeDesc, getBeakLabel, getBeakDesc, getFeatherColorLabel, getHabitatLabel } from '../lib/constants';
 import { useAuthStore } from '../stores/authStore';
 import { useT } from '../i18n';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { offlineCache } from '../lib/offlineCache';
 
 const markerIcon = L.divIcon({
   className: '',
@@ -21,27 +23,56 @@ export default function SpeciesDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user: curUser } = useAuthStore();
+  const isOnline = useOnlineStatus();
   const t = useT();
   const [species, setSpecies] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isCollected, setIsCollected] = useState(false);
   const [collecting, setCollecting] = useState(false);
+  const [usingCache, setUsingCache] = useState(false);
+
+  const numericId = Number(id);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
+      setUsingCache(false);
       try {
         const { data } = await api.get(`/species/${id}`);
         setSpecies(data.data);
+        offlineCache.setSpeciesDetail(numericId, data.data);
+
         if (curUser) {
-          const res = await api.get(`/collections/check/${id}`);
-          setIsCollected(res.data.data);
+          try {
+            const res = await api.get(`/collections/check/${id}`);
+            setIsCollected(res.data.data);
+          } catch {
+            setIsCollected(offlineCache.isSpeciesCollected(curUser.id, numericId));
+          }
+        }
+      } catch (err) {
+        console.warn('从服务器加载物种详情失败，尝试使用缓存:', err);
+        let cached = offlineCache.getSpeciesDetail(numericId);
+        if (!cached) {
+          const speciesList = offlineCache.getSpeciesList();
+          const basic = speciesList?.find((s) => s.id === numericId);
+          if (basic) {
+            const relatedObs = offlineCache.getObservationsBySpecies(numericId);
+            cached = { ...basic, observations: relatedObs };
+          }
+        }
+        if (cached) {
+          setSpecies(cached);
+          setUsingCache(true);
+        }
+        if (curUser) {
+          setIsCollected(offlineCache.isSpeciesCollected(curUser.id, numericId));
         }
       } finally {
         setLoading(false);
       }
     })();
-  }, [id, curUser]);
+  }, [id, curUser, numericId]);
 
   const toggleCollect = async () => {
     if (!curUser) return navigate('/login');
@@ -49,11 +80,29 @@ export default function SpeciesDetailPage() {
     setCollecting(true);
     try {
       if (isCollected) {
-        await api.delete(`/collections/${id}`);
+        try {
+          await api.delete(`/collections/${id}`);
+        } catch (err) {
+          if (!isOnline) {
+            offlineCache.removeCollection(curUser.id, numericId);
+          } else {
+            throw err;
+          }
+        }
         setIsCollected(false);
+        offlineCache.removeCollection(curUser.id, numericId);
       } else {
-        await api.post(`/collections/${id}`);
+        try {
+          await api.post(`/collections/${id}`);
+        } catch (err) {
+          if (!isOnline) {
+            offlineCache.addCollection(curUser.id, numericId);
+          } else {
+            throw err;
+          }
+        }
         setIsCollected(true);
+        offlineCache.addCollection(curUser.id, numericId);
       }
     } finally {
       setCollecting(false);
@@ -111,7 +160,15 @@ export default function SpeciesDetailPage() {
           <div className="md:col-span-3 p-6 sm:p-8">
             <div className="flex items-start justify-between gap-4 mb-2">
               <div>
-                <h1 className="font-display text-3xl sm:text-4xl font-bold text-forest-800">{sp.name}</h1>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="font-display text-3xl sm:text-4xl font-bold text-forest-800">{sp.name}</h1>
+                  {usingCache && (
+                    <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-forest-50 text-forest-600 border border-forest-100 font-medium">
+                      <Database className="w-3 h-3" />
+                      {t('offline_cached_label')}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sage-500 italic text-lg mt-1">{sp.scientificName}</p>
                 <div className="flex items-center gap-2 mt-2 text-sm text-sage-500">
                   <span className="chip !py-1 !px-2.5 bg-forest-50 text-forest-700">{sp.order}</span>
@@ -140,6 +197,11 @@ export default function SpeciesDetailPage() {
                 )}
               </button>
             </div>
+            {usingCache && (
+              <div className="mt-3 text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-3 py-2">
+                {t('offline_using_cache')}
+              </div>
+            )}
 
             <div className="mt-5 grid sm:grid-cols-2 gap-3">
               <div className="bg-white rounded-2xl p-4 border border-sage-100 flex items-start gap-3">

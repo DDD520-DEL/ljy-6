@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X, Database } from 'lucide-react';
 import api from '../lib/api';
 import type { Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
@@ -8,6 +8,8 @@ import { useAuthStore } from '../stores/authStore';
 import { timeAgo, formatDateTime } from '../lib/format';
 import { MIGRATION_LABELS, getMigrationLabel, getWeatherLabel } from '../lib/constants';
 import { useT } from '../i18n';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { offlineCache } from '../lib/offlineCache';
 
 function Lightbox({ photos, initialIndex, onClose }: { photos: string[]; initialIndex: number; onClose: () => void }) {
   const [index, setIndex] = useState(initialIndex);
@@ -61,19 +63,40 @@ export default function ObservationDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user: curUser } = useAuthStore();
+  const isOnline = useOnlineStatus();
   const [obs, setObs] = useState<Observation | null>(null);
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
   const [commentLoading, setCommentLoading] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [usingCache, setUsingCache] = useState(false);
   const t = useT();
+
+  const numericId = Number(id);
 
   const fetchData = async () => {
     setLoading(true);
+    setUsingCache(false);
     try {
       const { data } = await api.get(`/observations/${id}`);
       setObs(data.data);
+      offlineCache.setObservationDetail(numericId, data.data);
+      if (data.data?.user) {
+        offlineCache.addUserToCache(data.data.user);
+      }
+    } catch (err) {
+      console.warn('从服务器加载观测详情失败，尝试使用缓存:', err);
+      let cached = offlineCache.getObservationDetail(numericId);
+      if (!cached) {
+        const basicList = offlineCache.getObservationsBasic();
+        const basic = basicList?.find((o) => o.id === numericId);
+        if (basic) cached = basic;
+      }
+      if (cached) {
+        setObs(cached);
+        setUsingCache(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -81,7 +104,24 @@ export default function ObservationDetailPage() {
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, [id, numericId]);
+
+  useEffect(() => {
+    if (!isOnline && !loading && !obs) {
+      const cached = offlineCache.getObservationDetail(numericId);
+      if (cached) {
+        setObs(cached);
+        setUsingCache(true);
+      } else {
+        const basicList = offlineCache.getObservationsBasic();
+        const basic = basicList?.find((o) => o.id === numericId);
+        if (basic) {
+          setObs(basic);
+          setUsingCache(true);
+        }
+      }
+    }
+  }, [isOnline, numericId, loading, obs]);
 
   const handleLike = async () => {
     if (!curUser) return navigate('/login');
@@ -229,10 +269,25 @@ export default function ObservationDetailPage() {
             </div>
           )}
 
-          <h1 className="font-display text-3xl font-bold text-forest-800 mb-1">
-            {obs.speciesName}
-            {sp && <span className="ml-3 text-lg text-sage-400 italic font-sans font-normal">{sp.scientificName}</span>}
-          </h1>
+          <div className="flex items-start justify-between gap-4 mb-1 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="font-display text-3xl font-bold text-forest-800">
+                {obs.speciesName}
+                {sp && <span className="ml-3 text-lg text-sage-400 italic font-sans font-normal">{sp.scientificName}</span>}
+              </h1>
+              {usingCache && (
+                <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-forest-50 text-forest-600 border border-forest-100 font-medium">
+                  <Database className="w-3 h-3" />
+                  {t('offline_cached_label')}
+                </span>
+              )}
+            </div>
+          </div>
+          {usingCache && (
+            <div className="mt-2 text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-3 py-2">
+              {t('offline_using_cache')}
+            </div>
+          )}
 
           <div className="mt-5 grid sm:grid-cols-3 gap-3">
             <InfoItem icon={<MapPin className="w-4 h-4 text-forest-500" />} label={t('obs_detail_location')} value={obs.locationName || t('map_unknown_location')} />

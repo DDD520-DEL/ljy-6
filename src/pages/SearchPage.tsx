@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, X, Bird, Binoculars, Users as UsersIcon, MapPin, Calendar } from 'lucide-react';
+import { Search, X, Bird, Binoculars, Users as UsersIcon, MapPin, Calendar, Database } from 'lucide-react';
 import api from '../lib/api';
 import { useT } from '../i18n';
 import type { Species, Observation, User } from '../../shared/types';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { offlineCache } from '../lib/offlineCache';
 
 type SearchTab = 'all' | 'species' | 'observations' | 'users';
 
@@ -15,6 +17,7 @@ interface SearchResults {
 
 export default function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const isOnline = useOnlineStatus();
   const t = useT();
   const [inputValue, setInputValue] = useState(searchParams.get('q') || '');
   const [keyword, setKeyword] = useState(searchParams.get('q') || '');
@@ -22,20 +25,33 @@ export default function SearchPage() {
   const [totals, setTotals] = useState({ species: 0, observations: 0, users: 0 });
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<SearchTab>('all');
+  const [usingCache, setUsingCache] = useState(false);
 
   const doSearch = useCallback(async (q: string) => {
     if (!q.trim()) {
       setResults({ species: [], observations: [], users: [] });
       setTotals({ species: 0, observations: 0, users: 0 });
+      setUsingCache(false);
       return;
     }
     setLoading(true);
+    setUsingCache(false);
     try {
       const res = await api.get('/search', { params: { q: q.trim() } });
       if (res.data?.success) {
         setResults(res.data.data);
         setTotals(res.data.total);
       }
+    } catch (err) {
+      console.warn('从服务器搜索失败，尝试使用缓存搜索:', err);
+      const cached = offlineCache.searchAll(q.trim());
+      setResults(cached);
+      setTotals({
+        species: cached.species.length,
+        observations: cached.observations.length,
+        users: cached.users.length,
+      });
+      setUsingCache(true);
     } finally {
       setLoading(false);
     }
@@ -115,8 +131,22 @@ export default function SearchPage() {
       </form>
 
       {keyword && !loading && (
-        <div className="text-center text-sage-500 text-sm mb-6">
-          {t('search_results_for')} "<span className="font-medium text-forest-700">{keyword}</span>" · {totalCount} {t('search_count')}
+        <div className="text-center text-sage-500 text-sm mb-6 flex items-center justify-center gap-2 flex-wrap">
+          <span>
+            {t('search_results_for')} "<span className="font-medium text-forest-700">{keyword}</span>" · {totalCount} {t('search_count')}
+          </span>
+          {usingCache && (
+            <span className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-medium">
+              <Database className="w-3 h-3" />
+              {t('offline_search_hint')}
+            </span>
+          )}
+        </div>
+      )}
+
+      {usingCache && keyword && !loading && (
+        <div className="text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-4 py-2.5 mb-6 text-center">
+          {t('offline_using_cache')}
         </div>
       )}
 

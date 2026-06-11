@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from './Navbar';
+import { OfflineBanner } from './OfflineBanner';
 import { useT } from '../i18n';
 
 export function Layout() {
   const t = useT();
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-white via-forest-50/20 to-white">
+      <OfflineBanner />
       <Navbar />
       <main className="flex-1">
         <Outlet />

@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Search, Filter, Plus, Calendar, MapPin, Bird, ChevronRight } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Bird, ChevronRight, Database } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../lib/api';
 import type { Observation, Species } from '../../shared/types';
@@ -12,6 +12,8 @@ import { useMapStore } from '../stores/mapStore';
 import { formatDateTime } from '../lib/format';
 import { useT } from '../i18n';
 import { getMigrationLabel } from '../lib/constants';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { offlineCache } from '../lib/offlineCache';
 
 function MapEventsHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
   useMapEvents({
@@ -45,6 +47,7 @@ export default function MapHomePage() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { mapCenter, mapZoom, setMapCenter, setPendingNewObservation, flyTo } = useMapStore();
+  const isOnline = useOnlineStatus();
   const [observations, setObservations] = useState<Observation[]>([]);
   const [species, setSpecies] = useState<Species[]>([]);
   const [loading, setLoading] = useState(true);
@@ -52,16 +55,34 @@ export default function MapHomePage() {
   const [speciesFilter, setSpeciesFilter] = useState<number | null>(null);
   const [selectedObs, setSelectedObs] = useState<Observation | null>(null);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [usingCache, setUsingCache] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
+    setUsingCache(false);
     try {
       const [obsRes, spRes] = await Promise.all([
         api.get('/observations', { params: { limit: 100, search: search || undefined } }),
         api.get('/species', { params: { limit: 30 } }),
       ]);
-      setObservations(obsRes.data.data || []);
-      setSpecies(spRes.data.data || []);
+      const obsData = obsRes.data.data || [];
+      const spData = spRes.data.data || [];
+      setObservations(obsData);
+      setSpecies(spData);
+
+      if (!search) {
+        offlineCache.setObservationsBasic(obsData);
+        offlineCache.setSpeciesList(spData);
+      }
+    } catch (err) {
+      console.warn('从服务器加载数据失败，尝试使用缓存:', err);
+      const cachedObs = search
+        ? offlineCache.searchObservations(search, 100)
+        : offlineCache.getObservationsBasic();
+      const cachedSpecies = offlineCache.getSpeciesList();
+      if (cachedObs) setObservations(cachedObs);
+      if (cachedSpecies) setSpecies(cachedSpecies.slice(0, 30));
+      if (cachedObs || cachedSpecies) setUsingCache(true);
     } finally {
       setLoading(false);
     }
@@ -70,6 +91,18 @@ export default function MapHomePage() {
   useEffect(() => {
     fetchData();
   }, [search]);
+
+  useEffect(() => {
+    if (!isOnline && !loading) {
+      const cachedObs = search
+        ? offlineCache.searchObservations(search, 100)
+        : offlineCache.getObservationsBasic();
+      const cachedSpecies = offlineCache.getSpeciesList();
+      if (cachedObs && observations.length === 0) setObservations(cachedObs);
+      if (cachedSpecies && species.length === 0) setSpecies(cachedSpecies.slice(0, 30));
+      if ((cachedObs || cachedSpecies)) setUsingCache(true);
+    }
+  }, [isOnline]);
 
   const filteredObs = useMemo(() => {
     let list = observations;
@@ -92,7 +125,15 @@ export default function MapHomePage() {
         <aside className={`${showSidebar ? 'w-80 xl:w-96' : 'w-0'} transition-all duration-300 border-r border-sage-100 bg-white/80 overflow-hidden flex-shrink-0 flex flex-col`}>
           <div className="p-4 border-b border-sage-100 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="section-title !text-xl">{t('map_title')}</h2>
+              <div className="flex items-center gap-2">
+                <h2 className="section-title !text-xl">{t('map_title')}</h2>
+                {usingCache && (
+                  <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-forest-50 text-forest-600 border border-forest-100 font-medium">
+                    <Database className="w-3 h-3" />
+                    {t('offline_cached_label')}
+                  </span>
+                )}
+              </div>
               <button
                 onClick={() => setShowSidebar((v) => !v)}
                 className="p-2 rounded-xl hover:bg-sage-100 text-sage-600 lg:hidden"
@@ -100,6 +141,11 @@ export default function MapHomePage() {
                 <ChevronRight className={`w-5 h-5 transition-transform ${showSidebar ? 'rotate-180' : ''}`} />
               </button>
             </div>
+            {usingCache && (
+              <div className="text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-3 py-2">
+                {t('offline_using_cache')}
+              </div>
+            )}
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-sage-400" />
               <input

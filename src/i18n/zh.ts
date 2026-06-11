@@ -344,6 +344,25 @@ const zh: Record<string, string> = {
   lang_switch: '语言',
   lang_zh: '中文',
   lang_en: 'English',
+
+  offline_title: '当前处于离线模式',
+  offline_hint: '您正在浏览已缓存的数据，部分功能可能受限',
+  offline_online: '在线',
+  offline_syncing_data: '正在同步数据到本地缓存...',
+  offline_cached_available: '已启用离线浏览，数据已缓存到本地',
+  offline_cache_size: '缓存大小：',
+  offline_data_cached: '类数据已缓存',
+  offline_no_cache: '暂无缓存数据',
+  offline_using_cache: '显示的是本地缓存数据',
+  offline_no_data: '暂无离线数据，请先联网加载',
+  offline_search_hint: '搜索范围仅限已缓存数据',
+  offline_cached_label: '离线可用',
+
+  cache_preload_title: '正在预加载离线数据...',
+  cache_preload_done: '离线数据准备就绪',
+  cache_preload_species: '物种图鉴',
+  cache_preload_observations: '观测记录',
+  cache_preload_collections: '我的收藏',
 };
 
 export default zh;

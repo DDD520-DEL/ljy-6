@@ -344,6 +344,25 @@ const en: Record<string, string> = {
   lang_switch: 'Language',
   lang_zh: '中文',
   lang_en: 'English',
+
+  offline_title: 'You are currently offline',
+  offline_hint: 'Browsing cached data, some features may be limited',
+  offline_online: 'Online',
+  offline_syncing_data: 'Syncing data to local cache...',
+  offline_cached_available: 'Offline browsing enabled, data cached locally',
+  offline_cache_size: 'Cache size: ',
+  offline_data_cached: 'data types cached',
+  offline_no_cache: 'No cached data available',
+  offline_using_cache: 'Showing locally cached data',
+  offline_no_data: 'No offline data, please connect to network first',
+  offline_search_hint: 'Search is limited to cached data only',
+  offline_cached_label: 'Available Offline',
+
+  cache_preload_title: 'Preloading offline data...',
+  cache_preload_done: 'Offline data ready',
+  cache_preload_species: 'Species Guide',
+  cache_preload_observations: 'Observations',
+  cache_preload_collections: 'My Collections',
 };
 
 export default en;
