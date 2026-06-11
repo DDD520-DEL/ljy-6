@@ -363,6 +363,10 @@ const zh: Record<string, string> = {
   cache_preload_species: '物种图鉴',
   cache_preload_observations: '观测记录',
   cache_preload_collections: '我的收藏',
+
+  collect_error_add: '收藏失败，请稍后重试',
+  collect_error_remove: '取消收藏失败，请稍后重试',
+  offline_try_again_later: '网络连接失败，请稍后重试',
 };
 
 export default zh;

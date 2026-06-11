@@ -455,7 +455,7 @@ export const offlineCache = {
     return Math.round(size / 1024);
   },
 
-  getCacheSummary(): {
+  getCacheSummary(userId?: number): {
     speciesCount: number;
     observationsCount: number;
     collectionsCount: number;
@@ -464,10 +464,14 @@ export const offlineCache = {
     lastSync: number | null;
   } {
     const meta = this.getCacheMeta();
+    let collectionsCount = 0;
+    if (userId) {
+      collectionsCount = this.getUserCollections(userId)?.length || 0;
+    }
     return {
       speciesCount: this.getSpeciesList()?.length || 0,
       observationsCount: this.getObservationsBasic()?.length || 0,
-      collectionsCount: 0,
+      collectionsCount,
       usersCount: this.getUsersBasic()?.length || 0,
       sizeKB: this.getCacheSize(),
       lastSync: meta?.lastSyncTime || null,

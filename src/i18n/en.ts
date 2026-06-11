@@ -363,6 +363,10 @@ const en: Record<string, string> = {
   cache_preload_species: 'Species Guide',
   cache_preload_observations: 'Observations',
   cache_preload_collections: 'My Collections',
+
+  collect_error_add: 'Failed to collect, please try again later',
+  collect_error_remove: 'Failed to remove from collection, please try again later',
+  offline_try_again_later: 'Network connection failed, please try again later',
 };
 
 export default en;

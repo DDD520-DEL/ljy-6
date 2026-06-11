@@ -24,11 +24,16 @@ export function OfflineBanner() {
   }, [isOnline]);
 
   useEffect(() => {
-    if (isOnline && !showSyncing) {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    if (isOnline) {
       setShowSyncing(true);
-      const timer = setTimeout(() => setShowSyncing(false), 3000);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setShowSyncing(false), 3000);
+    } else {
+      setShowSyncing(false);
     }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [isOnline]);
 
   if (isOnline && !showSyncing) {

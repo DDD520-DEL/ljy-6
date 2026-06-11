@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star, Bookmark, BookmarkCheck, Database } from 'lucide-react';
+import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star, Bookmark, BookmarkCheck, Database, AlertCircle, X } from 'lucide-react';
 import api from '../lib/api';
 import type { Species, Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
@@ -30,6 +30,7 @@ export default function SpeciesDetailPage() {
   const [isCollected, setIsCollected] = useState(false);
   const [collecting, setCollecting] = useState(false);
   const [usingCache, setUsingCache] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const numericId = Number(id);
 
@@ -77,6 +78,7 @@ export default function SpeciesDetailPage() {
   const toggleCollect = async () => {
     if (!curUser) return navigate('/login');
     if (collecting) return;
+    setError(null);
     setCollecting(true);
     try {
       if (isCollected) {
@@ -86,7 +88,10 @@ export default function SpeciesDetailPage() {
           if (!isOnline) {
             offlineCache.removeCollection(curUser.id, numericId);
           } else {
-            throw err;
+            setError(t('collect_error_remove'));
+            console.error('取消收藏失败:', err);
+            setCollecting(false);
+            return;
           }
         }
         setIsCollected(false);
@@ -98,12 +103,18 @@ export default function SpeciesDetailPage() {
           if (!isOnline) {
             offlineCache.addCollection(curUser.id, numericId);
           } else {
-            throw err;
+            setError(t('collect_error_add'));
+            console.error('收藏失败:', err);
+            setCollecting(false);
+            return;
           }
         }
         setIsCollected(true);
         offlineCache.addCollection(curUser.id, numericId);
       }
+    } catch (err) {
+      setError(t('offline_try_again_later'));
+      console.error('操作失败:', err);
     } finally {
       setCollecting(false);
     }
@@ -200,6 +211,18 @@ export default function SpeciesDetailPage() {
             {usingCache && (
               <div className="mt-3 text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-3 py-2">
                 {t('offline_using_cache')}
+              </div>
+            )}
+            {error && (
+              <div className="mt-3 text-xs text-red-600 bg-red-50 border border-red-100 rounded-xl px-3 py-2 flex items-center gap-2">
+                <AlertCircle className="w-3.5 h-3.5" />
+                {error}
+                <button
+                  onClick={() => setError(null)}
+                  className="ml-auto text-red-400 hover:text-red-600"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
               </div>
             )}
 
