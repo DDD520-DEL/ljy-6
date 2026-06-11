@@ -172,6 +172,10 @@ const zh: Record<string, string> = {
   profile_tab_activity: '动态',
   profile_no_activity: '还没有动态',
   profile_activity_desc: '发布观测、评论或关注其他观鸟者后，动态会出现在这里',
+  profile_level: '等级',
+  profile_total_exp: '总经验值',
+  profile_next_level: '下一等级',
+  profile_max_level: '满级',
 
   activity_publish_obs: '发布了新的观测记录',
   activity_comment: '评论了一条观测记录',

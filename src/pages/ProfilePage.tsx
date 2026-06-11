@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy, Activity, Database } from 'lucide-react';
+import { Calendar, Binoculars, Eye, MapPin, Target, Award, Plus, LogIn, BookOpen, Layers, Trophy, Activity, Database, Sparkles } from 'lucide-react';
 import api from '../lib/api';
-import type { User, YearListItem, Observation, Collection, UserBadge, Activity as ActivityType } from '../../shared/types';
+import type { User, YearListItem, Observation, Collection, UserBadge, Activity as ActivityType, UserLevelProgress } from '../../shared/types';
 import { UserCard } from '../components/UserCard';
 import { ObservationCard } from '../components/ObservationCard';
 import { ActivityCard } from '../components/ActivityCard';
@@ -40,6 +40,7 @@ export default function ProfilePage() {
   const [badgesTotal, setBadgesTotal] = useState(0);
   const [activities, setActivities] = useState<ActivityType[]>([]);
   const [activitiesTotal, setActivitiesTotal] = useState(0);
+  const [levelProgress, setLevelProgress] = useState<UserLevelProgress | null>(null);
   const [usingCache, setUsingCache] = useState(false);
 
   const buildCollectionsGrouped = (collections: Collection[]) => {
@@ -83,8 +84,9 @@ export default function ProfilePage() {
         api.get(`/collections/user/${id}/grouped`),
         api.get(`/challenges/user/${id}/badges`),
         api.get(`/users/${id}/activities`),
+        api.get(`/levels/user/${id}`),
       ];
-      const [pRes, yRes, fFollowing, fFollowers, cRes, bRes, aRes] = await Promise.all(reqs);
+      const [pRes, yRes, fFollowing, fFollowers, cRes, bRes, aRes, lRes] = await Promise.all(reqs);
       const profileData = pRes.data.data;
       setProfile(profileData);
       setYearList(yRes.data.data || []);
@@ -98,6 +100,7 @@ export default function ProfilePage() {
       setBadgesTotal(bRes.data.total || 0);
       setActivities(aRes.data.data || []);
       setActivitiesTotal(aRes.data.total || 0);
+      setLevelProgress(lRes.data.data || null);
 
       if (profileData) offlineCache.addUserToCache(profileData);
       const cachedObs = profileData?.observations || offlineCache.getObservationsByUser(id);
@@ -195,13 +198,26 @@ export default function ProfilePage() {
         <div className="px-6 sm:px-8 pb-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-16">
             <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-              <img src={profile.avatar} alt="" className="w-28 h-28 rounded-2xl border-4 border-white shadow-card bg-white" />
+              <div className="relative">
+                <img src={profile.avatar} alt="" className="w-28 h-28 rounded-2xl border-4 border-white shadow-card bg-white" />
+                {profile.level && (
+                  <div className={`absolute -bottom-1 -right-1 w-10 h-10 rounded-xl bg-gradient-to-br ${profile.levelColor || 'from-gray-400 to-gray-500'} flex items-center justify-center text-lg shadow-md border-2 border-white`}>
+                    {profile.levelIcon || '🐦'}
+                  </div>
+                )}
+              </div>
               <div className="sm:pb-2">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h1 className="font-display text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
                     {profile.username}
                     {isSelf && <span className="ml-2 text-sm font-sans font-normal text-white/80">{t('profile_me')}</span>}
                   </h1>
+                  {profile.level && (
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r ${profile.levelColor || 'from-gray-400 to-gray-500'} text-white text-xs font-semibold shadow-md`}>
+                      <Sparkles className="w-3 h-3" />
+                      Lv.{profile.level} {profile.levelName}
+                    </span>
+                  )}
                   {usingCache && (
                     <span className="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-white/20 backdrop-blur text-white border border-white/30 font-medium">
                       <Database className="w-3 h-3" />
@@ -251,6 +267,42 @@ export default function ProfilePage() {
             <Stat icon={<Target className="w-5 h-5" />} label={t('profile_following')} value={profile.followingCount} color="bg-earth-100 text-earth-600" />
             <Stat icon={<Award className="w-5 h-5" />} label={t('profile_followers')} value={profile.followersCount} color="bg-rose-100 text-rose-600" />
           </div>
+
+          {levelProgress && (
+            <div className="mt-6 card p-5 border border-sage-100">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${levelProgress.levelColor || 'from-gray-400 to-gray-500'} flex items-center justify-center text-2xl shadow-md`}>
+                    {levelProgress.levelIcon || '🐦'}
+                  </div>
+                  <div>
+                    <h3 className="font-display font-semibold text-forest-800 flex items-center gap-2">
+                      {t('profile_level')} Lv.{levelProgress.level}
+                      <span className="text-sm font-normal text-sage-600">{levelProgress.levelName}</span>
+                    </h3>
+                    <p className="text-sm text-sage-500">{t('profile_total_exp')}: {levelProgress.experiencePoints}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-xs text-sage-500">{t('profile_next_level')}</div>
+                  <div className="font-display font-bold text-forest-700">
+                    {levelProgress.level < 10 ? `Lv.${levelProgress.level + 1}` : t('profile_max_level')}
+                  </div>
+                </div>
+              </div>
+              <div className="w-full h-3 rounded-full bg-sage-100 overflow-hidden">
+                <div
+                  className={`h-full rounded-full bg-gradient-to-r ${levelProgress.levelColor || 'from-gray-400 to-gray-500'} transition-all duration-500`}
+                  style={{ width: `${levelProgress.progressToNext}%` }}
+                />
+              </div>
+              <div className="mt-2 text-xs text-sage-500 flex justify-between">
+                <span>{levelProgress.currentLevelExp} EXP</span>
+                <span>{levelProgress.progressToNext}%</span>
+                <span>{levelProgress.level < 10 ? `${levelProgress.nextLevelExp} EXP` : 'MAX'}</span>
+              </div>
+            </div>
+          )}
 
           <div className="mt-6">
             <div className="flex items-center justify-between mb-3">

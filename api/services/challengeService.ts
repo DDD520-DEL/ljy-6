@@ -1,6 +1,7 @@
 import { getDb, nextId, scheduleSave } from '../db/storage.js';
 import type { Challenge, Badge, UserChallengeProgress, UserBadge, ChallengeRankingItem, ChallengeType } from '../../shared/types.js';
 import { NotificationService } from './notificationService.js';
+import { UserService } from './userService.js';
 
 const BADGE_DEFINITIONS: Omit<Badge, 'id'>[] = [
   { name: '观鸟新手', description: '完成首次月度挑战', icon: '🌱', rarity: 'common', color: 'bg-green-500' },
@@ -341,19 +342,11 @@ export const ChallengeService = {
         }
       });
 
+      const userData = UserService.findById(user.id);
+
       return {
         userId: user.id,
-        user: {
-          id: user.id,
-          username: user.username,
-          avatar: user.avatar,
-          bio: user.bio,
-          observationsCount: user.observationsCount || 0,
-          speciesCount: user.speciesCount || 0,
-          followersCount: user.followersCount || 0,
-          followingCount: user.followingCount || 0,
-          createdAt: user.createdAt,
-        },
+        user: userData!,
         completedCount,
         totalProgress: Math.round(totalProgress),
         rank: 0,

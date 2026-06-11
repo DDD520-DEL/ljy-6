@@ -1,6 +1,6 @@
 import type { Species, Observation, Collection, User, LocationFavorite, Tag } from '../../shared/types';
 
-const CACHE_VERSION = '1.2.0';
+const CACHE_VERSION = '1.3.0';
 const CACHE_KEY_PREFIX = 'bird_cache_';
 
 export enum CacheKey {

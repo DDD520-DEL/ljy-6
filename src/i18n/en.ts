@@ -172,6 +172,10 @@ const en: Record<string, string> = {
   profile_tab_activity: 'Activity',
   profile_no_activity: 'No activity yet',
   profile_activity_desc: 'Activities will appear here after you publish observations, comment, or follow other birders',
+  profile_level: 'Level',
+  profile_total_exp: 'Total EXP',
+  profile_next_level: 'Next Level',
+  profile_max_level: 'Max Level',
 
   activity_publish_obs: 'published a new observation',
   activity_comment: 'commented on an observation',

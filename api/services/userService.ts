@@ -3,16 +3,24 @@ import type { User } from '../../shared/types.js';
 import { ObservationService } from './observationService.js';
 import { NotificationService } from './notificationService.js';
 import { ActivityService } from './activityService.js';
+import { calculateUserExp, getLevelProgress } from './levelService.js';
 
 function countUserStats(userId: number) {
   const db = getDb();
   const observations = db.observations.filter((o) => o.userId === userId);
   const speciesSet = new Set(observations.map((o) => o.speciesId).filter((s) => s !== null));
+  const exp = calculateUserExp(userId);
+  const levelProgress = getLevelProgress(exp);
   return {
     observationsCount: observations.length,
     speciesCount: speciesSet.size,
     followersCount: db.follows.filter((f) => f.followingId === userId).length,
     followingCount: db.follows.filter((f) => f.followerId === userId).length,
+    experiencePoints: exp,
+    level: levelProgress.level,
+    levelName: levelProgress.levelName,
+    levelIcon: levelProgress.levelIcon,
+    levelColor: levelProgress.levelColor,
   };
 }
 

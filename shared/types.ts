@@ -3,6 +3,26 @@ export type BeakShape = 'short' | 'slender' | 'curved' | 'hooked' | 'conical';
 export type MigrationPattern = 'resident' | 'summer' | 'winter' | 'passage';
 export type WeatherType = 'sunny' | 'cloudy' | 'rainy' | 'foggy' | 'snowy' | 'windy';
 
+export interface UserLevel {
+  level: number;
+  name: string;
+  icon: string;
+  color: string;
+  minExp: number;
+  maxExp: number;
+}
+
+export interface UserLevelProgress {
+  level: number;
+  levelName: string;
+  levelIcon: string;
+  levelColor: string;
+  experiencePoints: number;
+  nextLevelExp: number;
+  currentLevelExp: number;
+  progressToNext: number;
+}
+
 export interface User {
   id: number;
   username: string;
@@ -14,6 +34,11 @@ export interface User {
   followingCount: number;
   isFollowing?: boolean;
   createdAt: string;
+  experiencePoints: number;
+  level: number;
+  levelName: string;
+  levelIcon: string;
+  levelColor: string;
 }
 
 export interface Species {

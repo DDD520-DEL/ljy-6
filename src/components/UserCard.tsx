@@ -35,15 +35,29 @@ export function UserCard({ user, onUpdate }: Props) {
   return (
     <div className="card p-5 animate-fade-in">
       <Link to={`/profile/${user.id}`} className="flex items-start gap-4">
-        <img
-          src={user.avatar}
-          alt={user.username}
-          className="w-16 h-16 rounded-2xl border-2 border-forest-100 bg-white shrink-0"
-        />
+        <div className="relative">
+          <img
+            src={user.avatar}
+            alt={user.username}
+            className="w-16 h-16 rounded-2xl border-2 border-forest-100 bg-white shrink-0"
+          />
+          {user.level && (
+            <div className={`absolute -bottom-1 -right-1 w-7 h-7 rounded-lg bg-gradient-to-br ${user.levelColor || 'from-gray-400 to-gray-500'} flex items-center justify-center text-sm shadow border-2 border-white`}>
+              {user.levelIcon || '🐦'}
+            </div>
+          )}
+        </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-display text-lg font-semibold text-forest-800 hover:text-forest-600 transition truncate">
-            {user.username}
-          </h3>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="font-display text-lg font-semibold text-forest-800 hover:text-forest-600 transition truncate">
+              {user.username}
+            </h3>
+            {user.level && (
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full bg-gradient-to-r ${user.levelColor || 'from-gray-400 to-gray-500'} text-white font-semibold shrink-0`}>
+                Lv.{user.level}
+              </span>
+            )}
+          </div>
           {user.bio && <p className="mt-1 text-sm text-sage-600 line-clamp-2">{user.bio}</p>}
         </div>
       </Link>

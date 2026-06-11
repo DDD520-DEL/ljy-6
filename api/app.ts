@@ -17,6 +17,7 @@ import searchRoutes from './routes/search.js';
 import feedbackRoutes from './routes/feedbacks.js';
 import birdingEventRoutes from './routes/birdingEvents.js';
 import tagRoutes from './routes/tags.js';
+import levelRoutes from './routes/levels.js';
 
 config();
 
@@ -43,6 +44,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 app.use('/api/birding-events', birdingEventRoutes);
 app.use('/api/tags', tagRoutes);
+app.use('/api/levels', levelRoutes);
 
 app.get('/api/health', (_req, res) => {
   res.json({ success: true, message: '观鸟社区API服务正常运行 🐦' });
