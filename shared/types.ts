@@ -220,6 +220,34 @@ export interface Feedback {
   user?: User;
 }
 
+export interface BirdingEvent {
+  id: number;
+  userId: number;
+  title: string;
+  description: string;
+  locationName: string;
+  latitude: number;
+  longitude: number;
+  startTime: string;
+  endTime: string;
+  maxParticipants: number;
+  registeredCount: number;
+  imageUrl?: string;
+  contactInfo?: string;
+  createdAt: string;
+  user?: User;
+  registrations?: BirdingEventRegistration[];
+  isRegistered?: boolean;
+}
+
+export interface BirdingEventRegistration {
+  id: number;
+  eventId: number;
+  userId: number;
+  registeredAt: string;
+  user?: User;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;

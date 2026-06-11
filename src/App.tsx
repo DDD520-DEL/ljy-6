@@ -16,6 +16,8 @@ import SearchPage from './pages/SearchPage';
 import FavoritesPage from './pages/FavoritesPage';
 import FeedbackPage from './pages/FeedbackPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
+import BirdingEventsPage from './pages/BirdingEventsPage';
+import NewBirdingEventPage from './pages/NewBirdingEventPage';
 import { useAuthStore } from './stores/authStore';
 import { useLanguage } from './stores/languageStore';
 import { offlineCache } from './lib/offlineCache';
@@ -95,6 +97,8 @@ function AppRoutes() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
+          <Route path="/events" element={<BirdingEventsPage />} />
+          <Route path="/events/new" element={<NewBirdingEventPage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>

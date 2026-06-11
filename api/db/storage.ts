@@ -23,6 +23,8 @@ interface Database {
   userBadges: any[];
   activities: any[];
   feedbacks: any[];
+  birdingEvents: any[];
+  birdingEventRegistrations: any[];
   _counters: {
     users: number;
     species: number;
@@ -38,6 +40,8 @@ interface Database {
     userBadges: number;
     activities: number;
     feedbacks: number;
+    birdingEvents: number;
+    birdingEventRegistrations: number;
   };
 }
 
@@ -60,6 +64,8 @@ function defaultDb(): Database {
     userBadges: [],
     activities: [],
     feedbacks: [],
+    birdingEvents: [],
+    birdingEventRegistrations: [],
     _counters: {
       users: 0,
       species: 0,
@@ -75,6 +81,8 @@ function defaultDb(): Database {
       userBadges: 0,
       activities: 0,
       feedbacks: 0,
+      birdingEvents: 0,
+      birdingEventRegistrations: 0,
     },
   };
 }
@@ -112,6 +120,10 @@ export function loadDb(): Database {
     if (!cachedDb!._counters.activities) cachedDb!._counters.activities = 0;
     if (!cachedDb!.feedbacks) cachedDb!.feedbacks = [];
     if (!cachedDb!._counters.feedbacks) cachedDb!._counters.feedbacks = 0;
+    if (!cachedDb!.birdingEvents) cachedDb!.birdingEvents = [];
+    if (!cachedDb!._counters.birdingEvents) cachedDb!._counters.birdingEvents = 0;
+    if (!cachedDb!.birdingEventRegistrations) cachedDb!.birdingEventRegistrations = [];
+    if (!cachedDb!._counters.birdingEventRegistrations) cachedDb!._counters.birdingEventRegistrations = 0;
     let needSave = false;
     cachedDb!.species.forEach((sp: any, idx: number) => {
       const seed = seedSpecies[idx] || seedSpecies[seedSpecies.length - 1];

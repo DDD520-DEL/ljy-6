@@ -58,6 +58,8 @@ function createTestDb() {
     userBadges: [],
     activities: [],
     feedbacks: [],
+    birdingEvents: [],
+    birdingEventRegistrations: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -73,6 +75,8 @@ function createTestDb() {
       userBadges: 0,
       activities: 0,
       feedbacks: 0,
+      birdingEvents: 0,
+      birdingEventRegistrations: 0,
     },
   };
 }

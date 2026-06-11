@@ -116,6 +116,8 @@ export function initializeDatabase(force = false) {
     userBadges: [],
     activities: [],
     feedbacks: [],
+    birdingEvents: [],
+    birdingEventRegistrations: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -131,6 +133,8 @@ export function initializeDatabase(force = false) {
       userBadges: 0,
       activities: 0,
       feedbacks: 0,
+      birdingEvents: 0,
+      birdingEventRegistrations: 0,
     },
   });
 
