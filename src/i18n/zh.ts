@@ -128,6 +128,13 @@ const zh: Record<string, string> = {
   species_collected: '已收藏',
   species_obs_locations: '观测地点分布',
   species_community_obs: '社区观测记录',
+  species_bird_call: '典型鸣叫声',
+  species_play_call: '播放鸣叫声',
+  species_pause_call: '暂停播放',
+  species_replay_call: '重新播放',
+  species_playing: '播放中...',
+  species_loading_audio: '加载音频中...',
+  species_no_call: '暂无鸣叫声录音',
 
   profile_joined: '加入于',
   profile_me: '(我)',

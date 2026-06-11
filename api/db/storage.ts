@@ -114,11 +114,16 @@ export function loadDb(): Database {
     if (!cachedDb!._counters.feedbacks) cachedDb!._counters.feedbacks = 0;
     let needSave = false;
     cachedDb!.species.forEach((sp: any, idx: number) => {
-      if (!sp.order || !sp.family) {
-        const seed = seedSpecies[idx] || seedSpecies[seedSpecies.length - 1];
-        if (seed) {
+      const seed = seedSpecies[idx] || seedSpecies[seedSpecies.length - 1];
+      if (seed) {
+        if (!sp.order || !sp.family) {
           sp.order = seed.order;
           sp.family = seed.family;
+          needSave = true;
+        }
+        if (!sp.birdCallUrl && seed.birdCallUrl) {
+          sp.birdCallUrl = seed.birdCallUrl;
+          sp.birdCallDescription = seed.birdCallDescription;
           needSave = true;
         }
       }

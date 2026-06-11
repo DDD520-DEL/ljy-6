@@ -30,6 +30,8 @@ export interface Species {
   imageUrl: string;
   rarity: number;
   migrationPattern: MigrationPattern;
+  birdCallUrl?: string;
+  birdCallDescription?: string;
 }
 
 export interface Collection {

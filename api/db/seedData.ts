@@ -45,6 +45,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=sparrow%20bird%20perched%20on%20branch%20natural%20light%20high%20quality%20photo&image_size=square',
     rarity: 10,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=sparrow-14601.mp3',
+    birdCallDescription: '典型的"叽叽喳喳"声，短促而频繁，常成群鸣叫',
   },
   {
     name: '白头鹎',
@@ -59,6 +61,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=light-vented%20bulbul%20bird%20white%20head%20green%20wings%20photography&image_size=square',
     rarity: 15,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/01/14/audio_f841513017.mp3?filename=bird-singing-on-tree-17058.mp3',
+    birdCallDescription: '清脆响亮的鸣叫声，婉转动听，晨昏时分最为活跃',
   },
   {
     name: '珠颈斑鸠',
@@ -73,6 +77,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=spotted%20dove%20bird%20pearl%20necklace%20markings%20photography&image_size=square',
     rarity: 20,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/12/28/audio_07437a0e48.mp3?filename=wood-pigeon-coo-128251.mp3',
+    birdCallDescription: '低沉的"咕咕"声，重复而有节奏，常清晨和傍晚鸣叫',
   },
   {
     name: '喜鹊',
@@ -87,6 +93,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=oriental%20magpie%20black%20white%20iridescent%20perched%20on%20branch&image_size=square',
     rarity: 25,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/11/14/audio_17ed3a7e05.mp3?filename=magpie-call-126360.mp3',
+    birdCallDescription: '响亮的"嘎嘎"声，粗厉单调，群栖时叫声嘈杂',
   },
   {
     name: '八哥',
@@ -101,6 +109,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=crested%20myna%20bird%20black%20plumage%20white%20wing%20patches&image_size=square',
     rarity: 35,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/10/25/audio_4b6a7d5e8c.mp3?filename=starling-bird-122898.mp3',
+    birdCallDescription: '丰富多变的鸣叫声，能模仿其他鸟类和环境声音',
   },
   {
     name: '白鹭',
@@ -115,6 +125,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20egret%20white%20heron%20wading%20in%20water%20elegant&image_size=square',
     rarity: 45,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/06/27/audio_40a7a57551.mp3?filename=heron-cry-49297.mp3',
+    birdCallDescription: '繁殖期发出低沉的"呱呱"声，平时较为安静',
   },
   {
     name: '夜鹭',
@@ -129,6 +141,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-crowned%20night%20heron%20red%20eyes%20perched%20near%20water&image_size=square',
     rarity: 55,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/02/08/audio_273612a0e3.mp3?filename=night-heron-call-52296.mp3',
+    birdCallDescription: '夜间发出粗哑的"呱呱"声，晨昏时分活动频繁',
   },
   {
     name: '小䴙䴘',
@@ -143,6 +157,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=little%20grebe%20duckling%20brown%20swimming%20in%20pond%20cute&image_size=square',
     rarity: 50,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/12/27/audio_3e6d556d50.mp3?filename=duck-quack-125063.mp3',
+    birdCallDescription: '繁殖期发出急促的颤鸣声，平时较少鸣叫',
   },
   {
     name: '家燕',
@@ -157,6 +173,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=barn%20swallow%20in%20flight%20forked%20tail%20blue%20black&image_size=square',
     rarity: 30,
     migrationPattern: 'summer',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/10/19/audio_6f2e269558.mp3?filename=swallow-chirp-22245.mp3',
+    birdCallDescription: '尖锐急促的"啾啾"声，飞行时鸣叫频繁',
   },
   {
     name: '戴胜',
@@ -171,6 +189,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hoopoe%20bird%20crown%20feathers%20long%20beak%20colorful&image_size=square',
     rarity: 70,
     migrationPattern: 'summer',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/05/04/audio_39c59f9f11.mp3?filename=hoopoe-bird-call-120553.mp3',
+    birdCallDescription: '低沉悠远的"呼-呼-呼"三声一度，繁殖期鸣叫频繁',
   },
   {
     name: '大山雀',
@@ -185,6 +205,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=japanese%20tit%20bird%20yellow%20belly%20black%20cap%20cute&image_size=square',
     rarity: 40,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/04/14/audio_1279843f2e.mp3?filename=great-tit-song-13021.mp3',
+    birdCallDescription: '清脆响亮的双音节鸣叫声，"子规-子规"般重复鸣叫',
   },
   {
     name: '红嘴蓝鹊',
@@ -199,6 +221,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=red-billed%20blue%20magpie%20colorful%20long%20tail%20perched&image_size=square',
     rarity: 65,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/12/21/audio_5b2211643d.mp3?filename=crow-cawing-125649.mp3',
+    birdCallDescription: '粗厉嘈杂的鸣叫声，群飞时叫声喧哗',
   },
   {
     name: '普通翠鸟',
@@ -213,6 +237,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=common%20kingfisher%20bright%20blue%20orange%20perched%20by%20water&image_size=square',
     rarity: 75,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/08/04/audio_4ceabdb5a9.mp3?filename=kingfisher-call-100559.mp3',
+    birdCallDescription: '尖锐清脆的"嘀嘀"声，飞行时常发出',
   },
   {
     name: '黑卷尾',
@@ -227,6 +253,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black%20drongo%20forked%20tail%20silhouette%20perched%20on%20wire&image_size=square',
     rarity: 60,
     migrationPattern: 'summer',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/02/16/audio_8b5609e2cc.mp3?filename=drongo-bird-call-54782.mp3',
+    birdCallDescription: '响亮多变的鸣叫声，善模仿其他鸟类叫声',
   },
   {
     name: '棕背伯劳',
@@ -241,6 +269,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=long-tailed%20shrike%20rufous%20back%20black%20mask%20perched&image_size=square',
     rarity: 68,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/10/15/audio_9acbda180e.mp3?filename=shrike-call-48378.mp3',
+    birdCallDescription: '粗厉沙哑的鸣叫声，也会模仿其他鸟类声音',
   },
   {
     name: '灰喜鹊',
@@ -255,6 +285,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=azure-winged%20magpie%20gray%20black%20blue%20flock&image_size=square',
     rarity: 32,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/03/15/audio_5af3c2d49a.mp3?filename=azure-winged-magpie-125421.mp3',
+    birdCallDescription: '清脆连贯的鸣叫声，比喜鹊叫声细而高',
   },
   {
     name: '红头长尾山雀',
@@ -269,6 +301,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=black-throated%20bushtit%20red%20head%20tiny%20cute%20fluffy&image_size=square',
     rarity: 58,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/04/28/audio_1b8e5981ee.mp3?filename=bushtit-call-116407.mp3',
+    birdCallDescription: '细碎高频的"吱吱"声，结群活动时此起彼伏',
   },
   {
     name: '乌鸫',
@@ -283,6 +317,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=chinese%20blackbird%20male%20yellow%20beak%20singing&image_size=square',
     rarity: 28,
     migrationPattern: 'resident',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/08/09/audio_9430c5c962.mp3?filename=blackbird-song-6497.mp3',
+    birdCallDescription: '婉转悠扬的歌声，善于模仿其他鸟类和环境声音',
   },
   {
     name: '鸳鸯',
@@ -297,6 +333,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=mandarin%20duck%20male%20colorful%20plumage%20swimming&image_size=square',
     rarity: 82,
     migrationPattern: 'winter',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2021/12/17/audio_0d1d2c0e1e.mp3?filename=duck-quacking-120884.mp3',
+    birdCallDescription: '低沉的"嘎嘎"声，雄鸟叫声稍细',
   },
   {
     name: '鸬鹚',
@@ -311,6 +349,8 @@ export const seedSpecies = [
     imageUrl: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=great%20cormorant%20black%20diving%20bird%20perched%20on%20water&image_size=square',
     rarity: 72,
     migrationPattern: 'winter',
+    birdCallUrl: 'https://cdn.pixabay.com/download/audio/2022/01/31/audio_d5c7f11b0c.mp3?filename=cormorant-call-123105.mp3',
+    birdCallDescription: '繁殖期发出粗哑的喉音，平时较为安静',
   },
 ];
 

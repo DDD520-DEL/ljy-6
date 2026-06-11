@@ -6,6 +6,7 @@ import { ArrowLeft, Ruler, Beaker, MapPin, Leaf, Calendar, Sparkles, Home, Star,
 import api from '../lib/api';
 import type { Species, Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
+import { BirdCallPlayer } from '../components/BirdCallPlayer';
 import { FEATHER_COLORS, BIRD_SIZES, BEAK_SHAPES, HABITATS, MIGRATION_LABELS, getMigrationLabel, getBirdSizeLabel, getBirdSizeDesc, getBeakLabel, getBeakDesc, getFeatherColorLabel, getHabitatLabel } from '../lib/constants';
 import { useAuthStore } from '../stores/authStore';
 import { useT } from '../i18n';
@@ -288,7 +289,17 @@ export default function SpeciesDetailPage() {
               </div>
             </div>
 
-            <div className="mt-6 p-5 rounded-2xl bg-gradient-to-br from-forest-50 to-white border border-forest-100">
+            {sp.birdCallUrl && (
+              <div className="mt-5">
+                <BirdCallPlayer
+                  audioUrl={sp.birdCallUrl}
+                  description={sp.birdCallDescription}
+                  speciesName={sp.name}
+                />
+              </div>
+            )}
+
+            <div className="mt-5 p-5 rounded-2xl bg-gradient-to-br from-forest-50 to-white border border-forest-100">
               <h3 className="font-display text-lg font-semibold text-forest-800 mb-2 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-forest-600" />
                 {t('species_description')}

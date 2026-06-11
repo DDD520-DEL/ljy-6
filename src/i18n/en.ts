@@ -128,6 +128,13 @@ const en: Record<string, string> = {
   species_collected: 'Collected',
   species_obs_locations: 'Observation Locations',
   species_community_obs: 'Community Observations',
+  species_bird_call: 'Typical Call',
+  species_play_call: 'Play Call',
+  species_pause_call: 'Pause',
+  species_replay_call: 'Replay',
+  species_playing: 'Playing...',
+  species_loading_audio: 'Loading audio...',
+  species_no_call: 'No call recording available',
 
   profile_joined: 'Joined',
   profile_me: '(Me)',
