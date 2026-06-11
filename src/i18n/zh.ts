@@ -87,6 +87,7 @@ const zh: Record<string, string> = {
   obs_time: '观测时间',
   obs_weather: '天气状况',
   obs_weather_refresh: '刷新天气',
+  obs_weather_readonly_hint: '点击「刷新天气」按钮可获取当前最新天气信息',
   obs_temperature: '温度',
   obs_wind_direction: '风向',
   obs_behavior: '鸟类行为描述',

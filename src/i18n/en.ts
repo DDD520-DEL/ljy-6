@@ -87,6 +87,7 @@ const en: Record<string, string> = {
   obs_time: 'Observation Time',
   obs_weather: 'Weather',
   obs_weather_refresh: 'Refresh Weather',
+  obs_weather_readonly_hint: 'Click "Refresh Weather" to get the latest weather information',
   obs_temperature: 'Temperature',
   obs_wind_direction: 'Wind Direction',
   obs_behavior: 'Bird Behavior',

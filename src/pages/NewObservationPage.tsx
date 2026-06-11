@@ -455,33 +455,38 @@ export default function NewObservationPage() {
               <label className="text-sm text-sage-700 font-medium flex items-center gap-1.5">
                 <CloudRain className="w-4 h-4 text-forest-600" />
                 {t('obs_weather')}
-                {!isEdit && (
-                  <button
-                    type="button"
-                    onClick={() => loadWeather(pos[0], pos[1])}
-                    disabled={weatherLoading}
-                    className="ml-auto text-xs text-forest-600 hover:text-forest-700 inline-flex items-center gap-1 disabled:opacity-50"
-                  >
-                    <RefreshCw className={`w-3.5 h-3.5 ${weatherLoading ? 'animate-spin' : ''}`} />
-                    {t('obs_weather_refresh')}
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => loadWeather(pos[0], pos[1])}
+                  disabled={weatherLoading}
+                  className="ml-auto text-xs text-forest-600 hover:text-forest-700 inline-flex items-center gap-1 disabled:opacity-50"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${weatherLoading ? 'animate-spin' : ''}`} />
+                  {t('obs_weather_refresh')}
+                </button>
               </label>
 
-              {(!isEdit) && (temperature !== undefined || windDirection) && (
-                <div className="mt-2 mb-3 p-3 bg-forest-50 rounded-xl border border-forest-100 grid grid-cols-2 gap-3">
+              {(temperature !== undefined || windDirection) && (
+                <div className={`mt-2 mb-3 p-3 rounded-xl border grid grid-cols-2 gap-3 ${
+                  isEdit ? 'bg-sage-50 border-sage-200' : 'bg-forest-50 border-forest-100'
+                }`}>
                   <div className="flex items-center gap-2">
                     <Thermometer className="w-4 h-4 text-rose-500" />
                     <span className="text-sm text-sage-700">
-                      {t('obs_temperature')}: <strong className="text-forest-700">{temperature !== undefined ? `${temperature}°C` : '--'}</strong>
+                      {t('obs_temperature')}: <strong className={`font-semibold ${isEdit ? 'text-sage-700' : 'text-forest-700'}`}>{temperature !== undefined ? `${temperature}°C` : '--'}</strong>
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Wind className="w-4 h-4 text-sky-500" />
                     <span className="text-sm text-sage-700">
-                      {t('obs_wind_direction')}: <strong className="text-forest-700">{windDirection ? getWindDirectionLabel(windDirection, lang as 'zh' | 'en') : '--'}</strong>
+                      {t('obs_wind_direction')}: <strong className={`font-semibold ${isEdit ? 'text-sage-700' : 'text-forest-700'}`}>{windDirection ? getWindDirectionLabel(windDirection, lang as 'zh' | 'en') : '--'}</strong>
                     </span>
                   </div>
+                  {isEdit && (
+                    <div className="col-span-2 text-[11px] text-sage-400 italic">
+                      {t('obs_weather_readonly_hint')}
+                    </div>
+                  )}
                 </div>
               )}
 
