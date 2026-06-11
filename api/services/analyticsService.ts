@@ -27,10 +27,12 @@ export const AnalyticsService = {
     return { data: arr, total: arr.length };
   },
 
-  seasonal(options: { speciesId?: number } = {}) {
+  seasonal(options: { speciesId?: number; startDate?: string; endDate?: string } = {}) {
     const db = getDb();
     let list = [...db.observations];
     if (options.speciesId) list = list.filter((o) => o.speciesId === options.speciesId);
+    if (options.startDate) list = list.filter((o) => o.observationTime >= options.startDate);
+    if (options.endDate) list = list.filter((o) => o.observationTime <= options.endDate);
     const counts: Record<number, number> = {};
     for (let m = 1; m <= 12; m++) counts[m] = 0;
     list.forEach((o) => {

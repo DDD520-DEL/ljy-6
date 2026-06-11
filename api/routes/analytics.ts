@@ -20,6 +20,8 @@ router.get('/frequency', (req, res) => {
 router.get('/seasonal', (req, res) => {
   const opts: any = {};
   if (req.query.speciesId) opts.speciesId = Number(req.query.speciesId);
+  if (req.query.startDate) opts.startDate = String(req.query.startDate);
+  if (req.query.endDate) opts.endDate = String(req.query.endDate);
   const result = AnalyticsService.seasonal(opts);
   res.json({ success: true, ...result });
 });

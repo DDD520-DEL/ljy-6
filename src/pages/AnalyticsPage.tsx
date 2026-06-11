@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet.heat';
 import 'leaflet/dist/leaflet.css';
-import { TrendingUp, BarChart3, Calendar, Flame, Eye, Bird, Download, MapPin } from 'lucide-react';
+import { TrendingUp, BarChart3, Calendar, Flame, Eye, Bird, Download, MapPin, FileText } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import api from '../lib/api';
 import type { Species, SeasonalItem, FrequencyItem } from '../../shared/types';
 import { SpeciesCard } from '../components/SpeciesCard';
@@ -44,21 +46,44 @@ export default function AnalyticsPage() {
   const [species, setSpecies] = useState<Species[]>([]);
   const [speciesId, setSpeciesId] = useState<number | null>(null);
   const [month, setMonth] = useState<number | null>(null);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(true);
   const [exportSpeciesId, setExportSpeciesId] = useState<number | null>(null);
   const [exportStartDate, setExportStartDate] = useState('');
   const [exportEndDate, setExportEndDate] = useState('');
   const [exportLocationName, setExportLocationName] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [exportingPdf, setExportingPdf] = useState(false);
+
+  const freqChartRef = useRef<ReactECharts>(null);
+  const seasonChartRef = useRef<ReactECharts>(null);
+  const monthSeasonChartRef = useRef<ReactECharts>(null);
+  const heatmapContainerRef = useRef<HTMLDivElement>(null);
 
   const fetchAll = async () => {
     setLoading(true);
     try {
+      const freqParams: any = { limit: 15 };
+      if (startDate) freqParams.startDate = startDate;
+      if (endDate) freqParams.endDate = endDate;
+
+      const heatParams: any = {};
+      if (speciesId) heatParams.speciesId = speciesId;
+      if (month !== null) heatParams.month = month;
+      if (startDate) heatParams.startDate = startDate;
+      if (endDate) heatParams.endDate = endDate;
+
+      const seasonalParams: any = {};
+      if (speciesId) seasonalParams.speciesId = speciesId;
+      if (startDate) seasonalParams.startDate = startDate;
+      if (endDate) seasonalParams.endDate = endDate;
+
       const [overviewRes, freqRes, seasonalRes, heatRes, speciesRes] = await Promise.all([
         api.get('/analytics/overview'),
-        api.get('/analytics/frequency', { params: { limit: 15 } }),
-        api.get('/analytics/seasonal', speciesId ? { params: { speciesId } } : undefined),
-        api.get('/analytics/heatmap', { params: { speciesId, month } }),
+        api.get('/analytics/frequency', { params: freqParams }),
+        api.get('/analytics/seasonal', Object.keys(seasonalParams).length > 0 ? { params: seasonalParams } : undefined),
+        api.get('/analytics/heatmap', { params: heatParams }),
         api.get('/species', { params: { limit: 50 } }),
       ]);
       setOverview(overviewRes.data.data);
@@ -68,6 +93,132 @@ export default function AnalyticsPage() {
       setSpecies(speciesRes.data.data || []);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleExportPdf = async () => {
+    setExportingPdf(true);
+    try {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 15;
+      let yPosition = margin;
+
+      const addText = (text: string, x: number, y: number, fontSize: number, isBold = false) => {
+        pdf.setFont('helvetica', isBold ? 'bold' : 'normal');
+        pdf.setFontSize(fontSize);
+        pdf.text(text, x, y);
+      };
+
+      const formatDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      };
+
+      addText(t('analytics_title'), margin, yPosition, 18, true);
+      yPosition += 8;
+      pdf.setDrawColor(45, 106, 79);
+      pdf.setLineWidth(0.5);
+      pdf.line(margin, yPosition, pageWidth - margin, yPosition);
+      yPosition += 10;
+
+      addText(`${t('analytics_export_generated')}: ${new Date().toLocaleString()}`, margin, yPosition, 10);
+      yPosition += 6;
+
+      const dateRangeParts: string[] = [];
+      if (startDate) dateRangeParts.push(`${t('analytics_start_date')}: ${formatDate(startDate)}`);
+      if (endDate) dateRangeParts.push(`${t('analytics_end_date')}: ${formatDate(endDate)}`);
+      if (speciesId) {
+        const sp = species.find((s) => s.id === speciesId);
+        if (sp) dateRangeParts.push(`${t('analytics_species_type')}: ${sp.name}`);
+      }
+      if (month !== null) dateRangeParts.push(`${t('analytics_month')}: ${getMonths()[month - 1]}`);
+
+      if (dateRangeParts.length > 0) {
+        addText(dateRangeParts.join('  |  '), margin, yPosition, 10);
+        yPosition += 8;
+      }
+
+      if (overview) {
+        addText(t('analytics_data_summary'), margin, yPosition, 12, true);
+        yPosition += 7;
+        const summaryItems = [
+          `${t('analytics_total_obs')}: ${overview.totalObservations || 0}`,
+          `${t('analytics_total_species')}: ${overview.totalSpecies || 0}`,
+          `${t('analytics_active_users')}: ${overview.totalUsers || 0}`,
+          `${t('analytics_total_comments')}: ${overview.totalComments || 0}`,
+        ];
+        summaryItems.forEach((item) => {
+          addText(`  • ${item}`, margin, yPosition, 10);
+          yPosition += 5;
+        });
+        yPosition += 5;
+      }
+
+      const addImageSection = async (title: string, dataUrl: string, height: number) => {
+        if (yPosition + height + 15 > pageHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        addText(title, margin, yPosition, 12, true);
+        yPosition += 7;
+        const imgWidth = pageWidth - margin * 2;
+        const imgHeight = height;
+        pdf.addImage(dataUrl, 'PNG', margin, yPosition, imgWidth, imgHeight);
+        yPosition += imgHeight + 10;
+      };
+
+      if (freqChartRef.current) {
+        const freqInstance = freqChartRef.current.getEchartsInstance();
+        const freqDataUrl = freqInstance.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#ffffff',
+        });
+        await addImageSection(t('analytics_freq_ranking'), freqDataUrl, 70);
+      }
+
+      if (seasonChartRef.current) {
+        const seasonInstance = seasonChartRef.current.getEchartsInstance();
+        const seasonDataUrl = seasonInstance.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#ffffff',
+        });
+        await addImageSection(t('analytics_monthly_pattern'), seasonDataUrl, 60);
+      }
+
+      if (monthSeasonChartRef.current) {
+        const monthSeasonInstance = monthSeasonChartRef.current.getEchartsInstance();
+        const monthSeasonDataUrl = monthSeasonInstance.getDataURL({
+          type: 'png',
+          pixelRatio: 2,
+          backgroundColor: '#ffffff',
+        });
+        await addImageSection(t('analytics_season_distribution'), monthSeasonDataUrl, 60);
+      }
+
+      if (heatmapContainerRef.current) {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        const canvas = await html2canvas(heatmapContainerRef.current, {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          useCORS: true,
+          logging: false,
+        });
+        const heatmapDataUrl = canvas.toDataURL('image/png');
+        await addImageSection(t('analytics_migration_heatmap'), heatmapDataUrl, 65);
+      }
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+      pdf.save(`${t('analytics_pdf_filename')}_${dateStr}.pdf`);
+    } catch (err) {
+      console.error('PDF 导出失败:', err);
+      alert(t('analytics_export_failed'));
+    } finally {
+      setExportingPdf(false);
     }
   };
 
@@ -104,7 +255,7 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     fetchAll();
-  }, [speciesId, month]);
+  }, [speciesId, month, startDate, endDate]);
 
   const freqOption = {
     tooltip: { trigger: 'axis' },
@@ -210,6 +361,87 @@ export default function AnalyticsPage() {
 
       <div className="card p-6 mb-8 animate-slide-up">
         <div className="flex flex-wrap items-center gap-3 mb-5">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-forest-400 to-forest-600 flex items-center justify-center shadow-card">
+            <BarChart3 className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="font-display text-xl font-semibold text-forest-800">{t('analytics_filter')}</h2>
+            <p className="text-sm text-sage-500">{t('analytics_filter_desc')}</p>
+          </div>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Bird className="w-3.5 h-3.5 inline mr-1" />
+              {t('analytics_species_type')}
+            </label>
+            <select
+              value={speciesId ?? ''}
+              onChange={(e) => setSpeciesId(e.target.value ? Number(e.target.value) : null)}
+              className="input-base w-full"
+            >
+              <option value="">{t('analytics_all_species')}</option>
+              {species.map((s) => (
+                <option key={s.id} value={s.id}>{s.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Calendar className="w-3.5 h-3.5 inline mr-1" />
+              {t('analytics_start_date')}
+            </label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="input-base w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Calendar className="w-3.5 h-3.5 inline mr-1" />
+              {t('analytics_end_date')}
+            </label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="input-base w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-sage-700 mb-1.5">
+              <Flame className="w-3.5 h-3.5 inline mr-1" />
+              {t('analytics_month')}
+            </label>
+            <select
+              value={month ?? ''}
+              onChange={(e) => setMonth(e.target.value ? Number(e.target.value) : null)}
+              className="input-base w-full"
+            >
+              <option value="">{t('analytics_all_year')}</option>
+              {getMonths().map((m, i) => { return <option key={i + 1} value={i + 1}>{m}</option>; })}
+            </select>
+          </div>
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-sage-500">
+            {t('analytics_filter_hint')}
+          </p>
+          <button
+            onClick={handleExportPdf}
+            disabled={exportingPdf || loading}
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-forest-500 to-forest-700 text-white font-medium shadow-lg shadow-forest-500/30 hover:shadow-xl hover:shadow-forest-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          >
+            <FileText className="w-4 h-4" />
+            {exportingPdf ? t('analytics_exporting_pdf') : t('analytics_export_pdf')}
+          </button>
+        </div>
+      </div>
+
+      <div className="card p-6 mb-8 animate-slide-up">
+        <div className="flex flex-wrap items-center gap-3 mb-5">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-card">
             <Download className="w-5 h-5 text-white" />
           </div>
@@ -295,14 +527,8 @@ export default function AnalyticsPage() {
               <Flame className="w-5 h-5 text-rose-500" />
               {t('analytics_freq_ranking')}
             </h2>
-            <div className="flex items-center gap-2">
-              <select value={speciesId ?? ''} onChange={(e) => setSpeciesId(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">{t('analytics_all_species')}</option>
-                {species.map((s) => { return <option key={s.id} value={s.id}>{s.name}</option>; })}
-              </select>
-            </div>
           </div>
-          <ReactECharts option={freqOption} style={{ height: 380 }} notMerge={true} />
+          <ReactECharts ref={freqChartRef} option={freqOption} style={{ height: 380 }} notMerge={true} />
         </div>
 
         <div className="card p-5">
@@ -310,12 +536,12 @@ export default function AnalyticsPage() {
             <Calendar className="w-5 h-5 text-sky-500" />
             {t('analytics_monthly_pattern')}
           </h2>
-          <ReactECharts option={seasonOption} style={{ height: 300 }} />
+          <ReactECharts ref={seasonChartRef} option={seasonOption} style={{ height: 300 }} />
         </div>
 
         <div className="card p-5">
           <h2 className="font-display text-xl font-semibold text-forest-800 mb-5">{t('analytics_season_distribution')}</h2>
-          <ReactECharts option={monthSeasonOption} style={{ height: 300 }} />
+          <ReactECharts ref={monthSeasonChartRef} option={monthSeasonOption} style={{ height: 300 }} />
         </div>
 
         <div className="card overflow-hidden lg:col-span-2">
@@ -324,18 +550,8 @@ export default function AnalyticsPage() {
               <Flame className="w-5 h-5 text-rose-500" />
               {t('analytics_migration_heatmap')}
             </h2>
-            <div className="flex flex-wrap items-center gap-2">
-              <select value={speciesId ?? ''} onChange={(e) => setSpeciesId(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">{t('analytics_all_species')}</option>
-                {species.map((s) => { return <option key={s.id} value={s.id}>{s.name}</option>; })}
-              </select>
-              <select value={month ?? ''} onChange={(e) => setMonth(e.target.value ? Number(e.target.value) : null)} className="input-base !py-2 text-sm">
-                <option value="">{t('analytics_all_year')}</option>
-                {getMonths().map((m, i) => { return <option key={i + 1} value={i + 1}>{m}</option>; })}
-              </select>
-            </div>
           </div>
-          <div className="h-[420px]">
+          <div ref={heatmapContainerRef} className="h-[420px]">
             <MapContainer center={[32.5, 114]} zoom={5} style={{ height: '100%', width: '100%' }} className="!rounded-none !border-0">
               <TileLayer attribution='OSM' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               <HeatmapLayer points={heatmap} />
