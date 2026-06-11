@@ -1,4 +1,4 @@
-import type { Species, Observation, Collection, User } from '../../shared/types';
+import type { Species, Observation, Collection, User, LocationFavorite } from '../../shared/types';
 
 const CACHE_VERSION = '1.1.0';
 const CACHE_KEY_PREFIX = 'bird_cache_';
@@ -10,6 +10,7 @@ export enum CacheKey {
   USER_COLLECTIONS = 'user_collections',
   SPECIES_DETAIL_PREFIX = 'species_detail_',
   USERS_BASIC = 'users_basic',
+  LOCATION_FAVORITES = 'location_favorites',
   CACHE_META = 'cache_meta',
 }
 
@@ -445,6 +446,32 @@ export const offlineCache = {
     localStorage.removeItem(getFullKey(`${CacheKey.USER_COLLECTIONS}_${userId}`));
   },
 
+  setLocationFavorites(userId: number, favorites: LocationFavorite[]): void {
+    localStorage.setItem(
+      getFullKey(`${CacheKey.LOCATION_FAVORITES}_${userId}`),
+      serialize(favorites),
+    );
+    this.updateCacheMeta(CacheKey.LOCATION_FAVORITES);
+  },
+
+  getLocationFavorites(userId: number): LocationFavorite[] | null {
+    const raw = localStorage.getItem(getFullKey(`${CacheKey.LOCATION_FAVORITES}_${userId}`));
+    const entry = deserialize<LocationFavorite[]>(raw);
+    return entry?.data ?? null;
+  },
+
+  isLocationFavorited(userId: number, lat: number, lng: number): boolean {
+    const favorites = this.getLocationFavorites(userId);
+    if (!favorites) return false;
+    return favorites.some(
+      (f) => Math.abs(f.latitude - lat) < 0.000001 && Math.abs(f.longitude - lng) < 0.000001
+    );
+  },
+
+  clearLocationFavorites(userId: number): void {
+    localStorage.removeItem(getFullKey(`${CacheKey.LOCATION_FAVORITES}_${userId}`));
+  },
+
   getCacheSize(): number {
     let size = 0;
     Object.keys(localStorage).forEach((key) => {
@@ -459,19 +486,23 @@ export const offlineCache = {
     speciesCount: number;
     observationsCount: number;
     collectionsCount: number;
+    locationFavoritesCount: number;
     usersCount: number;
     sizeKB: number;
     lastSync: number | null;
   } {
     const meta = this.getCacheMeta();
     let collectionsCount = 0;
+    let locationFavoritesCount = 0;
     if (userId) {
       collectionsCount = this.getUserCollections(userId)?.length || 0;
+      locationFavoritesCount = this.getLocationFavorites(userId)?.length || 0;
     }
     return {
       speciesCount: this.getSpeciesList()?.length || 0,
       observationsCount: this.getObservationsBasic()?.length || 0,
       collectionsCount,
+      locationFavoritesCount,
       usersCount: this.getUsersBasic()?.length || 0,
       sizeKB: this.getCacheSize(),
       lastSync: meta?.lastSyncTime || null,

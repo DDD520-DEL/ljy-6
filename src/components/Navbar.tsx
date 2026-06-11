@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search } from 'lucide-react';
+import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search, Star } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
@@ -40,6 +40,7 @@ export function Navbar() {
     { to: '/analytics', label: t('nav_analytics'), icon: BarChart3 },
     { to: '/challenges', label: t('nav_challenges'), icon: Trophy },
     { to: '/community', label: t('nav_community'), icon: Users },
+    { to: '/favorites', label: t('nav_favorites'), icon: Star },
   ];
 
   return (
@@ -144,6 +145,14 @@ export function Navbar() {
                     {unreadCount > 0 && (
                       <span className="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full leading-none">{unreadCount > 99 ? '99+' : unreadCount}</span>
                     )}
+                  </Link>
+                  <Link
+                    to="/favorites"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
+                  >
+                    <Star className="w-4 h-4" />
+                    {t('nav_favorites')}
                   </Link>
                   <Link
                     to={`/profile/${user.id}`}

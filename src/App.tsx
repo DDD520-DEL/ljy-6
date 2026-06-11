@@ -13,6 +13,7 @@ import SpeciesDetailPage from './pages/SpeciesDetailPage';
 import NotificationsPage from './pages/NotificationsPage';
 import ChallengesPage from './pages/ChallengesPage';
 import SearchPage from './pages/SearchPage';
+import FavoritesPage from './pages/FavoritesPage';
 import { useAuthStore } from './stores/authStore';
 import { useLanguage } from './stores/languageStore';
 import { offlineCache } from './lib/offlineCache';
@@ -84,6 +85,7 @@ function AppRoutes() {
           <Route path="/analytics" element={<AnalyticsPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/challenges" element={<ChallengesPage />} />
+          <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/profile/:userId" element={<ProfilePage />} />
           <Route path="/observe/:id" element={<ObservationDetailPage />} />
           <Route path="/species/:id" element={<SpeciesDetailPage />} />

@@ -40,6 +40,19 @@ export interface Collection {
   species?: Species;
 }
 
+export interface LocationFavorite {
+  id: number;
+  userId: number;
+  latitude: number;
+  longitude: number;
+  locationName: string;
+  note?: string;
+  createdAt: string;
+  speciesName?: string;
+  observationId?: number;
+  thumbnailUrl?: string;
+}
+
 export interface SpeciesMatch extends Species {
   matchScore: number;
 }
