@@ -65,14 +65,30 @@ export const AnalyticsService = {
     return { data };
   },
 
-  overview() {
+  overview(options: { startDate?: string; endDate?: string } = {}) {
     const db = getDb();
+    let observations = [...db.observations];
+    let comments = [...db.comments];
+
+    if (options.startDate) {
+      observations = observations.filter((o) => o.observationTime >= options.startDate!);
+      comments = comments.filter((c) => c.createdAt >= options.startDate!);
+    }
+    if (options.endDate) {
+      observations = observations.filter((o) => o.observationTime <= options.endDate!);
+      comments = comments.filter((c) => c.createdAt <= options.endDate!);
+    }
+
+    const uniqueSpeciesIds = new Set(observations.map((o) => o.speciesId).filter(Boolean));
+    const uniqueUserIds = new Set(observations.map((o) => o.userId).filter(Boolean));
+    comments.forEach((c) => uniqueUserIds.add(c.userId));
+
     return {
-      totalObservations: db.observations.length,
-      totalSpecies: db.species.length,
-      totalUsers: db.users.length,
-      totalComments: db.comments.length,
-      recentObservations: db.observations
+      totalObservations: observations.length,
+      totalSpecies: uniqueSpeciesIds.size,
+      totalUsers: uniqueUserIds.size,
+      totalComments: comments.length,
+      recentObservations: observations
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
         .slice(0, 5)
         .map((o) => ({

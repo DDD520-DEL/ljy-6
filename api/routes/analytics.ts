@@ -3,8 +3,11 @@ import { AnalyticsService } from '../services/analyticsService.js';
 
 const router = Router();
 
-router.get('/overview', (_req, res) => {
-  const data = AnalyticsService.overview();
+router.get('/overview', (req, res) => {
+  const opts: any = {};
+  if (req.query.startDate) opts.startDate = String(req.query.startDate);
+  if (req.query.endDate) opts.endDate = String(req.query.endDate);
+  const data = AnalyticsService.overview(opts);
   res.json({ success: true, data });
 });
 

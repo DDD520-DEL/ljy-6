@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -21,15 +21,90 @@ const HEAT_GRADIENT = {
   '1.0': '#E63946',
 };
 
-function HeatmapLayer({ points }: { points: [number, number, number][] }) {
+function HeatmapLayer({ points, onReady }: { points: [number, number, number][]; onReady?: () => void }) {
   const map = useMap();
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
+
   useEffect(() => {
     let layer: any = null;
     if (points.length > 0 && (L as any).heatLayer) {
       layer = (L as any).heatLayer(points, { radius: 25, blur: 30, maxZoom: 13, gradient: HEAT_GRADIENT }).addTo(map);
     }
-    return () => { if (layer && map.hasLayer(layer)) map.removeLayer(layer); };
+
+    let tileDone = false;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+
+    const checkReady = () => {
+      if (tileDone && onReadyRef.current) {
+        onReadyRef.current();
+      }
+    };
+
+    const handleTileLoad = () => {
+      tileDone = true;
+      checkReady();
+    };
+
+    map.once('load', handleTileLoad);
+    map.whenReady(handleTileLoad);
+
+    timeoutId = setTimeout(() => {
+      tileDone = true;
+      checkReady();
+    }, 5000);
+
+    return () => {
+      if (layer && map.hasLayer(layer)) map.removeLayer(layer);
+      map.off('load', handleTileLoad);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [map, points]);
+  return null;
+}
+
+function MapEvents({ onTilesReady }: { onTilesReady: () => void }) {
+  const map = useMap();
+  const onTilesReadyRef = useRef(onTilesReady);
+  onTilesReadyRef.current = onTilesReady;
+
+  useEffect(() => {
+    let pendingTiles = 0;
+    let fired = false;
+    let fallbackTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const fire = () => {
+      if (fired) return;
+      fired = true;
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+      onTilesReadyRef.current?.();
+    };
+
+    const onLoading = () => { pendingTiles++; };
+    const onTileLoad = () => {
+      pendingTiles = Math.max(0, pendingTiles - 1);
+      if (pendingTiles === 0) fire();
+    };
+    const onTileError = () => { pendingTiles = Math.max(0, pendingTiles - 1); if (pendingTiles === 0) fire(); };
+
+    map.on('loading', onLoading);
+    map.on('tileload', onTileLoad);
+    map.on('tileerror', onTileError);
+
+    fallbackTimer = setTimeout(fire, 8000);
+
+    if ((map as any)._loaded && pendingTiles === 0) {
+      setTimeout(fire, 100);
+    }
+
+    return () => {
+      map.off('loading', onLoading);
+      map.off('tileload', onTileLoad);
+      map.off('tileerror', onTileError);
+      if (fallbackTimer) clearTimeout(fallbackTimer);
+    };
+  }, [map]);
+
   return null;
 }
 
@@ -55,15 +130,22 @@ export default function AnalyticsPage() {
   const [exportLocationName, setExportLocationName] = useState('');
   const [exporting, setExporting] = useState(false);
   const [exportingPdf, setExportingPdf] = useState(false);
+  const [mapTilesReady, setMapTilesReady] = useState(false);
 
   const freqChartRef = useRef<ReactECharts>(null);
   const seasonChartRef = useRef<ReactECharts>(null);
   const monthSeasonChartRef = useRef<ReactECharts>(null);
   const heatmapContainerRef = useRef<HTMLDivElement>(null);
+  const mapTilesReadyRef = useRef(false);
+  mapTilesReadyRef.current = mapTilesReady;
 
   const fetchAll = async () => {
     setLoading(true);
     try {
+      const overviewParams: any = {};
+      if (startDate) overviewParams.startDate = startDate;
+      if (endDate) overviewParams.endDate = endDate;
+
       const freqParams: any = { limit: 15 };
       if (startDate) freqParams.startDate = startDate;
       if (endDate) freqParams.endDate = endDate;
@@ -80,7 +162,7 @@ export default function AnalyticsPage() {
       if (endDate) seasonalParams.endDate = endDate;
 
       const [overviewRes, freqRes, seasonalRes, heatRes, speciesRes] = await Promise.all([
-        api.get('/analytics/overview'),
+        api.get('/analytics/overview', { params: Object.keys(overviewParams).length > 0 ? overviewParams : undefined }),
         api.get('/analytics/frequency', { params: freqParams }),
         api.get('/analytics/seasonal', Object.keys(seasonalParams).length > 0 ? { params: seasonalParams } : undefined),
         api.get('/analytics/heatmap', { params: heatParams }),
@@ -91,10 +173,111 @@ export default function AnalyticsPage() {
       setSeasonal(seasonalRes.data.data || []);
       setHeatmap(heatRes.data.data || []);
       setSpecies(speciesRes.data.data || []);
+      setMapTilesReady(false);
     } finally {
       setLoading(false);
     }
   };
+
+  const waitForMapTiles = useCallback((timeoutMs = 10000): Promise<void> => {
+    return new Promise((resolve) => {
+      if (mapTilesReadyRef.current) {
+        resolve();
+        return;
+      }
+      const start = Date.now();
+      const check = () => {
+        if (mapTilesReadyRef.current || Date.now() - start >= timeoutMs) {
+          resolve();
+        } else {
+          setTimeout(check, 100);
+        }
+      };
+      setTimeout(check, 100);
+    });
+  }, []);
+
+  const generateFallbackHeatmapImage = useCallback((points: [number, number, number][]): string => {
+    const width = 800;
+    const height = 500;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d')!;
+
+    const gradient = ctx.createLinearGradient(0, 0, width, 0);
+    gradient.addColorStop(0, '#e8f4ec');
+    gradient.addColorStop(1, '#c5e1d0');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = 'rgba(45, 106, 79, 0.1)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 10; i++) {
+      ctx.beginPath();
+      ctx.moveTo((width / 10) * i, 0);
+      ctx.lineTo((width / 10) * i, height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, (height / 10) * i);
+      ctx.lineTo(width, (height / 10) * i);
+      ctx.stroke();
+    }
+
+    if (points.length === 0) {
+      ctx.fillStyle = '#888';
+      ctx.font = '16px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('暂无热力图数据', width / 2, height / 2);
+      return canvas.toDataURL('image/png');
+    }
+
+    const lats = points.map((p) => p[0]);
+    const lngs = points.map((p) => p[1]);
+    const counts = points.map((p) => p[2]);
+    const minLat = Math.min(...lats);
+    const maxLat = Math.max(...lats);
+    const minLng = Math.min(...lngs);
+    const maxLng = Math.max(...lngs);
+    const maxCount = Math.max(...counts);
+    const latRange = maxLat - minLat || 1;
+    const lngRange = maxLng - minLng || 1;
+
+    const colorForCount = (ratio: number): string => {
+      if (ratio < 0.2) return `rgba(45, 106, 79, ${0.3 + ratio * 0.5})`;
+      if (ratio < 0.4) return `rgba(82, 183, 136, ${0.4 + ratio * 0.4})`;
+      if (ratio < 0.6) return `rgba(216, 243, 220, ${0.5 + ratio * 0.3})`;
+      if (ratio < 0.8) return `rgba(249, 199, 79, ${0.6 + ratio * 0.2})`;
+      return `rgba(230, 57, 70, ${0.7 + ratio * 0.2})`;
+    };
+
+    points.forEach((p) => {
+      const [lat, lng, count] = p;
+      const x = ((lng - minLng) / lngRange) * (width - 80) + 40;
+      const y = height - (((lat - minLat) / latRange) * (height - 80) + 40);
+      const ratio = count / maxCount;
+      const radius = 15 + ratio * 35;
+
+      const radial = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      radial.addColorStop(0, colorForCount(ratio));
+      radial.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = radial;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    ctx.strokeStyle = '#2D6A4F';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, width - 2, height - 2);
+
+    ctx.fillStyle = '#2D6A4F';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`观测点: ${points.length}  |  最大密度: ${maxCount}`, 12, 24);
+
+    return canvas.toDataURL('image/png');
+  }, []);
 
   const handleExportPdf = async () => {
     setExportingPdf(true);
@@ -200,15 +383,32 @@ export default function AnalyticsPage() {
         await addImageSection(t('analytics_season_distribution'), monthSeasonDataUrl, 60);
       }
 
+      let heatmapDataUrl: string | null = null;
       if (heatmapContainerRef.current) {
-        await new Promise((resolve) => setTimeout(resolve, 500));
-        const canvas = await html2canvas(heatmapContainerRef.current, {
-          scale: 2,
-          backgroundColor: '#ffffff',
-          useCORS: true,
-          logging: false,
-        });
-        const heatmapDataUrl = canvas.toDataURL('image/png');
+        await waitForMapTiles(10000);
+        try {
+          const canvas = await html2canvas(heatmapContainerRef.current, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            allowTaint: true,
+            logging: false,
+            imageTimeout: 15000,
+            ignoreElements: (el) => {
+              const tag = (el.tagName || '').toLowerCase();
+              return tag === 'iframe' || tag === 'script';
+            },
+          });
+          heatmapDataUrl = canvas.toDataURL('image/png');
+        } catch (corsErr) {
+          console.warn('html2canvas 捕获失败，使用降级方案:', corsErr);
+          heatmapDataUrl = generateFallbackHeatmapImage(heatmap);
+        }
+      } else {
+        heatmapDataUrl = generateFallbackHeatmapImage(heatmap);
+      }
+
+      if (heatmapDataUrl) {
         await addImageSection(t('analytics_migration_heatmap'), heatmapDataUrl, 65);
       }
 
@@ -553,8 +753,13 @@ export default function AnalyticsPage() {
           </div>
           <div ref={heatmapContainerRef} className="h-[420px]">
             <MapContainer center={[32.5, 114]} zoom={5} style={{ height: '100%', width: '100%' }} className="!rounded-none !border-0">
-              <TileLayer attribution='OSM' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <TileLayer
+                attribution='OSM'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                crossOrigin={true as any}
+              />
               <HeatmapLayer points={heatmap} />
+              <MapEvents onTilesReady={() => setMapTilesReady(true)} />
             </MapContainer>
           </div>
         </div>
