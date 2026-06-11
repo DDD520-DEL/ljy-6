@@ -52,6 +52,33 @@ const deserialize = <T>(str: string | null): CacheEntry<T> | null => {
   }
 };
 
+const DRAFT_VERSION = '1.0.0';
+
+interface DraftEntry<T> {
+  data: T;
+  savedAt: number;
+  version: string;
+}
+
+const serializeDraft = <T>(data: T & { savedAt: number }): string => {
+  return JSON.stringify({
+    data,
+    savedAt: data.savedAt,
+    version: DRAFT_VERSION,
+  });
+};
+
+const deserializeDraft = <T>(str: string | null): T | null => {
+  if (!str) return null;
+  try {
+    const parsed = JSON.parse(str) as DraftEntry<T>;
+    if (parsed.version !== DRAFT_VERSION) return null;
+    return parsed.data;
+  } catch {
+    return null;
+  }
+};
+
 const normalizeForSearch = (text: string): string => {
   return text.toLowerCase().trim();
 };
@@ -445,6 +472,22 @@ export const offlineCache = {
     Object.values(CacheKey).forEach((key) => {
       if (key === CacheKey.CACHE_META) {
         localStorage.removeItem(getFullKey(key));
+      } else if (key === CacheKey.OBSERVATION_DRAFT_PREFIX) {
+      } else {
+        const prefix = getFullKey(key);
+        Object.keys(localStorage).forEach((k) => {
+          if (k.startsWith(prefix)) {
+            localStorage.removeItem(k);
+          }
+        });
+      }
+    });
+  },
+
+  clearAllIncludingDrafts(): void {
+    Object.values(CacheKey).forEach((key) => {
+      if (key === CacheKey.CACHE_META) {
+        localStorage.removeItem(getFullKey(key));
       } else {
         const prefix = getFullKey(key);
         Object.keys(localStorage).forEach((k) => {
@@ -526,14 +569,13 @@ export const offlineCache = {
   setObservationDraft(userId: number, draft: ObservationDraft): void {
     localStorage.setItem(
       getFullKey(`${CacheKey.OBSERVATION_DRAFT_PREFIX}${userId}`),
-      serialize(draft),
+      serializeDraft(draft),
     );
   },
 
   getObservationDraft(userId: number): ObservationDraft | null {
     const raw = localStorage.getItem(getFullKey(`${CacheKey.OBSERVATION_DRAFT_PREFIX}${userId}`));
-    const entry = deserialize<ObservationDraft>(raw);
-    return entry?.data ?? null;
+    return deserializeDraft<ObservationDraft>(raw);
   },
 
   clearObservationDraft(userId: number): void {
