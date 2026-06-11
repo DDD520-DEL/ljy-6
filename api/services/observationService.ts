@@ -104,6 +104,8 @@ export const ObservationService = {
     locationName?: string;
     observationTime: string;
     weather?: string;
+    temperature?: number;
+    windDirection?: string;
     behavior?: string;
     photoUrls?: string[];
     thumbnailUrls?: string[];
@@ -121,6 +123,8 @@ export const ObservationService = {
       locationName: data.locationName ?? '',
       observationTime: data.observationTime,
       weather: data.weather ?? 'sunny',
+      temperature: data.temperature,
+      windDirection: data.windDirection,
       behavior: data.behavior ?? '',
       photoUrls: data.photoUrls ?? [],
       thumbnailUrls: data.thumbnailUrls ?? [],
@@ -153,6 +157,8 @@ export const ObservationService = {
     locationName?: string;
     observationTime?: string;
     weather?: string;
+    temperature?: number;
+    windDirection?: string;
     behavior?: string;
     photoUrls?: string[];
     thumbnailUrls?: string[];
@@ -168,6 +174,8 @@ export const ObservationService = {
     if (data.locationName !== undefined) obs.locationName = data.locationName;
     if (data.observationTime !== undefined) obs.observationTime = data.observationTime;
     if (data.weather !== undefined) obs.weather = data.weather;
+    if (data.temperature !== undefined) obs.temperature = data.temperature;
+    if (data.windDirection !== undefined) obs.windDirection = data.windDirection;
     if (data.behavior !== undefined) obs.behavior = data.behavior;
     if (data.photoUrls !== undefined) obs.photoUrls = data.photoUrls;
     if (data.thumbnailUrls !== undefined) obs.thumbnailUrls = data.thumbnailUrls;

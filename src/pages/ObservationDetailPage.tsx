@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X, Database } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X, Database, Thermometer, Wind } from 'lucide-react';
 import api from '../lib/api';
 import type { Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { useAuthStore } from '../stores/authStore';
+import { useLanguage } from '../stores/languageStore';
 import { timeAgo, formatDateTime } from '../lib/format';
 import { MIGRATION_LABELS, getMigrationLabel, getWeatherLabel } from '../lib/constants';
+import { getWindDirectionLabel } from '../lib/weather';
 import { useT } from '../i18n';
 import { useOnlineStatus } from '../hooks/useOnlineStatus';
 import { offlineCache } from '../lib/offlineCache';
@@ -72,6 +74,7 @@ export default function ObservationDetailPage() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [usingCache, setUsingCache] = useState(false);
   const t = useT();
+  const { lang } = useLanguage();
 
   const numericId = Number(id);
 
@@ -289,10 +292,16 @@ export default function ObservationDetailPage() {
             </div>
           )}
 
-          <div className="mt-5 grid sm:grid-cols-3 gap-3">
+          <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             <InfoItem icon={<MapPin className="w-4 h-4 text-forest-500" />} label={t('obs_detail_location')} value={obs.locationName || t('map_unknown_location')} />
             <InfoItem icon={<Calendar className="w-4 h-4 text-forest-500" />} label={t('obs_detail_time')} value={formatDateTime(obs.observationTime)} />
             <InfoItem icon={<CloudRain className="w-4 h-4 text-forest-500" />} label={t('obs_detail_weather')} value={getWeatherLabel(obs.weather)} />
+            {obs.temperature !== undefined && (
+              <InfoItem icon={<Thermometer className="w-4 h-4 text-rose-500" />} label={t('obs_temperature')} value={`${obs.temperature}°C`} />
+            )}
+            {obs.windDirection && (
+              <InfoItem icon={<Wind className="w-4 h-4 text-sky-500" />} label={t('obs_wind_direction')} value={getWindDirectionLabel(obs.windDirection, lang as 'zh' | 'en')} />
+            )}
           </div>
 
           {obs.behavior && (

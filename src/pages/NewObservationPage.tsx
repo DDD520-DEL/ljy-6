@@ -1,15 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload } from 'lucide-react';
+import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload, Thermometer, Wind, RefreshCw } from 'lucide-react';
 import api from '../lib/api';
 import { WEATHER_OPTIONS } from '../lib/constants';
 import { fromLocalInputDate, toLocalInputDate, formatDateShort } from '../lib/format';
 import { useMapStore } from '../stores/mapStore';
 import { useAuthStore } from '../stores/authStore';
 import { useT } from '../i18n';
-import type { Species } from '../../shared/types';
+import { useLanguage } from '../stores/languageStore';
+import { fetchWeatherByCoords, getWindDirectionLabel } from '../lib/weather';
+import type { Species, WeatherInfo } from '../../shared/types';
 
 const clickIcon = L.divIcon({
   className: '',
@@ -18,10 +20,11 @@ const clickIcon = L.divIcon({
   iconAnchor: [14, 14],
 });
 
-function ClickHandler({ setPos }: { setPos: (p: [number, number]) => void }) {
+function ClickHandler({ setPos, onPosChange }: { setPos: (p: [number, number]) => void; onPosChange?: (lat: number, lng: number) => void }) {
   useMapEvents({
     click(e) {
       setPos([e.latlng.lat, e.latlng.lng]);
+      onPosChange?.(e.latlng.lat, e.latlng.lng);
     },
   });
   return null;
@@ -43,6 +46,7 @@ export default function NewObservationPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const t = useT();
+  const { lang } = useLanguage();
 
   const [pos, setPos] = useState<[number, number]>(pendingNewObservation ? [pendingNewObservation.lat, pendingNewObservation.lng] : [39.9087, 116.3975]);
   const [locationName, setLocationName] = useState(pendingNewObservation?.locationName || '');
@@ -50,6 +54,9 @@ export default function NewObservationPage() {
   const [speciesId, setSpeciesId] = useState<number | null>(null);
   const [observationTime, setObservationTime] = useState(toLocalInputDate(new Date().toISOString()));
   const [weather, setWeather] = useState('sunny');
+  const [temperature, setTemperature] = useState<number | undefined>(undefined);
+  const [windDirection, setWindDirection] = useState<string | undefined>(undefined);
+  const [weatherLoading, setWeatherLoading] = useState(false);
   const [behavior, setBehavior] = useState('');
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
@@ -59,9 +66,34 @@ export default function NewObservationPage() {
   const [searchTimer, setSearchTimer] = useState<any>(null);
   const [pageLoading, setPageLoading] = useState(isEdit);
 
+  const loadWeather = useCallback(async (lat: number, lng: number) => {
+    if (isEdit) return;
+    setWeatherLoading(true);
+    try {
+      const info: WeatherInfo = await fetchWeatherByCoords(lat, lng);
+      setWeather(info.weather);
+      setTemperature(info.temperature);
+      setWindDirection(info.windDirection);
+    } finally {
+      setWeatherLoading(false);
+    }
+  }, [isEdit]);
+
   useEffect(() => {
     if (!user) navigate('/login');
   }, [user, navigate]);
+
+  useEffect(() => {
+    if (!isEdit && !pendingNewObservation) {
+      loadWeather(pos[0], pos[1]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (pendingNewObservation && !isEdit) {
+      loadWeather(pendingNewObservation.lat, pendingNewObservation.lng);
+    }
+  }, [pendingNewObservation, isEdit, loadWeather]);
 
   useEffect(() => {
     if (isEdit && editId) {
@@ -76,6 +108,8 @@ export default function NewObservationPage() {
             setSpeciesId(obs.speciesId);
             setObservationTime(toLocalInputDate(obs.observationTime));
             setWeather(obs.weather || 'sunny');
+            setTemperature(obs.temperature);
+            setWindDirection(obs.windDirection);
             setBehavior(obs.behavior || '');
             setDescription(obs.description || '');
             setPhotos(
@@ -182,6 +216,8 @@ export default function NewObservationPage() {
         locationName,
         observationTime: fromLocalInputDate(observationTime),
         weather,
+        temperature,
+        windDirection,
         behavior,
         description,
         photoUrls,
@@ -240,7 +276,7 @@ export default function NewObservationPage() {
             <div className="h-72 rounded-xl overflow-hidden border border-sage-100">
               <MapContainer center={pos} zoom={12} scrollWheelZoom style={{ height: '100%', width: '100%' }} className="!rounded-xl !border-0">
                 <TileLayer attribution='OSM' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                <ClickHandler setPos={setPos} />
+                <ClickHandler setPos={setPos} onPosChange={(lat, lng) => !isEdit && loadWeather(lat, lng)} />
                 <Marker position={pos} icon={clickIcon}>
                   <Popup>{t('obs_location_on_map')}</Popup>
                 </Marker>
@@ -419,7 +455,36 @@ export default function NewObservationPage() {
               <label className="text-sm text-sage-700 font-medium flex items-center gap-1.5">
                 <CloudRain className="w-4 h-4 text-forest-600" />
                 {t('obs_weather')}
+                {!isEdit && (
+                  <button
+                    type="button"
+                    onClick={() => loadWeather(pos[0], pos[1])}
+                    disabled={weatherLoading}
+                    className="ml-auto text-xs text-forest-600 hover:text-forest-700 inline-flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${weatherLoading ? 'animate-spin' : ''}`} />
+                    {t('obs_weather_refresh')}
+                  </button>
+                )}
               </label>
+
+              {(!isEdit) && (temperature !== undefined || windDirection) && (
+                <div className="mt-2 mb-3 p-3 bg-forest-50 rounded-xl border border-forest-100 grid grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2">
+                    <Thermometer className="w-4 h-4 text-rose-500" />
+                    <span className="text-sm text-sage-700">
+                      {t('obs_temperature')}: <strong className="text-forest-700">{temperature !== undefined ? `${temperature}°C` : '--'}</strong>
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Wind className="w-4 h-4 text-sky-500" />
+                    <span className="text-sm text-sage-700">
+                      {t('obs_wind_direction')}: <strong className="text-forest-700">{windDirection ? getWindDirectionLabel(windDirection, lang as 'zh' | 'en') : '--'}</strong>
+                    </span>
+                  </div>
+                </div>
+              )}
+
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {WEATHER_OPTIONS.map((w) => (
                   <button

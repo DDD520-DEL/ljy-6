@@ -76,6 +76,8 @@ export interface Observation {
   locationName: string;
   observationTime: string;
   weather: WeatherType | string;
+  temperature?: number;
+  windDirection?: string;
   behavior: string;
   photoUrls: string[];
   thumbnailUrls: string[];
@@ -86,6 +88,13 @@ export interface Observation {
   species?: Species | null;
   comments?: Comment[];
   isLiked?: boolean;
+}
+
+export interface WeatherInfo {
+  weather: WeatherType;
+  temperature: number;
+  windDirection: string;
+  windSpeed?: number;
 }
 
 export interface YearListItem {

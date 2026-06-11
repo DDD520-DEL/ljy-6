@@ -50,6 +50,8 @@ export function initializeDatabase(force = false) {
       locationName: o.locationName,
       observationTime: time,
       weather: o.weather ?? 'sunny',
+      temperature: (o as any).temperature ?? rand(10, 30),
+      windDirection: (o as any).windDirection ?? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][rand(0, 7)],
       behavior: o.behavior ?? '',
       photoUrls: [`https://picsum.photos/seed/bird${o.photo ?? id}/600/400`],
       description: o.description ?? '',
