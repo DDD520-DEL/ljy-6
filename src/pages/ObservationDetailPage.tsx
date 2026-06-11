@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X, Database, Thermometer, Wind } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, CloudRain, Heart, MessageCircle, Send, Sparkles, Binoculars, Pencil, ChevronLeft, ChevronRight, X, Database, Thermometer, Wind, Tag as TagIcon } from 'lucide-react';
 import api from '../lib/api';
 import type { Observation } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
@@ -286,6 +286,21 @@ export default function ObservationDetailPage() {
               )}
             </div>
           </div>
+
+          {obs.tags && obs.tags.length > 0 && (
+            <div className="mt-3 flex flex-wrap items-center gap-1.5">
+              <TagIcon className="w-4 h-4 text-sage-500" />
+              {obs.tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium text-white"
+                  style={{ backgroundColor: tag.color }}
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
           {usingCache && (
             <div className="mt-2 text-xs text-sage-500 bg-amber-50/60 border border-amber-100 rounded-xl px-3 py-2">
               {t('offline_using_cache')}

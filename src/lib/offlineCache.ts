@@ -1,6 +1,6 @@
-import type { Species, Observation, Collection, User, LocationFavorite } from '../../shared/types';
+import type { Species, Observation, Collection, User, LocationFavorite, Tag } from '../../shared/types';
 
-const CACHE_VERSION = '1.1.0';
+const CACHE_VERSION = '1.2.0';
 const CACHE_KEY_PREFIX = 'bird_cache_';
 
 export enum CacheKey {
@@ -11,6 +11,7 @@ export enum CacheKey {
   SPECIES_DETAIL_PREFIX = 'species_detail_',
   USERS_BASIC = 'users_basic',
   LOCATION_FAVORITES = 'location_favorites',
+  TAGS_LIST = 'tags_list',
   CACHE_META = 'cache_meta',
 }
 
@@ -116,6 +117,17 @@ export const offlineCache = {
       .slice(0, limit);
   },
 
+  setTagsList(tags: Tag[]): void {
+    localStorage.setItem(getFullKey(CacheKey.TAGS_LIST), serialize(tags));
+    this.updateCacheMeta(CacheKey.TAGS_LIST);
+  },
+
+  getTagsList(): Tag[] | null {
+    const raw = localStorage.getItem(getFullKey(CacheKey.TAGS_LIST));
+    const entry = deserialize<Tag[]>(raw);
+    return entry?.data ?? null;
+  },
+
   setObservationsBasic(observations: Observation[]): void {
     const basic = observations.map((o) => ({
       id: o.id,
@@ -133,6 +145,7 @@ export const offlineCache = {
       weather: o.weather,
       behavior: o.behavior,
       description: o.description,
+      tags: o.tags,
       user: o.user ? {
         id: o.user.id,
         username: o.user.username,

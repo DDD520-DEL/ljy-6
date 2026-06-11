@@ -21,6 +21,15 @@ router.get('/', (req, res) => {
   if (req.query.radius) opts.radius = Number(req.query.radius);
   if (req.query.limit) opts.limit = Number(req.query.limit);
   if (req.query.search) opts.search = String(req.query.search);
+  if (req.query.tagId) opts.tagId = Number(req.query.tagId);
+  if (req.query.tagIds) {
+    const raw = req.query.tagIds;
+    if (Array.isArray(raw)) {
+      opts.tagIds = raw.map((v: any) => Number(v)).filter((v: number) => !isNaN(v));
+    } else if (typeof raw === 'string') {
+      opts.tagIds = raw.split(',').map((v: string) => Number(v.trim())).filter((v: number) => !isNaN(v));
+    }
+  }
   opts.currentUserId = getCurrentUserId(req);
   const result = ObservationService.list(opts);
   res.json({ success: true, ...result });

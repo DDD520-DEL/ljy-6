@@ -4,6 +4,7 @@ import { UserService } from './userService.js';
 import { NotificationService } from './notificationService.js';
 import { ChallengeService } from './challengeService.js';
 import { ActivityService } from './activityService.js';
+import { TagService } from './tagService.js';
 import ExcelJS from 'exceljs';
 
 function enrichUser(userId?: number) {
@@ -26,6 +27,7 @@ function enrichUser(userId?: number) {
         };
       });
     const isLiked = userId ? db.likes.some((l) => l.userId === userId && l.observationId === row.id) : false;
+    const tags = TagService.getTagsForObservation(row.id);
     return {
       ...row,
       thumbnailUrls: row.thumbnailUrls || [],
@@ -33,6 +35,7 @@ function enrichUser(userId?: number) {
       species,
       comments,
       isLiked,
+      tags,
     };
   };
 }
@@ -51,6 +54,8 @@ export const ObservationService = {
     limit?: number;
     search?: string;
     currentUserId?: number;
+    tagId?: number;
+    tagIds?: number[];
   } = {}) {
     const db = getDb();
     let list = [...db.observations];
@@ -58,6 +63,17 @@ export const ObservationService = {
     if (options.userId) list = list.filter((o) => o.userId === options.userId);
     if (options.startDate) list = list.filter((o) => o.observationTime >= options.startDate);
     if (options.endDate) list = list.filter((o) => o.observationTime <= options.endDate);
+    if (options.tagId) {
+      const obsIds = TagService.getObservationsByTagId(options.tagId);
+      list = list.filter((o) => obsIds.includes(o.id));
+    }
+    if (options.tagIds && options.tagIds.length > 0) {
+      const obsIdsSet = new Set<number>();
+      options.tagIds.forEach((tid) => {
+        TagService.getObservationsByTagId(tid).forEach((oid) => obsIdsSet.add(oid));
+      });
+      list = list.filter((o) => obsIdsSet.has(o.id));
+    }
     if (options.search && options.search.trim()) {
       const q = options.search.trim().toLowerCase();
       list = list.filter(
@@ -110,6 +126,7 @@ export const ObservationService = {
     photoUrls?: string[];
     thumbnailUrls?: string[];
     description?: string;
+    tagNames?: string[];
   }) {
     const id = nextId('observations');
     const db = getDb();
@@ -133,6 +150,9 @@ export const ObservationService = {
       createdAt: new Date().toISOString(),
     };
     db.observations.push(obs);
+    if (data.tagNames && data.tagNames.length > 0) {
+      TagService.setTagsForObservation(id, data.tagNames);
+    }
     scheduleSave();
 
     ActivityService.create({
@@ -163,6 +183,7 @@ export const ObservationService = {
     photoUrls?: string[];
     thumbnailUrls?: string[];
     description?: string;
+    tagNames?: string[];
   }) {
     const db = getDb();
     const obs = db.observations.find((o: any) => o.id === id);
@@ -180,6 +201,9 @@ export const ObservationService = {
     if (data.photoUrls !== undefined) obs.photoUrls = data.photoUrls;
     if (data.thumbnailUrls !== undefined) obs.thumbnailUrls = data.thumbnailUrls;
     if (data.description !== undefined) obs.description = data.description;
+    if (data.tagNames !== undefined) {
+      TagService.setTagsForObservation(id, data.tagNames);
+    }
     scheduleSave();
     return this.getById(id);
   },

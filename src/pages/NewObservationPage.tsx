@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from 'react-leaflet';
 import L from 'leaflet';
-import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload, Thermometer, Wind, RefreshCw } from 'lucide-react';
+import { MapPin, Calendar, CloudRain, Camera, ImagePlus, X, Send, Bird as BirdIcon, Sparkles, ArrowLeft, Upload, Thermometer, Wind, RefreshCw, Tag as TagIcon } from 'lucide-react';
 import api from '../lib/api';
 import { WEATHER_OPTIONS } from '../lib/constants';
 import { fromLocalInputDate, toLocalInputDate, formatDateShort } from '../lib/format';
@@ -12,6 +12,7 @@ import { useT } from '../i18n';
 import { useLanguage } from '../stores/languageStore';
 import { fetchWeatherByCoords, getWindDirectionLabel } from '../lib/weather';
 import type { Species, WeatherInfo } from '../../shared/types';
+import { TagSelector } from '../components/TagSelector';
 
 const clickIcon = L.divIcon({
   className: '',
@@ -60,6 +61,7 @@ export default function NewObservationPage() {
   const [behavior, setBehavior] = useState('');
   const [description, setDescription] = useState('');
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
+  const [tagNames, setTagNames] = useState<string[]>([]);
   const [speciesSuggestions, setSpeciesSuggestions] = useState<Species[]>([]);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -112,6 +114,7 @@ export default function NewObservationPage() {
             setWindDirection(obs.windDirection);
             setBehavior(obs.behavior || '');
             setDescription(obs.description || '');
+            setTagNames(obs.tags?.map((t: any) => t.name) || []);
             setPhotos(
               (obs.photoUrls || []).map((url: string, i: number) => ({
                 url,
@@ -222,6 +225,7 @@ export default function NewObservationPage() {
         description,
         photoUrls,
         thumbnailUrls,
+        tagNames,
       };
 
       if (isEdit && editId) {
@@ -525,6 +529,16 @@ export default function NewObservationPage() {
                 placeholder={t('obs_notes_placeholder')}
                 className="input-base mt-1 resize-none"
               />
+            </div>
+
+            <div>
+              <label className="text-sm text-sage-700 font-medium flex items-center gap-1.5">
+                <TagIcon className="w-4 h-4 text-forest-600" />
+                {t('tags_label')}
+              </label>
+              <div className="mt-1">
+                <TagSelector selected={tagNames} onChange={setTagNames} placeholder={t('tag_placeholder')} />
+              </div>
             </div>
           </div>
 

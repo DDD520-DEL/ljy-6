@@ -68,6 +68,19 @@ export interface Comment {
   user: User;
 }
 
+export interface Tag {
+  id: number;
+  name: string;
+  color: string;
+  createdAt: string;
+}
+
+export interface ObservationTag {
+  id: number;
+  observationId: number;
+  tagId: number;
+}
+
 export interface Observation {
   id: number;
   userId: number;
@@ -90,6 +103,7 @@ export interface Observation {
   species?: Species | null;
   comments?: Comment[];
   isLiked?: boolean;
+  tags?: Tag[];
 }
 
 export interface WeatherInfo {

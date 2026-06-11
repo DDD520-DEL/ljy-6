@@ -100,6 +100,19 @@ export function ObservationCard({ observation, compact = false, onUpdate }: Prop
               {sp && <span className="ml-2 text-xs text-sage-400 font-sans font-normal italic">{sp.scientificName}</span>}
             </h3>
           </Link>
+          {observation.tags && observation.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-2">
+              {observation.tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium text-white"
+                  style={{ backgroundColor: tag.color }}
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
           {!compact && observation.description && (
             <p className="mt-2 text-sm text-sage-600 line-clamp-2">{observation.description}</p>
           )}

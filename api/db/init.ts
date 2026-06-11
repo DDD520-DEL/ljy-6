@@ -101,6 +101,33 @@ export function initializeDatabase(force = false) {
     obs.likes = likes.filter((l) => l.observationId === obs.id).length;
   });
 
+  const seedTagNames = ['罕见', '迁徙', '繁殖期', '城市公园', '湿地', '森林', '成群', '单只', '鸣唱', '育雏'];
+  const tags: any[] = [];
+  const tagColors = ['#E07A5F', '#3D405B', '#81B29A', '#F2CC8F', '#2D6A4F', '#40916C', '#9B5DE5', '#F15BB5', '#00BBF9', '#06D6A0'];
+  seedTagNames.forEach((name, idx) => {
+    const id = nextId('tags');
+    tags.push({
+      id,
+      name,
+      color: tagColors[idx % tagColors.length],
+      createdAt: new Date(Date.now() - (idx + 1) * 86400000 * 10).toISOString(),
+    });
+  });
+
+  const observationTags: any[] = [];
+  observations.forEach((obs, idx) => {
+    const numTags = rand(0, 3);
+    const shuffled = [...tags].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < numTags; i++) {
+      const id = nextId('observationTags');
+      observationTags.push({
+        id,
+        observationId: obs.id,
+        tagId: shuffled[i].id,
+      });
+    }
+  });
+
   resetDb({
     users,
     species,
@@ -118,6 +145,8 @@ export function initializeDatabase(force = false) {
     feedbacks: [],
     birdingEvents: [],
     birdingEventRegistrations: [],
+    tags,
+    observationTags,
     _counters: {
       users: users.length,
       species: species.length,
@@ -135,6 +164,8 @@ export function initializeDatabase(force = false) {
       feedbacks: 0,
       birdingEvents: 0,
       birdingEventRegistrations: 0,
+      tags: tags.length,
+      observationTags: observationTags.length,
     },
   });
 

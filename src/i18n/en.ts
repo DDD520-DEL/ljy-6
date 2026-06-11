@@ -475,6 +475,21 @@ const en: Record<string, string> = {
   event_contact: 'Contact Info',
   event_contact_placeholder: 'e.g. WeChat, phone number (visible to registered users)',
   event_time_error: 'End time must be after start time',
+
+  tag_label: 'Tag',
+  tags_label: 'Tags',
+  tag_select: 'Select Tags',
+  tag_add: 'Add Tag',
+  tag_create: 'Create Tag',
+  tag_name: 'Tag Name',
+  tag_name_placeholder: 'Enter tag name, e.g. Rare, Migration, Breeding...',
+  tag_filter_all: 'All Tags',
+  tag_filter: 'Filter by Tags',
+  tag_placeholder: 'Select or enter tags',
+  tag_input_hint: 'Press Enter to add',
+  tag_no_result: 'No matching tags',
+  tag_create_new: 'Create new tag: ',
+  tag_selected: 'Selected Tags',
 };
 
 export default en;

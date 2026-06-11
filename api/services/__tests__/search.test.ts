@@ -60,6 +60,8 @@ function createTestDb() {
     feedbacks: [],
     birdingEvents: [],
     birdingEventRegistrations: [],
+    tags: [],
+    observationTags: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -77,6 +79,8 @@ function createTestDb() {
       feedbacks: 0,
       birdingEvents: 0,
       birdingEventRegistrations: 0,
+      tags: 0,
+      observationTags: 0,
     },
   };
 }

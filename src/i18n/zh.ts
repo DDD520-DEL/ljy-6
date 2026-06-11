@@ -475,6 +475,21 @@ const zh: Record<string, string> = {
   event_contact: '联系方式',
   event_contact_placeholder: '例如：微信号、手机号等（仅报名用户可见）',
   event_time_error: '结束时间必须晚于开始时间',
+
+  tag_label: '标签',
+  tags_label: '标签',
+  tag_select: '选择标签',
+  tag_add: '添加标签',
+  tag_create: '创建标签',
+  tag_name: '标签名称',
+  tag_name_placeholder: '输入标签名称，例如：罕见、迁徙、繁殖期...',
+  tag_filter_all: '全部标签',
+  tag_filter: '按标签筛选',
+  tag_placeholder: '选择或输入标签',
+  tag_input_hint: '按回车添加标签',
+  tag_no_result: '暂无匹配标签',
+  tag_create_new: '创建新标签：',
+  tag_selected: '已选标签',
 };
 
 export default zh;

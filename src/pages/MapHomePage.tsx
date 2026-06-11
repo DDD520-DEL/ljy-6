@@ -2,10 +2,10 @@ import { useEffect, useState, useMemo, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Search, Filter, Plus, Calendar, MapPin, Bird, ChevronRight, Database, Star, Trash2, CheckCircle, X } from 'lucide-react';
+import { Search, Filter, Plus, Calendar, MapPin, Bird, ChevronRight, Database, Star, Trash2, CheckCircle, X, Tag as TagIcon } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../lib/api';
-import type { Observation, Species } from '../../shared/types';
+import type { Observation, Species, Tag } from '../../shared/types';
 import { ObservationCard } from '../components/ObservationCard';
 import { useAuthStore } from '../stores/authStore';
 import { useMapStore } from '../stores/mapStore';
@@ -54,9 +54,11 @@ export default function MapHomePage() {
   const isOnline = useOnlineStatus();
   const [observations, setObservations] = useState<Observation[]>([]);
   const [species, setSpecies] = useState<Species[]>([]);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [speciesFilter, setSpeciesFilter] = useState<number | null>(null);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
   const [selectedObs, setSelectedObs] = useState<Observation | null>(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const [usingCache, setUsingCache] = useState(false);
@@ -78,18 +80,26 @@ export default function MapHomePage() {
     setLoading(true);
     setUsingCache(false);
     try {
-      const [obsRes, spRes] = await Promise.all([
-        api.get('/observations', { params: { limit: 100, search: search || undefined } }),
+      const params: any = { limit: 100 };
+      if (search) params.search = search;
+      if (selectedTagIds.length > 0) params.tagIds = selectedTagIds.join(',');
+
+      const [obsRes, spRes, tagRes] = await Promise.all([
+        api.get('/observations', { params }),
         api.get('/species', { params: { limit: 30 } }),
+        api.get('/tags'),
       ]);
       const obsData = obsRes.data.data || [];
       const spData = spRes.data.data || [];
+      const tagData = tagRes.data.data || [];
       setObservations(obsData);
       setSpecies(spData);
+      setAllTags(tagData);
 
       if (!search) {
         offlineCache.setObservationsBasic(obsData);
         offlineCache.setSpeciesList(spData);
+        offlineCache.setTagsList(tagData);
       }
     } catch (err) {
       console.warn('从服务器加载数据失败，尝试使用缓存:', err);
@@ -97,9 +107,17 @@ export default function MapHomePage() {
         ? offlineCache.searchObservations(search, 100)
         : offlineCache.getObservationsBasic();
       const cachedSpecies = offlineCache.getSpeciesList();
-      if (cachedObs) setObservations(cachedObs);
+      const cachedTags = offlineCache.getTagsList();
+      let filtered = cachedObs;
+      if (cachedObs && selectedTagIds.length > 0) {
+        filtered = cachedObs.filter((o) =>
+          o.tags?.some((t) => selectedTagIds.includes(t.id)),
+        );
+      }
+      if (filtered) setObservations(filtered);
       if (cachedSpecies) setSpecies(cachedSpecies.slice(0, 30));
-      if (cachedObs || cachedSpecies) setUsingCache(true);
+      if (cachedTags) setAllTags(cachedTags);
+      if ((filtered || cachedSpecies || cachedTags)) setUsingCache(true);
     } finally {
       setLoading(false);
     }
@@ -107,7 +125,7 @@ export default function MapHomePage() {
 
   useEffect(() => {
     fetchData();
-  }, [search]);
+  }, [search, selectedTagIds]);
 
   useEffect(() => {
     if (!isOnline && !loading) {
@@ -115,11 +133,19 @@ export default function MapHomePage() {
         ? offlineCache.searchObservations(search, 100)
         : offlineCache.getObservationsBasic();
       const cachedSpecies = offlineCache.getSpeciesList();
-      if (cachedObs && observations.length === 0) setObservations(cachedObs);
+      const cachedTags = offlineCache.getTagsList();
+      let filtered = cachedObs;
+      if (cachedObs && selectedTagIds.length > 0) {
+        filtered = cachedObs.filter((o) =>
+          o.tags?.some((t) => selectedTagIds.includes(t.id)),
+        );
+      }
+      if (filtered && observations.length === 0) setObservations(filtered);
       if (cachedSpecies && species.length === 0) setSpecies(cachedSpecies.slice(0, 30));
-      if ((cachedObs || cachedSpecies)) setUsingCache(true);
+      if (cachedTags && allTags.length === 0) setAllTags(cachedTags);
+      if ((filtered || cachedSpecies || cachedTags)) setUsingCache(true);
     }
-  }, [isOnline]);
+  }, [isOnline, selectedTagIds]);
 
   useEffect(() => {
     if (user) {
@@ -254,6 +280,43 @@ export default function MapHomePage() {
                 </button>
               ))}
             </div>
+
+            {allTags.length > 0 && (
+              <div>
+                <div className="text-[11px] text-sage-500 font-medium mb-1.5 flex items-center gap-1">
+                  <TagIcon className="w-3 h-3" />
+                  {t('tag_filter')}
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  <button
+                    onClick={() => setSelectedTagIds([])}
+                    className={`chip text-xs ${selectedTagIds.length === 0 ? 'chip-active' : 'chip-default'}`}
+                  >
+                    {t('tag_filter_all')}
+                  </button>
+                  {allTags.map((tag) => (
+                    <button
+                      key={tag.id}
+                      onClick={() => {
+                        setSelectedTagIds((prev) =>
+                          prev.includes(tag.id)
+                            ? prev.filter((id) => id !== tag.id)
+                            : [...prev, tag.id],
+                        );
+                      }}
+                      className={`chip text-xs ${selectedTagIds.includes(tag.id) ? 'chip-active' : 'chip-default'}`}
+                      title={tag.name}
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full"
+                        style={{ backgroundColor: tag.color }}
+                      />
+                      {tag.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
