@@ -22,6 +22,7 @@ interface Database {
   userChallengeProgress: any[];
   userBadges: any[];
   activities: any[];
+  feedbacks: any[];
   _counters: {
     users: number;
     species: number;
@@ -36,6 +37,7 @@ interface Database {
     userChallengeProgress: number;
     userBadges: number;
     activities: number;
+    feedbacks: number;
   };
 }
 
@@ -57,6 +59,7 @@ function defaultDb(): Database {
     userChallengeProgress: [],
     userBadges: [],
     activities: [],
+    feedbacks: [],
     _counters: {
       users: 0,
       species: 0,
@@ -71,6 +74,7 @@ function defaultDb(): Database {
       userChallengeProgress: 0,
       userBadges: 0,
       activities: 0,
+      feedbacks: 0,
     },
   };
 }
@@ -106,6 +110,8 @@ export function loadDb(): Database {
     if (!cachedDb!._counters.userBadges) cachedDb!._counters.userBadges = 0;
     if (!cachedDb!.activities) cachedDb!.activities = [];
     if (!cachedDb!._counters.activities) cachedDb!._counters.activities = 0;
+    if (!cachedDb!.feedbacks) cachedDb!.feedbacks = [];
+    if (!cachedDb!._counters.feedbacks) cachedDb!._counters.feedbacks = 0;
     let needSave = false;
     cachedDb!.species.forEach((sp: any, idx: number) => {
       if (!sp.order || !sp.family) {

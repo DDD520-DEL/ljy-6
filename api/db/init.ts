@@ -115,6 +115,7 @@ export function initializeDatabase(force = false) {
     userChallengeProgress: [],
     userBadges: [],
     activities: [],
+    feedbacks: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -129,6 +130,7 @@ export function initializeDatabase(force = false) {
       userChallengeProgress: 0,
       userBadges: 0,
       activities: 0,
+      feedbacks: 0,
     },
   });
 

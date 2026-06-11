@@ -57,6 +57,7 @@ function createTestDb() {
     userChallengeProgress: [],
     userBadges: [],
     activities: [],
+    feedbacks: [],
     _counters: {
       users: users.length,
       species: species.length,
@@ -71,6 +72,7 @@ function createTestDb() {
       userChallengeProgress: 0,
       userBadges: 0,
       activities: 0,
+      feedbacks: 0,
     },
   };
 }

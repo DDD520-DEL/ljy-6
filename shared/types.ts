@@ -207,6 +207,17 @@ export interface ChallengeRankingItem {
   rank: number;
 }
 
+export interface Feedback {
+  id: number;
+  userId: number;
+  content: string;
+  contact: string;
+  status: 'pending' | 'processing' | 'resolved';
+  reply?: string;
+  createdAt: string;
+  user?: User;
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data?: T;

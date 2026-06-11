@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search, Star } from 'lucide-react';
+import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search, Star, MessageSquare, Shield } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
@@ -162,6 +162,22 @@ export function Navbar() {
                     <User className="w-4 h-4" />
                     {t('nav_profile')}
                   </Link>
+                  <Link
+                    to="/feedback"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    {t('feedback_nav')}
+                  </Link>
+                  <Link
+                    to="/admin/feedback"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
+                  >
+                    <Shield className="w-4 h-4" />
+                    {t('feedback_admin_title')}
+                  </Link>
                   <button
                     onClick={() => setLang(lang === 'zh' ? 'en' : 'zh')}
                     className="w-full flex items-center gap-3 px-4 py-2.5 text-sage-700 hover:bg-forest-50 transition"
@@ -244,6 +260,12 @@ export function Navbar() {
               {unreadCount > 0 && (
                 <span className="w-2 h-2 bg-red-500 rounded-full" />
               )}
+            </Link>
+          )}
+          {user && (
+            <Link to="/feedback" onClick={() => setMenuOpen(false)} className="nav-link flex items-center gap-2">
+              <MessageSquare className="w-4 h-4" />
+              {t('feedback_nav')}
             </Link>
           )}
         </nav>
