@@ -24,8 +24,6 @@ function ClickHandler({ setPos }: { setPos: (p: [number, number]) => void }) {
   return null;
 }
 
-const DEFAULT_IMAGE = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=beautiful%20bird%20watching%20group%20in%20park%20sunrise%20nature%20outdoor&image_size=landscape_16_9';
-
 function addHours(dateStr: string, hours: number): string {
   const d = new Date(dateStr);
   d.setHours(d.getHours() + hours);
@@ -120,7 +118,7 @@ export default function NewBirdingEventPage() {
         endTime: fromLocalInputDate(endTime),
         maxParticipants: Number(maxParticipants),
         contactInfo: contactInfo.trim(),
-        imageUrl: uploadedImageUrl || DEFAULT_IMAGE,
+        imageUrl: uploadedImageUrl || undefined,
       };
       const { data } = await api.post('/birding-events', body);
       if (data.success) {

@@ -6,7 +6,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder1&backgroundColor=b6e3f4",
       "bio": "十年观鸟经验，热爱记录城市飞羽之美。常驻北京朝阳公园。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-10T12:35:16.400Z"
+      "createdAt": "2026-06-10T12:44:51.113Z"
     },
     {
       "id": 2,
@@ -14,7 +14,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder2&backgroundColor=c0aede",
       "bio": "自然摄影师，专注鸟类摄影五年。喜欢迁徙季追鸟。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-09T12:35:16.400Z"
+      "createdAt": "2026-06-09T12:44:51.113Z"
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder3&backgroundColor=ffd5dc",
       "bio": "城市观鸟入门者，从常见鸟开始积累。上海人。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-08T12:35:16.400Z"
+      "createdAt": "2026-06-08T12:44:51.113Z"
     },
     {
       "id": 4,
@@ -30,7 +30,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder4&backgroundColor=ffdfbf",
       "bio": "生态保护工作者，深圳湾水鸟调查志愿者。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-07T12:35:16.400Z"
+      "createdAt": "2026-06-07T12:44:51.113Z"
     },
     {
       "id": 5,
@@ -38,7 +38,7 @@
       "avatar": "https://api.dicebear.com/7.x/avataaars/svg?seed=birder5&backgroundColor=d1d4f9",
       "bio": "成都观鸟协会会员，每周公园巡礼。",
       "passwordHash": "testhash",
-      "createdAt": "2026-06-06T12:35:16.400Z"
+      "createdAt": "2026-06-06T12:44:51.113Z"
     }
   ],
   "species": [

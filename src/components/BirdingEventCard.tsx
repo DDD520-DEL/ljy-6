@@ -33,7 +33,7 @@ export function BirdingEventCard({
 
   return (
     <div className="card overflow-hidden border-l-4 border-l-sky-400 hover:shadow-card-hover transition group animate-fade-in">
-      {event.imageUrl && (
+      {event.imageUrl ? (
         <div className="aspect-[16/8] overflow-hidden bg-sage-50 relative">
           <img
             src={event.imageUrl}
@@ -51,6 +51,29 @@ export function BirdingEventCard({
           )}
           {event.isRegistered && (
             <div className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-forest-500 text-white text-xs font-medium">
+              <UserCheck className="w-3 h-3" />
+              {t('event_registered_tag')}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="aspect-[16/8] overflow-hidden relative bg-gradient-to-br from-sky-400 via-sky-500 to-forest-500">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-2 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Bird className="w-8 h-8 text-white" />
+              </div>
+              <div className="text-white/90 text-xs font-medium">{t('event_label')}</div>
+            </div>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/10 to-transparent" />
+          {isFull && !event.isRegistered && (
+            <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-rose-500 text-white text-xs font-medium shadow-md">
+              {t('event_full')}
+            </div>
+          )}
+          {event.isRegistered && (
+            <div className="absolute top-3 right-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur-sm text-forest-700 text-xs font-medium shadow-md">
               <UserCheck className="w-3 h-3" />
               {t('event_registered_tag')}
             </div>
