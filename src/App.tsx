@@ -18,6 +18,7 @@ import FeedbackPage from './pages/FeedbackPage';
 import FeedbackAdminPage from './pages/FeedbackAdminPage';
 import BirdingEventsPage from './pages/BirdingEventsPage';
 import NewBirdingEventPage from './pages/NewBirdingEventPage';
+import SpeciesComparePage from './pages/SpeciesComparePage';
 import { useAuthStore } from './stores/authStore';
 import { useLanguage } from './stores/languageStore';
 import { offlineCache } from './lib/offlineCache';
@@ -99,6 +100,7 @@ function AppRoutes() {
           <Route path="/admin/feedback" element={<FeedbackAdminPage />} />
           <Route path="/events" element={<BirdingEventsPage />} />
           <Route path="/events/new" element={<NewBirdingEventPage />} />
+          <Route path="/species-compare" element={<SpeciesComparePage />} />
           <Route path="/login" element={<LoginPage />} />
         </Route>
       </Routes>

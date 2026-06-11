@@ -1,5 +1,5 @@
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search, Star, MessageSquare, Shield, CalendarDays } from 'lucide-react';
+import { Bird, MapPin, Sparkles, BarChart3, Users, User, LogOut, Plus, Menu, Bell, Trophy, Search, Star, MessageSquare, Shield, CalendarDays, GitCompareArrows } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../stores/authStore';
 import { useNotificationStore } from '../stores/notificationStore';
@@ -37,6 +37,7 @@ export function Navbar() {
   const navItems = [
     { to: '/', label: t('nav_map'), icon: MapPin, end: true },
     { to: '/bird-id', label: t('nav_bird_id'), icon: Sparkles },
+    { to: '/species-compare', label: t('nav_compare'), icon: GitCompareArrows },
     { to: '/analytics', label: t('nav_analytics'), icon: BarChart3 },
     { to: '/challenges', label: t('nav_challenges'), icon: Trophy },
     { to: '/events', label: t('nav_events'), icon: CalendarDays },

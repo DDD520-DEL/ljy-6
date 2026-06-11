@@ -51,6 +51,7 @@ export interface Species {
   beakShape: BeakShape;
   featherColors: string[];
   habitat: string[];
+  distribution: string;
   description: string;
   imageUrl: string;
   rarity: number;

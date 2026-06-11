@@ -66,7 +66,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/03/10/audio_c8c8a73467.mp3?filename=sparrow-14601.mp3",
       "birdCallDescription": "典型的\"叽叽喳喳\"声，短促而频繁，常成群鸣叫",
-      "id": 1
+      "id": 1,
+      "distribution": "中国各地广泛分布，欧亚大陆普遍可见"
     },
     {
       "name": "白头鹎",
@@ -93,7 +94,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/01/14/audio_f841513017.mp3?filename=bird-singing-on-tree-17058.mp3",
       "birdCallDescription": "清脆响亮的鸣叫声，婉转动听，晨昏时分最为活跃",
-      "id": 2
+      "id": 2,
+      "distribution": "中国南方、华北及东部地区，城市常见"
     },
     {
       "name": "珠颈斑鸠",
@@ -121,7 +123,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/12/28/audio_07437a0e48.mp3?filename=wood-pigeon-coo-128251.mp3",
       "birdCallDescription": "低沉的\"咕咕\"声，重复而有节奏，常清晨和傍晚鸣叫",
-      "id": 3
+      "id": 3,
+      "distribution": "中国南方及华北地区，东南亚广泛分布"
     },
     {
       "name": "喜鹊",
@@ -149,7 +152,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/11/14/audio_17ed3a7e05.mp3?filename=magpie-call-126360.mp3",
       "birdCallDescription": "响亮的\"嘎嘎\"声，粗厉单调，群栖时叫声嘈杂",
-      "id": 4
+      "id": 4,
+      "distribution": "中国各地广泛分布，东亚地区常见"
     },
     {
       "name": "八哥",
@@ -175,7 +179,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/10/25/audio_4b6a7d5e8c.mp3?filename=starling-bird-122898.mp3",
       "birdCallDescription": "丰富多变的鸣叫声，能模仿其他鸟类和环境声音",
-      "id": 5
+      "id": 5,
+      "distribution": "中国南方及西南地区，东南亚也有分布"
     },
     {
       "name": "白鹭",
@@ -202,7 +207,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/06/27/audio_40a7a57551.mp3?filename=heron-cry-49297.mp3",
       "birdCallDescription": "繁殖期发出低沉的\"呱呱\"声，平时较为安静",
-      "id": 6
+      "id": 6,
+      "distribution": "中国南方、东部及西南地区，非洲、欧亚大陆广布"
     },
     {
       "name": "夜鹭",
@@ -230,7 +236,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/02/08/audio_273612a0e3.mp3?filename=night-heron-call-52296.mp3",
       "birdCallDescription": "夜间发出粗哑的\"呱呱\"声，晨昏时分活动频繁",
-      "id": 7
+      "id": 7,
+      "distribution": "中国东部、南部及西南地区，全球广布"
     },
     {
       "name": "小䴙䴘",
@@ -258,7 +265,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/12/27/audio_3e6d556d50.mp3?filename=duck-quack-125063.mp3",
       "birdCallDescription": "繁殖期发出急促的颤鸣声，平时较少鸣叫",
-      "id": 8
+      "id": 8,
+      "distribution": "中国各地淡水水域均有分布，欧亚大陆、非洲广布"
     },
     {
       "name": "家燕",
@@ -286,7 +294,8 @@
       "migrationPattern": "summer",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/10/19/audio_6f2e269558.mp3?filename=swallow-chirp-22245.mp3",
       "birdCallDescription": "尖锐急促的\"啾啾\"声，飞行时鸣叫频繁",
-      "id": 9
+      "id": 9,
+      "distribution": "中国各地均有分布（夏候鸟），全球广布"
     },
     {
       "name": "戴胜",
@@ -315,7 +324,8 @@
       "migrationPattern": "summer",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/05/04/audio_39c59f9f11.mp3?filename=hoopoe-bird-call-120553.mp3",
       "birdCallDescription": "低沉悠远的\"呼-呼-呼\"三声一度，繁殖期鸣叫频繁",
-      "id": 10
+      "id": 10,
+      "distribution": "中国大部分地区均有分布，欧亚大陆及非洲广布"
     },
     {
       "name": "大山雀",
@@ -344,7 +354,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/04/14/audio_1279843f2e.mp3?filename=great-tit-song-13021.mp3",
       "birdCallDescription": "清脆响亮的双音节鸣叫声，\"子规-子规\"般重复鸣叫",
-      "id": 11
+      "id": 11,
+      "distribution": "中国各地林区均有分布，东亚地区常见"
     },
     {
       "name": "红嘴蓝鹊",
@@ -373,7 +384,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/12/21/audio_5b2211643d.mp3?filename=crow-cawing-125649.mp3",
       "birdCallDescription": "粗厉嘈杂的鸣叫声，群飞时叫声喧哗",
-      "id": 12
+      "id": 12,
+      "distribution": "中国东部、南部及西南地区，喜马拉雅山脉也有分布"
     },
     {
       "name": "普通翠鸟",
@@ -403,7 +415,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/08/04/audio_4ceabdb5a9.mp3?filename=kingfisher-call-100559.mp3",
       "birdCallDescription": "尖锐清脆的\"嘀嘀\"声，飞行时常发出",
-      "id": 13
+      "id": 13,
+      "distribution": "中国各地水域附近均有分布，欧亚大陆、北非广布"
     },
     {
       "name": "黑卷尾",
@@ -430,7 +443,8 @@
       "migrationPattern": "summer",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/02/16/audio_8b5609e2cc.mp3?filename=drongo-bird-call-54782.mp3",
       "birdCallDescription": "响亮多变的鸣叫声，善模仿其他鸟类叫声",
-      "id": 14
+      "id": 14,
+      "distribution": "中国东部、南部及西南地区（夏候鸟），南亚、东南亚广布"
     },
     {
       "name": "棕背伯劳",
@@ -459,7 +473,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/10/15/audio_9acbda180e.mp3?filename=shrike-call-48378.mp3",
       "birdCallDescription": "粗厉沙哑的鸣叫声，也会模仿其他鸟类声音",
-      "id": 15
+      "id": 15,
+      "distribution": "中国南方及华东地区，南亚、东南亚也有分布"
     },
     {
       "name": "灰喜鹊",
@@ -486,7 +501,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/03/15/audio_5af3c2d49a.mp3?filename=azure-winged-magpie-125421.mp3",
       "birdCallDescription": "清脆连贯的鸣叫声，比喜鹊叫声细而高",
-      "id": 16
+      "id": 16,
+      "distribution": "中国华北、华东及东北地区，东亚地区广布"
     },
     {
       "name": "红头长尾山雀",
@@ -515,7 +531,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/04/28/audio_1b8e5981ee.mp3?filename=bushtit-call-116407.mp3",
       "birdCallDescription": "细碎高频的\"吱吱\"声，结群活动时此起彼伏",
-      "id": 17
+      "id": 17,
+      "distribution": "中国南方及西南地区，喜马拉雅山脉也有分布"
     },
     {
       "name": "乌鸫",
@@ -542,7 +559,8 @@
       "migrationPattern": "resident",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/08/09/audio_9430c5c962.mp3?filename=blackbird-song-6497.mp3",
       "birdCallDescription": "婉转悠扬的歌声，善于模仿其他鸟类和环境声音",
-      "id": 18
+      "id": 18,
+      "distribution": "中国南方及华北地区，欧亚大陆广布"
     },
     {
       "name": "鸳鸯",
@@ -573,7 +591,8 @@
       "migrationPattern": "winter",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2021/12/17/audio_0d1d2c0e1e.mp3?filename=duck-quacking-120884.mp3",
       "birdCallDescription": "低沉的\"嘎嘎\"声，雄鸟叫声稍细",
-      "id": 19
+      "id": 19,
+      "distribution": "中国东北繁殖，南方及东部越冬，东亚地区分布"
     },
     {
       "name": "鸬鹚",
@@ -603,7 +622,8 @@
       "migrationPattern": "winter",
       "birdCallUrl": "https://cdn.pixabay.com/download/audio/2022/01/31/audio_d5c7f11b0c.mp3?filename=cormorant-call-123105.mp3",
       "birdCallDescription": "繁殖期发出粗哑的喉音，平时较为安静",
-      "id": 20
+      "id": 20,
+      "distribution": "中国东部、南部沿海及内陆水域，全球广布"
     }
   ],
   "observations": [],

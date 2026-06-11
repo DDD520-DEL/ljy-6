@@ -289,6 +289,14 @@ export default function SpeciesDetailPage() {
               </div>
             </div>
 
+            <div className="mt-5">
+              <h3 className="text-sm font-semibold text-sage-700 mb-2.5 flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-forest-500" />
+                {t('species_distribution')}
+              </h3>
+              <p className="text-sm text-sage-600 leading-relaxed">{sp.distribution}</p>
+            </div>
+
             {sp.birdCallUrl && (
               <div className="mt-5">
                 <BirdCallPlayer

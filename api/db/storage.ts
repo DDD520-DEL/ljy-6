@@ -150,6 +150,10 @@ export function loadDb(): Database {
           sp.birdCallDescription = seed.birdCallDescription;
           needSave = true;
         }
+        if (!sp.distribution && seed.distribution) {
+          sp.distribution = seed.distribution;
+          needSave = true;
+        }
       }
     });
     if (needSave) scheduleSave();
